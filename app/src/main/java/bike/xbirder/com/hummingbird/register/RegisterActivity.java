@@ -1,14 +1,14 @@
 package bike.xbirder.com.hummingbird.register;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import bike.xbirder.com.hummingbird.R;
+import bike.xbirder.com.hummingbird.base.BaseActivity;
 
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

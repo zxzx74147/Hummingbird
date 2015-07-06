@@ -1,10 +1,11 @@
 package bike.xbirder.com.hummingbird;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+
+import bike.xbirder.com.hummingbird.base.BaseActivity;
 
 
-public class LogoActivity extends AppCompatActivity {
+public class LogoActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
