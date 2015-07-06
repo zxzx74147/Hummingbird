@@ -1,10 +1,10 @@
 package bike.xbirder.com.hummingbird;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 
-public class LogoActivity extends ActionBarActivity {
+public class LogoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
