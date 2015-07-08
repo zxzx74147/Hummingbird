@@ -1,11 +1,11 @@
-package bike.xbirder.com.hummingbird.register;
+package com.xbirder.bike.hummingbird.register;
 
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import bike.xbirder.com.hummingbird.R;
-import bike.xbirder.com.hummingbird.base.BaseActivity;
+import com.xbirder.bike.hummingbird.R;
+import com.xbirder.bike.hummingbird.base.BaseActivity;
 
 
 public class RegisterActivity extends BaseActivity {

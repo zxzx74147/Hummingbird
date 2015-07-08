@@ -1,9 +1,9 @@
-package bike.xbirder.com.hummingbird.main;
+package com.xbirder.bike.hummingbird.main;
 
 import android.os.Bundle;
 
-import bike.xbirder.com.hummingbird.R;
-import bike.xbirder.com.hummingbird.base.BaseActivity;
+import com.xbirder.bike.hummingbird.R;
+import com.xbirder.bike.hummingbird.base.BaseActivity;
 
 public class MainActivity extends BaseActivity {
 

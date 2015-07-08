@@ -1,8 +1,8 @@
-package bike.xbirder.com.hummingbird;
+package com.xbirder.bike.hummingbird;
 
 import android.os.Bundle;
 
-import bike.xbirder.com.hummingbird.base.BaseActivity;
+import com.xbirder.bike.hummingbird.base.BaseActivity;
 
 
 public class LogoActivity extends BaseActivity {

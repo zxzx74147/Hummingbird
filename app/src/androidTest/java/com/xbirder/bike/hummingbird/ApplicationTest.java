@@ -1,4 +1,4 @@
-package bike.xbirder.com.hummingbird;
+package com.xbirder.bike.hummingbird;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
