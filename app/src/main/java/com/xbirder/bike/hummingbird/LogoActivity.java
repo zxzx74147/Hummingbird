@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.xbirder.bike.hummingbird.base.BaseActivity;
 import com.xbirder.bike.hummingbird.login.LoginActivity;
+import com.xbirder.bike.hummingbird.main.MainActivity;
 import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
 
 
@@ -28,7 +29,7 @@ public class LogoActivity extends BaseActivity {
         mRegisterView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityJumpHelper.startActivity(LogoActivity.this, LoginActivity.class);
+                ActivityJumpHelper.startActivity(LogoActivity.this, MainActivity.class);
             }
         });
     }
