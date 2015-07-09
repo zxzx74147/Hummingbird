@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.xbirder.bike.hummingbird.base.BaseActivity;
-import com.xbirder.bike.hummingbird.register.RegisterActivity;
+import com.xbirder.bike.hummingbird.login.LoginActivity;
 import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
 
 
@@ -22,13 +22,13 @@ public class LogoActivity extends BaseActivity {
         mLoginView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityJumpHelper.startActivity(LogoActivity.this, RegisterActivity.class);
+                ActivityJumpHelper.startActivity(LogoActivity.this, LoginActivity.class);
             }
         });
         mRegisterView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityJumpHelper.startActivity(LogoActivity.this, RegisterActivity.class);
+                ActivityJumpHelper.startActivity(LogoActivity.this, LoginActivity.class);
             }
         });
     }

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/common_background_day"
-    tools:context="com.xbirder.bike.hummingbird.register.RegisterFragment">
+    tools:context="com.xbirder.bike.hummingbird.login.LoginFragment">
 
     <com.xbirder.bike.hummingbird.common.widget.TitleBar
         android:layout_width="match_parent"

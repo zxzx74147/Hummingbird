@@ -1,4 +1,4 @@
-package com.xbirder.bike.hummingbird.register;
+package com.xbirder.bike.hummingbird.login;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -12,14 +12,14 @@ import com.xbirder.bike.hummingbird.R;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class RegisterFragment extends Fragment {
+public class LoginFragment extends Fragment {
 
-    public RegisterFragment() {
+    public LoginFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_register, container, false);
+        return inflater.inflate(R.layout.fragment_login, container, false);
     }
 }

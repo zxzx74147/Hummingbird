@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.xbirder.bike.hummingbird.register.RegisterActivity"
+            android:name=".login.LoginActivity"
             android:label="@string/title_activity_register" >
         </activity>
         <activity
