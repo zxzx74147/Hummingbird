@@ -2,14 +2,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/login_bg"
     tools:context=".LogoActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/demo_toolbar"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        app:title="@string/hello_world" />
+
+
+    <Button
+        android:background="@drawable/login_login_btn"
+        android:id="@+id/btn_login"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/default_gap_180"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageButton
+        android:id="@+id/btn_reg"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:layout_marginBottom="@dimen/default_gap_140"
+        android:src="@drawable/btn_reg"
+        android:layout_width="@dimen/default_gap_200"
+        android:layout_height="@dimen/default_gap_20" />
+
 
 </RelativeLayout>
