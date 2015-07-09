@@ -36,7 +36,7 @@
             android:layout_width="@dimen/default_gap_180"
             android:layout_height="match_parent" />
 
-        <TextView
+        <EditText
             android:hint="@string/login_input_phone_remind"
             android:textColor="@color/common_text_gray_day"
             android:paddingLeft="@dimen/default_gap_10"
@@ -62,7 +62,7 @@
             android:layout_width="@dimen/default_gap_180"
             android:layout_height="match_parent" />
 
-        <TextView
+        <EditText
             android:hint="@string/password_remind"
             android:textColor="@color/common_text_gray_day"
             android:paddingLeft="@dimen/default_gap_10"
