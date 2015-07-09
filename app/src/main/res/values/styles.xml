@@ -6,5 +6,12 @@
     </style>
 
 
+    <style name="AppTheme.day" parent="AppTheme">
+        <item name="common_background">@color/common_background_day</item>
+    </style>
+    <!-- 夜间模式 -->
+    <style name="AppTheme.night" parent="AppTheme">
+        <item name="common_background">@color/common_background_day</item>
+    </style>
 
 </resources>
