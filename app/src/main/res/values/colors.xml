@@ -6,4 +6,7 @@
     <color name="common_orange_day">#E55A28</color>
 
     <color name="common_text_gray_day">#2B2B2B</color>
+
+    <color name="battery_roll_top_day">#e97122</color>
+    <color name="battery_roll_bottom_day">#f9bb4e</color>
 </resources>
