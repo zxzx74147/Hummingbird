@@ -14,7 +14,7 @@ public class AccountManager {
     private AccountManager(){
         mToken = SharedPreferenceHelper.getString(KEY_TOKEN);
     }
-    public AccountManager sharedInstance(){
+    public static AccountManager sharedInstance(){
         if(mInstance == null){
             mInstance = new AccountManager();
         }

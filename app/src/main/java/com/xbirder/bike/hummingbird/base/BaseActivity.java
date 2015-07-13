@@ -2,6 +2,9 @@ package com.xbirder.bike.hummingbird.base;
 
 import android.support.v7.app.AppCompatActivity;
 
+import com.baidu.asyncTask.CommonUniqueId;
+import com.baidu.core.net.base.HttpManager;
+import com.baidu.core.net.base.HttpRequestBase;
 import com.xbirder.bike.hummingbird.skin.SkinConfig;
 import com.xbirder.bike.hummingbird.skin.SkinManager;
 
@@ -11,6 +14,8 @@ import com.xbirder.bike.hummingbird.skin.SkinManager;
 public class BaseActivity extends AppCompatActivity {
 
     protected int mSkinMode = SkinConfig.SKIN_MODE_DAY;
+
+    private CommonUniqueId mUniqueId = CommonUniqueId.gen();
 
     @Override
     protected void onResume() {
@@ -31,5 +36,13 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void initData(){
 
+    }
+
+    protected void sendRequest(HttpRequestBase request, boolean isLoadCache) {
+        HttpManager.sendRequest(mUniqueId, request, isLoadCache);
+    }
+
+    protected void sendRequest(HttpRequestBase request) {
+        sendRequest(request, false);
     }
 }

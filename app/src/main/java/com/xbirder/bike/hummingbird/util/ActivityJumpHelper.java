@@ -1,8 +1,8 @@
 package com.xbirder.bike.hummingbird.util;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 
 /**
  * Created by zhengxin on 2015/7/9.

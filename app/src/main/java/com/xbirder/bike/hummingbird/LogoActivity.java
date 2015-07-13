@@ -7,6 +7,7 @@ import com.xbirder.bike.hummingbird.base.BaseActivity;
 import com.xbirder.bike.hummingbird.login.LoginActivity;
 import com.xbirder.bike.hummingbird.main.MainActivity;
 import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
+import com.xbirder.bike.hummingbird.util.StringHelper;
 
 
 public class LogoActivity extends BaseActivity {
@@ -32,6 +33,10 @@ public class LogoActivity extends BaseActivity {
                 ActivityJumpHelper.startActivity(LogoActivity.this, MainActivity.class);
             }
         });
+        String token = AccountManager.sharedInstance().getToken();
+        if(StringHelper.checkString(token)){
+            ActivityJumpHelper.startActivity(this,MainActivity.class);
+        }
     }
 
 

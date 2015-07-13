@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         app:title_text="@string/login_by_phone"
         app:right_text="@string/register"
+        android:id="@+id/title_bar"
         android:layout_height="@dimen/title_bar_height"/>
 
     <TextView
@@ -43,6 +44,7 @@
             android:gravity="center"
             android:background="@null"
             android:textSize="@dimen/default_size_40"
+            android:id="@+id/login_phone_num"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
     </LinearLayout>
@@ -70,6 +72,7 @@
             android:gravity="center"
             android:textSize="@dimen/default_size_40"
             android:background="@null"
+            android:id="@+id/login_password"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
     </LinearLayout>
