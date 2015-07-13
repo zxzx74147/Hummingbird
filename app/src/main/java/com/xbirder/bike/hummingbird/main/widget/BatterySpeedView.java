@@ -1,4 +1,4 @@
-package com.xbirder.bike.hummingbird.widget;
+package com.xbirder.bike.hummingbird.main.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
