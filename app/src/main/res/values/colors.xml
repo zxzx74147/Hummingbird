@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="white">#FFFFFF</color>
+    <color name="common_background_day">#FFFAF3EF</color>
+    <color name="common_gray_day">#FFEDEDED</color>
+    <color name="common_orange_day">#E55A28</color>
 
+    <color name="common_text_gray_day">#2B2B2B</color>
 </resources>
