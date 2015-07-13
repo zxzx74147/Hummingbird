@@ -21,11 +21,14 @@ import com.xbirder.bike.hummingbird.R;
 public class BatterySpeedView extends ImageView {
 
     private static int ROLL_WIDTH = 0;
-    private float mPercent = 10;
+    private float mPercent = 60;
 
     private Paint mGrayPaint = new Paint();
     private Paint mColorPaint = new Paint();
     private RectF mArgRect = new RectF();
+    private int mColorTop = 0;
+    private int mColorBottom= 0;
+    private int mColorBg = 0;
 
 
     public BatterySpeedView(Context context) {
@@ -47,25 +50,28 @@ public class BatterySpeedView extends ImageView {
         super.onLayout(changed,left,top,right,bottom);
         int width = right-left;
         int height = bottom-top;
-        LinearGradient linearGradient = new LinearGradient(0,0,0,height, Color.BLACK, Color.WHITE, Shader.TileMode.REPEAT);
-        LinearGradient linearGradient2 = new LinearGradient(0,0,0,height, Color.GREEN, Color.BLUE, Shader.TileMode.REPEAT);
+        LinearGradient linearGradient = new LinearGradient(0,0,0,height, mColorBg, mColorBg, Shader.TileMode.REPEAT);
+        LinearGradient linearGradient2 = new LinearGradient(0,0,0,height, mColorTop, mColorBottom, Shader.TileMode.REPEAT);
         mGrayPaint.setShader(linearGradient);
         mColorPaint.setShader(linearGradient2);
     }
 
 
     private void init(){
-        ROLL_WIDTH = getResources().getDimensionPixelSize(R.dimen.default_gap_10);
+        ROLL_WIDTH = getResources().getDimensionPixelSize(R.dimen.default_gap_35);
+        mColorBg = getResources().getColor(R.color.battery_roll_bg);
+        mColorTop = getResources().getColor(R.color.battery_roll_top_day);
+        mColorBottom = getResources().getColor(R.color.battery_roll_bottom_day);
         ColorMatrix grayMatrix = new ColorMatrix();
         grayMatrix.setSaturation(0);
         mGrayPaint.setColorFilter(new ColorMatrixColorFilter(grayMatrix));
         mGrayPaint.setStrokeCap(Paint.Cap.ROUND);
         mGrayPaint.setAntiAlias(true);
-        mGrayPaint.setStrokeWidth(30);
+        mGrayPaint.setStrokeWidth(ROLL_WIDTH);
         mGrayPaint.setStyle(Paint.Style.STROKE); //绘制空心圆
 
         mColorPaint.setStrokeCap(Paint.Cap.ROUND);
-        mColorPaint.setStrokeWidth(30);
+        mColorPaint.setStrokeWidth(ROLL_WIDTH);
         mGrayPaint.setAntiAlias(true);
         mColorPaint.setStyle(Paint.Style.STROKE); //绘制空心圆
 
@@ -88,7 +94,7 @@ public class BatterySpeedView extends ImageView {
         super.onDraw(canvas);
         int width = canvas.getWidth();
         int height = canvas.getHeight();
-        mArgRect.set(ROLL_WIDTH/2,ROLL_WIDTH/2,width-ROLL_WIDTH/2,height-ROLL_WIDTH/2);
+        mArgRect.set(ROLL_WIDTH,ROLL_WIDTH,width-ROLL_WIDTH,height-ROLL_WIDTH);
         canvas.drawArc(mArgRect, 0, 360, false, mGrayPaint);
         float end = -360 * mPercent/100;
         float start = -90;

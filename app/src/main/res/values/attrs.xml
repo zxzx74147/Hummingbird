@@ -5,4 +5,7 @@
         <attr name="right_text" format="string"/>
         <attr name="back_text" format="string"/>
     </declare-styleable>
+
+    <declare-styleable name="BatterySpeedView">
+    </declare-styleable>
 </resources>
