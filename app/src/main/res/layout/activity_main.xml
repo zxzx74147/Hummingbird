@@ -67,7 +67,7 @@
         android:layout_height="@dimen/default_gap_100">
 
         <ImageView
-            android:src="@drawable/model"
+            android:src="?attr/model_bg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -75,7 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <ImageView
-                android:src="@drawable/icon_e_drawable"
+                android:src="?attr/btn_e_drawable"
                 android:id="@+id/mode_e"
                 android:layout_width="wrap_content"
                 android:scaleType="fitStart"
@@ -86,7 +86,7 @@
                 android:layout_weight="1"
                 android:layout_height="1dip"/>
             <ImageView
-                android:src="@drawable/icon_n_drawable"
+                android:src="?attr/btn_n_drawable"
                 android:layout_width="wrap_content"
                 android:id="@+id/mode_n"
                 android:layout_height="wrap_content" />
@@ -96,7 +96,7 @@
                 android:layout_weight="1"
                 android:layout_height="1dip"/>
             <ImageView
-                android:src="@drawable/icon_s_drawable"
+                android:src="?attr/btn_s_drawable"
                 android:layout_width="wrap_content"
                 android:id="@+id/mode_s"
                 android:scaleType="fitEnd"

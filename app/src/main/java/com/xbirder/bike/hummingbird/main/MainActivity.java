@@ -61,6 +61,7 @@ public class MainActivity extends BaseActivity {
         FontsManager.sharedInstance().setSpeedType(mSpeedText);
         FontsManager.sharedInstance().setSpeedType(mBatteryView);
         FontsManager.sharedInstance().setSpeedKMType(mBatteryShow);
+        setBattery(35);
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -132,7 +133,7 @@ public class MainActivity extends BaseActivity {
 
     private void setBattery(int battery){
         mBatteryRollView.setPercent(battery);
-        mBatteryView.setText(String.valueOf(battery));
+        mBatteryView.setText(String.valueOf(battery)+"%");
     }
 
 }
