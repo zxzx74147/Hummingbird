@@ -2,8 +2,10 @@
 <resources>
     <color name="white">#FFFFFF</color>
     <color name="common_background_day">#FFEDEDED</color>
+    <color name="common_background_night">#FF0D1535</color>
     <color name="common_gray_day">#FFC0C0C0</color>
     <color name="common_orange_day">#E55A28</color>
+
 
     <color name="common_text_gray_day">#2B2B2B</color>
 

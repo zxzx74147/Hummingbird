@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.baidu.asyncTask.CommonUniqueId;
 import com.baidu.core.net.base.HttpManager;
 import com.baidu.core.net.base.HttpRequestBase;
+import com.xbirder.bike.hummingbird.R;
 import com.xbirder.bike.hummingbird.skin.SkinConfig;
 import com.xbirder.bike.hummingbird.skin.SkinManager;
 
@@ -32,6 +33,11 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void initView(){
         mSkinMode = SkinManager.sharedInstance().getSkinMode();
+        if(mSkinMode == SkinConfig.SKIN_MODE_DAY) {
+            setTheme(R.style.AppTheme_Day);
+        }else{
+            setTheme(R.style.AppTheme_Night);
+        }
     }
 
     protected void initData(){
