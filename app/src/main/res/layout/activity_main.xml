@@ -2,7 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/common_background_day"
     tools:context="com.xbirder.bike.hummingbird.main.MainActivity">
 
 
@@ -11,7 +10,7 @@
         android:layout_width="@dimen/default_gap_500"
         android:layout_centerHorizontal="true"
         android:id="@+id/roll_view"
-        android:src="@drawable/icon_100"
+        android:src="?attr/main_roll_drawable"
         android:layout_marginTop="@dimen/default_gap_120"
         android:layout_height="@dimen/default_gap_500" />
 
@@ -31,20 +30,12 @@
             android:text="50"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
-            android:textColor="@color/common_orange_day"
+            android:textColor="?attr/main_text_value_color"
             android:lineSpacingExtra="0dip"
             android:layout_marginBottom="-15dp"
             android:lineSpacingMultiplier="1"
             android:layout_height="wrap_content" />
-        <!--<TextView-->
-            <!--android:textSize="@dimen/default_size_60"-->
-            <!--android:text="KM/H"-->
-            <!--android:id="@+id/km_text"-->
-            <!--android:layout_below="@+id/speed_num"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:textColor="@color/common_gray_day"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content" />-->
+
     </RelativeLayout>
     
     <TextView
@@ -54,7 +45,7 @@
         android:layout_marginTop="@dimen/default_gap_30"
         android:text="30%"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/common_gray_day"
+        android:textColor="?attr/main_text_value_color"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -64,7 +55,7 @@
         android:textSize="@dimen/default_size_40"
         android:text="电量"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/common_gray_day"
+        android:textColor="?attr/main_text_show_color"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

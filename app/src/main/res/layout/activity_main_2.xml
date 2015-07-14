@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:src="@drawable/icon_logo" />
+            android:src="?attr/main_title_drawable" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -30,7 +30,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:paddingRight="@dimen/default_gap_30"
-            android:src="@drawable/icon_light" />
+            android:id="@+id/main_light"
+            android:src="?attr/main_light_drawable" />
 
         <View
             android:layout_width="match_parent"

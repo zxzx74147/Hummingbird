@@ -8,10 +8,22 @@
 
     <style name="AppTheme.Day" parent="AppTheme">
         <item name="common_background">@color/common_background_day</item>
+        <item name="main_setting_drawable">@drawable/icon_setting</item>
+        <item name="main_title_drawable">@drawable/icon_logo</item>
+        <item name="main_light_drawable" >@drawable/icon_light</item>
+        <item name="main_roll_drawable">@drawable/icon_100</item>
+        <item name="main_text_value_color">@color/common_orange_day</item>
+        <item name="main_text_show_color">@color/common_text_gray_day</item>
     </style>
     <!-- 夜间模式 -->
     <style name="AppTheme.Night" parent="AppTheme">
         <item name="common_background">@color/common_background_night</item>
+        <item name="main_setting_drawable">@drawable/icon_setting</item>
+        <item name="main_title_drawable">@drawable/icon_logo</item>
+        <item name="main_light_drawable" >@drawable/icon_light_night</item>
+        <item name="main_roll_drawable">@drawable/icon_100_night</item>
+        <item name="main_text_value_color">@color/white</item>
+        <item name="main_text_show_color">@color/white</item>
     </style>
 
 </resources>

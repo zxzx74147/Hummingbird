@@ -12,6 +12,8 @@ import com.xbirder.bike.hummingbird.R;
 import com.xbirder.bike.hummingbird.base.BaseActivity;
 import com.xbirder.bike.hummingbird.fonts.FontsManager;
 import com.xbirder.bike.hummingbird.main.widget.BatteryRollView;
+import com.xbirder.bike.hummingbird.skin.SkinConfig;
+import com.xbirder.bike.hummingbird.skin.SkinManager;
 
 public class MainActivity extends BaseActivity {
 
@@ -25,6 +27,7 @@ public class MainActivity extends BaseActivity {
     private TextView mBatteryShow;
     private DrawerLayout mDrawerLayout;
     private View mSettingView;
+    private View mLightView;
     private ImageView mLockView;
     private boolean isLock = true;
     @Override
@@ -40,6 +43,7 @@ public class MainActivity extends BaseActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mSettingView = findViewById(R.id.main_setting);
         mLockView = (ImageView) findViewById(R.id.lock_top);
+        mLightView = findViewById(R.id.main_light);
 //        mKMText = (TextView) findViewById(R.id.km_text);
         mBatteryShow = (TextView) findViewById(R.id.battery_show);
         mButtonE = findViewById(R.id.mode_e);
@@ -53,6 +57,7 @@ public class MainActivity extends BaseActivity {
         mButtonS.setOnClickListener(mOnClickListener);
         mLockView.setOnClickListener(mOnClickListener);
         mSettingView.setOnClickListener(mOnClickListener);
+        mLightView.setOnClickListener(mOnClickListener);
         FontsManager.sharedInstance().setSpeedType(mSpeedText);
         FontsManager.sharedInstance().setSpeedType(mBatteryView);
         FontsManager.sharedInstance().setSpeedKMType(mBatteryShow);
@@ -80,6 +85,14 @@ public class MainActivity extends BaseActivity {
                     lock();
                 }
                 isLock = !isLock;
+            }else if(v == mLightView){
+                int mode = SkinManager.sharedInstance().getSkinMode();
+                if(mode == SkinConfig.SKIN_MODE_DAY){
+                    SkinManager.sharedInstance().setSkinMode(SkinConfig.SKIN_MODE_NIGHT);
+                }else{
+                    SkinManager.sharedInstance().setSkinMode(SkinConfig.SKIN_MODE_DAY);
+                }
+                initView();
             }
         }
     };

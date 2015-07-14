@@ -8,7 +8,6 @@
         android:layout_marginTop="@dimen/default_gap_150"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/head"
-
         android:src = "@drawable/icon_photo_normal"
         android:scaleType="centerInside"
         app:riv_corner_radius="@dimen/default_gap_100"
