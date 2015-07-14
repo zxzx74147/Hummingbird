@@ -1,5 +1,9 @@
 package com.xbirder.bike.hummingbird.main;
 
+import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -21,9 +25,9 @@ public class MainActivity extends BaseActivity {
 
     private TextView mSpeedText;
 //    private TextView mKMText;
-    private View mButtonE;
-    private View mButtonN;
-    private View mButtonS;
+    private ImageView mButtonE;
+    private ImageView mButtonN;
+    private ImageView mButtonS;
     private BatteryRollView mBatteryRollView;
     private TextView mBatteryView;
     private TextView mBatteryShow;
@@ -50,9 +54,9 @@ public class MainActivity extends BaseActivity {
         mSideSetting = findViewById(R.id.setting_layout);
 //        mKMText = (TextView) findViewById(R.id.km_text);
         mBatteryShow = (TextView) findViewById(R.id.battery_show);
-        mButtonE = findViewById(R.id.mode_e);
-        mButtonN = findViewById(R.id.mode_n);
-        mButtonS = findViewById(R.id.mode_s);
+        mButtonE = (ImageView) findViewById(R.id.mode_e);
+        mButtonN = (ImageView) findViewById(R.id.mode_n);
+        mButtonS = (ImageView) findViewById(R.id.mode_s);
         mBatteryRollView = (BatteryRollView) findViewById(R.id.roll_view);
         mBatteryView = (TextView) findViewById(R.id.battery_num);
         mSpeedText.setIncludeFontPadding(false);
@@ -67,6 +71,7 @@ public class MainActivity extends BaseActivity {
         FontsManager.sharedInstance().setSpeedType(mBatteryView);
         FontsManager.sharedInstance().setSpeedKMType(mBatteryShow);
         setBattery(35);
+        setMode(StatusConfig.MODE_E);
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -118,18 +123,33 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setMode(int mode){
-        mButtonE.setVisibility(View.INVISIBLE);
-        mButtonN.setVisibility(View.INVISIBLE);
-        mButtonS.setVisibility(View.INVISIBLE);
+        mButtonE.setImageBitmap(getTranBitmap());
+        mButtonN.setImageBitmap(getTranBitmap());
+        mButtonS.setImageBitmap(getTranBitmap());
+        TypedArray ta;
+        Drawable drawable;
+        int[] attrs;
         switch (mode){
             case StatusConfig.MODE_E:
-                mButtonE.setVisibility(View.VISIBLE);
+                attrs = new int[] { R.attr.btn_e_drawable};
+                ta = this.obtainStyledAttributes(attrs);
+                drawable = ta.getDrawable(0);
+                ta.recycle();
+                mButtonE.setImageDrawable(drawable);
                 break;
             case StatusConfig.MODE_N:
-                mButtonN.setVisibility(View.VISIBLE);
+                attrs = new int[] { R.attr.btn_n_drawable};
+                ta = this.obtainStyledAttributes(attrs);
+                drawable = ta.getDrawable(0);
+                ta.recycle();
+                mButtonN.setImageDrawable(drawable);
                 break;
             case StatusConfig.MODE_S:
-                mButtonS.setVisibility(View.VISIBLE);
+                attrs = new int[] { R.attr.btn_s_drawable};
+                ta = this.obtainStyledAttributes(attrs);
+                drawable = ta.getDrawable(0);
+                ta.recycle();
+                mButtonS.setImageDrawable(drawable);
                 break;
         }
         //TODO 发送蓝牙指令
@@ -143,6 +163,16 @@ public class MainActivity extends BaseActivity {
     private void setBattery(int battery){
         mBatteryRollView.setPercent(battery);
         mBatteryView.setText(String.valueOf(battery)+"%");
+    }
+
+    Bitmap mTran;
+    private Bitmap getTranBitmap(){
+        if(mTran == null) {
+            mTran  = Bitmap.createBitmap(296, 296, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(mTran);
+            canvas.drawARGB(0,0,0,0);
+        }
+        return mTran;
     }
 
 }

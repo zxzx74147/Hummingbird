@@ -20,7 +20,7 @@
         android:layout_alignEnd="@+id/roll_view"
         android:orientation="vertical"
         android:layout_alignTop="@+id/roll_view"
-        android:layout_marginBottom="@dimen/default_gap_50"
+        android:layout_marginBottom="@dimen/default_gap_20"
         android:layout_alignBottom="@+id/roll_view"
         android:layout_height="wrap_content">
         <TextView
@@ -58,6 +58,7 @@
         android:textColor="?attr/main_text_show_color"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
 
     <RelativeLayout
         android:layout_below="@+id/battery_show"
