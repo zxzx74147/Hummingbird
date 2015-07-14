@@ -1,8 +1,89 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.xbirder.bike.hummingbird.setting.SettingActivity">
+    <com.xbirder.bike.hummingbird.common.widget.TitleBar
+        android:layout_width="match_parent"
+        app:title_text="@string/setting"
+        android:id="@+id/title_bar"
+        android:layout_height="@dimen/title_bar_height"/>
+
+    <View
+        android:layout_marginTop="@dimen/default_gap_70"
+        android:layout_width="match_parent"
+        android:background="@color/common_gray_day"
+        android:layout_height="@dimen/default_gap_1"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:paddingRight="@dimen/default_gap_50"
+        android:text="@string/phone_num"
+        android:layout_marginLeft="@dimen/default_gap_50"
+        style="@style/item_text"
+        android:drawableRight="@drawable/icon_next"
+        android:layout_height="@dimen/default_gap_100" />
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/common_gray_day"
+        android:layout_marginLeft="@dimen/default_gap_50"
+        android:layout_height="@dimen/default_gap_1"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:paddingRight="@dimen/default_gap_50"
+        android:layout_marginLeft="@dimen/default_gap_50"
+        android:text="@string/change_password"
+        android:drawableRight="@drawable/icon_next"
+        style="@style/item_text"
+        android:layout_height="@dimen/default_gap_100" />
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/common_gray_day"
+        android:layout_height="@dimen/default_gap_1"/>
+
+    <View
+        android:layout_marginTop="@dimen/default_gap_120"
+        android:layout_width="match_parent"
+        android:background="@color/common_gray_day"
+        android:layout_height="@dimen/default_gap_1"/>
+    <TextView
+        android:layout_width="match_parent"
+        style="@style/item_text"
+        android:paddingRight="@dimen/default_gap_50"
+        android:layout_marginLeft="@dimen/default_gap_50"
+        android:text="@string/feedback"
+        android:drawableRight="@drawable/icon_next"
+        android:layout_height="@dimen/default_gap_100" />
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/common_gray_day"
+        android:layout_marginLeft="@dimen/default_gap_50"
+        android:layout_height="@dimen/default_gap_1"/>
+    <TextView
+        android:layout_width="match_parent"
+        style="@style/item_text"
+        android:paddingRight="@dimen/default_gap_50"
+        android:text="@string/about"
+        android:layout_marginLeft="@dimen/default_gap_50"
+        android:drawableRight="@drawable/icon_next"
+        android:layout_height="@dimen/default_gap_100" />
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/common_gray_day"
+        android:layout_marginLeft="@dimen/default_gap_50"
+        android:layout_height="@dimen/default_gap_1"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:paddingRight="@dimen/default_gap_50"
+        android:text="@string/vote"
+        style="@style/item_text"
+        android:drawableRight="@drawable/icon_next"
+        android:layout_marginLeft="@dimen/default_gap_50"
+        android:layout_height="@dimen/default_gap_100" />
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/common_gray_day"
+        android:layout_height="@dimen/default_gap_1"/>
 
 
-
-</RelativeLayout>
+</LinearLayout>

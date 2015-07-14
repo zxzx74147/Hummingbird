@@ -26,4 +26,11 @@
     <string name="title_activity_setting">SettingActivity</string>
     <string name="low_carbon">低碳统计</string>
     <string name="setting">设置</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="personal_info">个人资料</string>
+    <string name="change_password">修改密码</string>
+    <string name="feedback">反馈</string>
+    <string name="about">关于</string>
+    <string name="vote">主人，给个好评</string>
+    <string name="phone_num">手机号</string>
 </resources>

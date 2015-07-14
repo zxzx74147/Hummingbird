@@ -34,4 +34,10 @@
         <item name="model_bg" >@drawable/model_night</item>
     </style>
 
+    <style name="item_text">
+        <item name="android:gravity">center_vertical|left</item>
+        <item name="android:textColor">@color/common_text_gray_day</item>
+        <item name="android:textSize">@dimen/text_size_big</item>
+    </style>
+
 </resources>

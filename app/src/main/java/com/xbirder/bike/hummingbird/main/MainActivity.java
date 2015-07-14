@@ -12,8 +12,10 @@ import com.xbirder.bike.hummingbird.R;
 import com.xbirder.bike.hummingbird.base.BaseActivity;
 import com.xbirder.bike.hummingbird.fonts.FontsManager;
 import com.xbirder.bike.hummingbird.main.widget.BatteryRollView;
+import com.xbirder.bike.hummingbird.setting.SettingActivity;
 import com.xbirder.bike.hummingbird.skin.SkinConfig;
 import com.xbirder.bike.hummingbird.skin.SkinManager;
+import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
 
 public class MainActivity extends BaseActivity {
 
@@ -28,6 +30,7 @@ public class MainActivity extends BaseActivity {
     private DrawerLayout mDrawerLayout;
     private View mSettingView;
     private View mLightView;
+    private View mSideSetting;
     private ImageView mLockView;
     private boolean isLock = true;
     @Override
@@ -38,12 +41,13 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initView(){
         super.initView();
-        setContentView(R.layout.activity_main_2);
+        setContentView(R.layout.activity_main);
         mSpeedText = (TextView) findViewById(R.id.speed_num);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mSettingView = findViewById(R.id.main_setting);
         mLockView = (ImageView) findViewById(R.id.lock_top);
         mLightView = findViewById(R.id.main_light);
+        mSideSetting = findViewById(R.id.setting_layout);
 //        mKMText = (TextView) findViewById(R.id.km_text);
         mBatteryShow = (TextView) findViewById(R.id.battery_show);
         mButtonE = findViewById(R.id.mode_e);
@@ -58,6 +62,7 @@ public class MainActivity extends BaseActivity {
         mLockView.setOnClickListener(mOnClickListener);
         mSettingView.setOnClickListener(mOnClickListener);
         mLightView.setOnClickListener(mOnClickListener);
+        mSideSetting.setOnClickListener(mOnClickListener);
         FontsManager.sharedInstance().setSpeedType(mSpeedText);
         FontsManager.sharedInstance().setSpeedType(mBatteryView);
         FontsManager.sharedInstance().setSpeedKMType(mBatteryShow);
@@ -94,6 +99,8 @@ public class MainActivity extends BaseActivity {
                     SkinManager.sharedInstance().setSkinMode(SkinConfig.SKIN_MODE_DAY);
                 }
                 initView();
+            }else if(v == mSideSetting){
+                ActivityJumpHelper.startActivity(MainActivity.this, SettingActivity.class);
             }
         }
     };
@@ -101,11 +108,13 @@ public class MainActivity extends BaseActivity {
     private void lock(){
         mLockView.setImageResource(R.drawable.lock_green);
         mLockView.setScaleType(ImageView.ScaleType.FIT_START);
+        //TODO 发送蓝牙指令
     }
 
     private void unLock(){
         mLockView.setImageResource(R.drawable.lock_red);
         mLockView.setScaleType(ImageView.ScaleType.FIT_END);
+        //TODO 发送蓝牙指令
     }
 
     private void setMode(int mode){

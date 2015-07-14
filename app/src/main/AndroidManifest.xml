@@ -43,6 +43,10 @@
             android:name=".setting.SettingActivity"
             android:label="@string/title_activity_setting" >
         </activity>
+        <activity
+            android:name=".profile.ProfileActivity"
+            android:label="@string/title_activity_profile" >
+        </activity>
     </application>
 
 </manifest>
