@@ -5,6 +5,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xbirder.bike.hummingbird.R;
@@ -24,6 +25,8 @@ public class MainActivity extends BaseActivity {
     private TextView mBatteryShow;
     private DrawerLayout mDrawerLayout;
     private View mSettingView;
+    private ImageView mLockView;
+    private boolean isLock = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +39,7 @@ public class MainActivity extends BaseActivity {
         mSpeedText = (TextView) findViewById(R.id.speed_num);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mSettingView = findViewById(R.id.main_setting);
+        mLockView = (ImageView) findViewById(R.id.lock_top);
 //        mKMText = (TextView) findViewById(R.id.km_text);
         mBatteryShow = (TextView) findViewById(R.id.battery_show);
         mButtonE = findViewById(R.id.mode_e);
@@ -47,6 +51,7 @@ public class MainActivity extends BaseActivity {
         mButtonE.setOnClickListener(mOnClickListener);
         mButtonN.setOnClickListener(mOnClickListener);
         mButtonS.setOnClickListener(mOnClickListener);
+        mLockView.setOnClickListener(mOnClickListener);
         mSettingView.setOnClickListener(mOnClickListener);
         FontsManager.sharedInstance().setSpeedType(mSpeedText);
         FontsManager.sharedInstance().setSpeedType(mBatteryView);
@@ -68,9 +73,26 @@ public class MainActivity extends BaseActivity {
                 }else{
                     mDrawerLayout.closeDrawer(Gravity.LEFT);
                 }
+            }else if(v == mLockView){
+                if(isLock){
+                    unLock();
+                }else{
+                    lock();
+                }
+                isLock = !isLock;
             }
         }
     };
+
+    private void lock(){
+        mLockView.setImageResource(R.drawable.lock_green);
+        mLockView.setScaleType(ImageView.ScaleType.FIT_START);
+    }
+
+    private void unLock(){
+        mLockView.setImageResource(R.drawable.lock_red);
+        mLockView.setScaleType(ImageView.ScaleType.FIT_END);
+    }
 
     private void setMode(int mode){
         mButtonE.setVisibility(View.INVISIBLE);
@@ -89,6 +111,7 @@ public class MainActivity extends BaseActivity {
         }
         //TODO 发送蓝牙指令
     }
+
 
     private void setSpeed(int speed){
         mSpeedText.setText(String.valueOf(speed));
