@@ -22,7 +22,8 @@ public class AccountManager {
     }
 
     public String getToken(){
-        return mToken;
+        return "a";
+//        return mToken;
     }
 
     public void setToken(String token){

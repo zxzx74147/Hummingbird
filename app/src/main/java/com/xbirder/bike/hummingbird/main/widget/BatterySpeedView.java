@@ -65,8 +65,8 @@ public class BatterySpeedView extends ImageView {
         mGrayPaint.setStyle(Paint.Style.STROKE); //绘制空心圆
 
         mColorPaint.setStrokeCap(Paint.Cap.ROUND);
-        mColorPaint.setStrokeWidth(30);
         mGrayPaint.setAntiAlias(true);
+        mColorPaint.setStrokeWidth(30);
         mColorPaint.setStyle(Paint.Style.STROKE); //绘制空心圆
 
         mGrayPaint.setShadowLayer(8,0,5, Color.YELLOW);

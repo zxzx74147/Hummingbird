@@ -11,9 +11,9 @@ import com.xbirder.bike.hummingbird.R;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class RegiesterActivityFragment extends Fragment {
+public class RegisterActivityFragment extends Fragment {
 
-    public RegiesterActivityFragment() {
+    public RegisterActivityFragment() {
     }
 
     @Override

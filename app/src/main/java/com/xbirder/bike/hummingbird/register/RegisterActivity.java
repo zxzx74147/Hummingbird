@@ -7,7 +7,7 @@ import android.view.MenuItem;
 
 import com.xbirder.bike.hummingbird.R;
 
-public class RegiesterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

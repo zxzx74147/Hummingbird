@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_gap_100"
+        android:background="@color/white" />
+
+    <android.support.v4.widget.DrawerLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <!-- The main content view -->
+        <RelativeLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_blue_dark" >
+
+            <com.xbirder.bike.hummingbird.main.widget.BatteryRollView
+                android:layout_width="@dimen/default_gap_400"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/roll_view"
+                android:src="@drawable/icon_100"
+                android:layout_marginTop="@dimen/default_gap_120"
+                android:layout_height="@dimen/default_gap_400" />
+
+        </RelativeLayout>
+        <!-- The navigation drawer -->
+        <ListView
+            android:id="@+id/left_drawer"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="#111"
+            android:choiceMode="singleChoice"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp" />
+
+    </android.support.v4.widget.DrawerLayout>
+</LinearLayout>
