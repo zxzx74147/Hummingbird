@@ -21,6 +21,11 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void initView(){
+        super.initView();
         setContentView(R.layout.activity_main_2);
         mSpeedText = (TextView) findViewById(R.id.speed_num);
         mKMText = (TextView) findViewById(R.id.km_text);
