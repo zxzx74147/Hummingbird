@@ -5,42 +5,13 @@
     android:background="@color/common_background_day"
     tools:context="com.xbirder.bike.hummingbird.main.MainActivity">
 
-<RelativeLayout
-    android:id="@+id/title"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/title_bar_height">
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:id="@+id/main_setting"
-        android:background="@null"
-        android:paddingLeft="@dimen/default_gap_30"
-        android:src="@drawable/icon_setting"
-        android:layout_height="match_parent" />
-    <ImageView
-        android:layout_width="wrap_content"
-        android:src="@drawable/icon_logo"
-        android:layout_centerInParent="true"
-        android:layout_height="match_parent" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:src="@drawable/icon_light"
-        android:layout_alignParentRight="true"
-        android:paddingRight="@dimen/default_gap_30"
-        android:layout_centerInParent="true"
-        android:layout_height="match_parent" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
-        android:background="@color/common_gray_day"
-        android:layout_height="@dimen/default_gap_2"/>
-</RelativeLayout>
 
-    <com.xbirder.bike.hummingbird.main.widget.BatterySpeedView
+    <com.xbirder.bike.hummingbird.main.widget.BatteryRollView
         android:layout_width="@dimen/default_gap_500"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/title"
         android:id="@+id/roll_view"
+        android:src="@drawable/icon_100"
         android:layout_marginTop="@dimen/default_gap_120"
         android:layout_height="@dimen/default_gap_500" />
 
@@ -68,6 +39,7 @@
         <TextView
             android:textSize="@dimen/default_size_60"
             android:text="KM/H"
+            android:id="@+id/km_text"
             android:layout_below="@+id/speed_num"
             android:layout_centerHorizontal="true"
             android:textColor="@color/common_gray_day"
