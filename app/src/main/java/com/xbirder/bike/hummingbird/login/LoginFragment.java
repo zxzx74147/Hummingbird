@@ -1,16 +1,13 @@
 package com.xbirder.bike.hummingbird.login;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.baidu.core.net.base.HttpGsonRequest;
 import com.baidu.core.net.base.HttpResponse;
 import com.xbirder.bike.hummingbird.AccountManager;
 import com.xbirder.bike.hummingbird.R;
@@ -18,11 +15,9 @@ import com.xbirder.bike.hummingbird.base.BaseFragment;
 import com.xbirder.bike.hummingbird.common.widget.TitleBar;
 import com.xbirder.bike.hummingbird.login.data.LoginData;
 import com.xbirder.bike.hummingbird.main.MainActivity;
-import com.xbirder.bike.hummingbird.register.RegiesterActivity;
+import com.xbirder.bike.hummingbird.register.RegisterActivity;
 import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
 import com.xbirder.bike.hummingbird.util.StringHelper;
-
-import java.util.HashMap;
 
 
 /**
@@ -50,7 +45,7 @@ public class LoginFragment extends BaseFragment {
         mTitleBar.setRigntOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityJumpHelper.startActivity(LoginFragment.this,RegiesterActivity.class);
+                ActivityJumpHelper.startActivity(LoginFragment.this,RegisterActivity.class);
             }
         });
         return root;
