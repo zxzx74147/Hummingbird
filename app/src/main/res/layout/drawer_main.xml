@@ -1,9 +1,112 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/common_background_day"
-    tools:context="com.xbirder.bike.hummingbird.main.MainActivity">
+    android:background="@color/common_background_day">
 
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:layout_marginTop="@dimen/default_gap_150"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/head"
+
+        android:src = "@drawable/start"
+        android:scaleType="centerInside"
+        app:riv_corner_radius="@dimen/default_gap_100"
+        app:riv_border_width="2dip"
+        app:riv_border_color="#00FFFFFF"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/icon_photo_normal_frame"
+        android:layout_width="@dimen/default_gap_200"
+        android:layout_height="@dimen/default_gap_200" />
+
+    <TextView
+        android:layout_marginTop="@dimen/default_gap_20"
+        android:id="@+id/user_name"
+        android:layout_below="@+id/head"
+        android:textSize="@dimen/text_size_mid"
+        android:textColor="@color/common_text_gray_day"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_below="@+id/user_name"
+        android:id="@+id/low_carbon_layout"
+        android:layout_marginTop="@dimen/default_gap_150"
+        android:layout_marginLeft="@dimen/default_gap_50"
+        android:layout_marginRight="@dimen/default_gap_50"
+        android:layout_height="@dimen/default_gap_70">
+        <ImageView
+            android:src="@drawable/icon_calender"
+            android:layout_width="wrap_content"
+            android:id="@+id/calender_image"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:text="@string/low_carbon"
+            android:gravity="center_vertical|left"
+            android:paddingLeft="@dimen/default_gap_120"
+            android:textSize="@dimen/text_size_big"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:src="@drawable/icon_next"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_marginLeft="@dimen/default_gap_100"
+            android:background="@color/common_gray_day"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="@dimen/default_gap_100"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_gap_1" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_below="@+id/low_carbon_layout"
+        android:id="@+id/setting_layout"
+        android:layout_marginTop="@dimen/default_gap_30"
+        android:layout_marginLeft="@dimen/default_gap_50"
+
+        android:layout_marginRight="@dimen/default_gap_50"
+        android:layout_height="@dimen/default_gap_70">
+        <ImageView
+            android:src="@drawable/icon_set"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:text="@string/setting"
+            android:gravity="center_vertical|left"
+            android:paddingLeft="@dimen/default_gap_120"
+            android:textSize="@dimen/text_size_big"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:src="@drawable/icon_next"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_marginLeft="@dimen/default_gap_100"
+            android:background="@color/common_gray_day"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="@dimen/default_gap_100"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_gap_1" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

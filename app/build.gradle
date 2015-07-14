@@ -48,6 +48,8 @@ dependencies {
     compile project(':netcore')
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.makeramen:roundedimageview:2.1.1'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
 }
 
 

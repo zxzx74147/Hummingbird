@@ -24,4 +24,6 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_setting">SettingActivity</string>
+    <string name="low_carbon">低碳统计</string>
+    <string name="setting">设置</string>
 </resources>

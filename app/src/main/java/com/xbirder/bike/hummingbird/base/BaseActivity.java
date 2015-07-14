@@ -14,7 +14,7 @@ import com.xbirder.bike.hummingbird.skin.SkinManager;
  */
 public class BaseActivity extends AppCompatActivity {
 
-    protected int mSkinMode = SkinConfig.SKIN_MODE_DAY;
+    protected int mSkinMode = -1;
 
     private CommonUniqueId mUniqueId = CommonUniqueId.gen();
 
