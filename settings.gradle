@@ -1,1 +1,1 @@
-include ':app'
+include ':netcore',':asyncTask',':cachecore',':app'
