@@ -15,6 +15,7 @@
 
     <string name="login_by_phone">手机号码登录</string>
     <string name="register_by_phone">手机号码注册</string>
+    <string name="register_account_info">账户信息</string>
     <string name="login_remind">主人，请输入注册时的手机号码</string>
     <string name="login_input_phone_remind">请填写手机号码</string>
     <string name="password_remind">密码</string>
@@ -33,4 +34,12 @@
     <string name="about">关于</string>
     <string name="vote">主人，给个好评</string>
     <string name="phone_num">手机号</string>
+    <string name="register_input_phone_remind">手机号码</string>
+    <string name="input_code">收取验证码</string>
+    <string name="rule">隐私与服务条款</string>
+    <string name="resent">重发</string>
+    <string name="input_code_hint">请输入手机验证码</string>
+    <string name="password_hint">密码</string>
+    <string name="reg_name">名字</string>
+    <string name="done">完成</string>
 </resources>

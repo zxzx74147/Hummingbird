@@ -58,7 +58,7 @@ public class TitleBar extends RelativeLayout {
         mLeftText.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getContext() instanceof Activity){
+                if (getContext() instanceof Activity) {
                     ((Activity) getContext()).finish();
                 }
             }
@@ -73,6 +73,14 @@ public class TitleBar extends RelativeLayout {
         mTitleText.setText(id);
     }
 
+    public void setLeftText(String text){
+        mLeftText.setText(text);
+    }
+
+    public void setLeftText(int id){
+        mLeftText.setText(id);
+    }
+
     public void setRigntOnClickListener(OnClickListener listener){
         mRigntText.setOnClickListener(listener);
     }
@@ -80,8 +88,6 @@ public class TitleBar extends RelativeLayout {
     public void setBackOnClickListener(OnClickListener listener){
         mLeftText.setOnClickListener(listener);
     }
-
-
 
 
 }

@@ -1,18 +1,19 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.xbirder.bike.hummingbird.register.RegisterActivityFragment">
 
     <com.xbirder.bike.hummingbird.common.widget.TitleBar
         android:layout_width="match_parent"
         app:title_text="@string/register_by_phone"
+        android:id="@+id/title_bar"
         android:layout_height="@dimen/title_bar_height"/>
 
-    <android.support.v4.app.FragmentTabHost
-        android:id="@+id/tab_host"
-        android:layout_height="match_parent"
+    <com.xbirder.bike.hummingbird.common.widget.FixViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        />
+        android:layout_height="match_parent"/>
 
-</RelativeLayout>
+</LinearLayout>

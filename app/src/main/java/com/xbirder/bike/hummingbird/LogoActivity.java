@@ -6,6 +6,7 @@ import android.view.View;
 import com.xbirder.bike.hummingbird.base.BaseActivity;
 import com.xbirder.bike.hummingbird.login.LoginActivity;
 import com.xbirder.bike.hummingbird.main.MainActivity;
+import com.xbirder.bike.hummingbird.register.RegisterActivity;
 import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
 import com.xbirder.bike.hummingbird.util.StringHelper;
 
@@ -30,14 +31,14 @@ public class LogoActivity extends BaseActivity {
         mRegisterView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityJumpHelper.startActivity(LogoActivity.this, MainActivity.class);
+                ActivityJumpHelper.startActivity(LogoActivity.this, RegisterActivity.class);
             }
         });
-        String token = AccountManager.sharedInstance().getToken();
-        if(StringHelper.checkString(token)){
-            ActivityJumpHelper.startActivity(this,MainActivity.class);
-            finish();
-        }
+//        String token = AccountManager.sharedInstance().getToken();
+//        if(StringHelper.checkString(token)){
+//            ActivityJumpHelper.startActivity(this,MainActivity.class);
+//            finish();
+//        }
     }
 
 
