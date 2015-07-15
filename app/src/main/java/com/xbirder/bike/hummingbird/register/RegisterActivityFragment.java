@@ -151,7 +151,7 @@ public class RegisterActivityFragment extends BaseFragment {
 
     private void register(){
         String username = mUserNameText.getText().toString();
-        String pass = mUserNameText.getText().toString();
+        String pass = mPassText.getText().toString();
         String phone = mStep1PhoneNum.getText().toString();
         RegisterRequest request = new RegisterRequest(new HttpResponse.Listener<LoginData>() {
             @Override
@@ -165,6 +165,5 @@ public class RegisterActivityFragment extends BaseFragment {
         });
         request.setParam(phone,username,pass);
         sendRequest(request);
-
     }
 }
