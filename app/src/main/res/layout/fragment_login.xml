@@ -45,6 +45,7 @@
             android:background="@null"
             android:textSize="@dimen/default_size_40"
             android:id="@+id/login_phone_num"
+            android:inputType="phone"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
     </LinearLayout>
@@ -71,6 +72,7 @@
             android:paddingLeft="@dimen/default_gap_10"
             android:gravity="left|center_vertical"
             android:textSize="@dimen/default_size_40"
+            android:inputType="textPassword"
             android:background="@null"
             android:id="@+id/login_password"
             android:layout_width="wrap_content"
