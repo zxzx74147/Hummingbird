@@ -34,11 +34,11 @@ public class LogoActivity extends BaseActivity {
                 ActivityJumpHelper.startActivity(LogoActivity.this, RegisterActivity.class);
             }
         });
-//        String token = AccountManager.sharedInstance().getToken();
-//        if(StringHelper.checkString(token)){
-//            ActivityJumpHelper.startActivity(this,MainActivity.class);
-//            finish();
-//        }
+        String token = AccountManager.sharedInstance().getToken();
+        if(StringHelper.checkString(token)){
+            ActivityJumpHelper.startActivity(this,MainActivity.class);
+            finish();
+        }
     }
 
 
