@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.baidu.asyncTask.CommonUniqueId;
 import com.baidu.core.net.base.HttpManager;
@@ -47,7 +48,13 @@ public class BaseFragment extends Fragment implements IHttpCancelable {
 		vibrator.vibrate(new long[] { 500, 200, 500, 200 }, -1); // 第一个｛｝里面是节奏数组，
 	}
 
-	
+	protected void toast(String text){
+		Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+				text, Toast.LENGTH_LONG);
+		toast.show();
+	}
+
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

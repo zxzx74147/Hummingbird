@@ -199,7 +199,7 @@ public class RegisterActivityFragment extends BaseFragment {
         EventHandler eh = new EventHandler() {
 
             @Override
-            public void afterEvent(int event, int result, Object data) {
+            public void afterEvent(final int event, int result, Object data) {
 
                 if (result == SMSSDK.RESULT_COMPLETE) {
                     //回调完成
@@ -207,6 +207,7 @@ public class RegisterActivityFragment extends BaseFragment {
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
+                                toast("提交验证码成功");
                                 register();
                             }
                         });
@@ -226,7 +227,12 @@ public class RegisterActivityFragment extends BaseFragment {
                     mHandler.post(new Runnable() {
                                       @Override
                                       public void run() {
-                                          Toast.makeText(getActivity(), "失败！", Toast.LENGTH_LONG);
+                                          if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
+                                              toast("提交验证码失败");
+                                          } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
+                                              toast("获取验证码失败");
+
+                                          }
                                       }
                                   }
                         );

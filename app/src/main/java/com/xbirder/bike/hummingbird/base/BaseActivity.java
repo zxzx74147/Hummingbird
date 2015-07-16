@@ -1,6 +1,8 @@
 package com.xbirder.bike.hummingbird.base;
 
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import com.baidu.asyncTask.CommonUniqueId;
 import com.baidu.core.net.base.HttpManager;
@@ -38,6 +40,12 @@ public class BaseActivity extends AppCompatActivity {
         }else{
             setTheme(R.style.AppTheme_Night);
         }
+    }
+
+    protected void toast(String text){
+        Toast toast = Toast.makeText(getApplicationContext(),
+                text, Toast.LENGTH_LONG);
+        toast.show();
     }
 
     protected void initData(){
