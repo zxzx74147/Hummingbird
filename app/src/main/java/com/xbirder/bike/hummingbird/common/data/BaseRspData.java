@@ -1,4 +1,4 @@
-package com.xbirder.bike.hummingbird.base.data;
+package com.xbirder.bike.hummingbird.common.data;
 
 import java.io.Serializable;
 

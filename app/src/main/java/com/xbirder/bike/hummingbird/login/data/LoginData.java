@@ -1,6 +1,6 @@
 package com.xbirder.bike.hummingbird.login.data;
 
-import com.xbirder.bike.hummingbird.base.data.UserData;
+import com.xbirder.bike.hummingbird.common.data.UserData;
 
 import java.io.Serializable;
 
