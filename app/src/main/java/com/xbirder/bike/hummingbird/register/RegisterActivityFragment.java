@@ -2,6 +2,7 @@ package com.xbirder.bike.hummingbird.register;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -47,9 +48,11 @@ public class RegisterActivityFragment extends BaseFragment {
     private EditText mUserNameText;
     private View mDone;
     private String mPhoneNum;
-
+    private Handler mHandler;
+    private View mResend;
 
     public RegisterActivityFragment() {
+        mHandler = new Handler();
     }
 
     @Override
@@ -63,6 +66,7 @@ public class RegisterActivityFragment extends BaseFragment {
         mStep1Code = (Button) mStep1.findViewById(R.id.reg_send_code);
         mTitle = (TitleBar) mRoot.findViewById(R.id.title_bar);
         mDone = mStep2.findViewById(R.id.reg_done);
+        mResend = mStep2.findViewById(R.id.resend);
         mUserNameText = (EditText) mStep2.findViewById(R.id.reg_username);
         mCodeText = (EditText) mStep2.findViewById(R.id.reg_code_text);
         mPassText = (EditText) mStep2.findViewById(R.id.reg_pass);
@@ -71,6 +75,7 @@ public class RegisterActivityFragment extends BaseFragment {
         mStep1Code.setOnClickListener(mOnClickListener);
         mViewPager.addOnPageChangeListener(mOnPageChangedListener);
         mDone.setOnClickListener(mOnClickListener);
+        mResend.setOnClickListener(mOnClickListener);
 
         mTitle.setBackOnClickListener(new View.OnClickListener() {
 
@@ -121,7 +126,7 @@ public class RegisterActivityFragment extends BaseFragment {
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v == mStep1Code) {
+            if (v == mStep1Code || v == mResend) {
                 mPhoneNum = mStep1PhoneNum.getText().toString();
                 if(isPhoneNumberValid(mPhoneNum)){
                     SMSSDK.getVerificationCode("86", mPhoneNum);
@@ -199,14 +204,32 @@ public class RegisterActivityFragment extends BaseFragment {
                 if (result == SMSSDK.RESULT_COMPLETE) {
                     //回调完成
                     if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-                        register();
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                register();
+                            }
+                        });
+
                     } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-                        mViewPager.setCurrentItem(1);
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mViewPager.setCurrentItem(1);
+                            }
+                        });
+
                     } else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {
                         //返回支持发送验证码的国家列表
                     }
                 } else if(result == SMSSDK.RESULT_ERROR){
-
+                    mHandler.post(new Runnable() {
+                                      @Override
+                                      public void run() {
+                                          Toast.makeText(getActivity(), "失败！", Toast.LENGTH_LONG);
+                                      }
+                                  }
+                        );
                 }else{
                     ((Throwable) data).printStackTrace();
                 }

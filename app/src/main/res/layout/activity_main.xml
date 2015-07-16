@@ -12,20 +12,24 @@
 
         <ImageButton
             android:id="@+id/main_setting"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/default_gap_70"
+            android:scaleType="fitCenter"
             android:layout_height="match_parent"
             android:background="@null"
             android:paddingLeft="@dimen/default_gap_30"
-            android:src="@drawable/icon_setting" />
+            android:src="?attr/main_setting_drawable" />
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/default_gap_200"
+            android:scaleType="fitCenter"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
+
             android:src="?attr/main_title_drawable" />
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/default_gap_120"
+            android:scaleType="fitCenter"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"

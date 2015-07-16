@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="common_background" format="color"/>
+    <attr name="common_background" format="color|reference"/>
 
     <attr name="main_setting_drawable" format="reference"/>
     <attr name="main_title_drawable" format="reference"/>

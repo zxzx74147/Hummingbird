@@ -28,6 +28,7 @@
             android:paddingLeft="@dimen/default_gap_10"
             android:gravity="left|center_vertical"
             android:background="@null"
+            android:inputType="phone"
             android:textSize="@dimen/default_size_40"
             android:id="@+id/reg_phone_num"
             android:layout_width="wrap_content"

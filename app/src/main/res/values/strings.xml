@@ -42,4 +42,7 @@
     <string name="password_hint">密码</string>
     <string name="reg_name">名字</string>
     <string name="done">完成</string>
+    <string name="mode_e_text">ECO</string>
+    <string name="mode_n_text">NORMAL</string>
+    <string name="mode_s_text">SPORT</string>
 </resources>

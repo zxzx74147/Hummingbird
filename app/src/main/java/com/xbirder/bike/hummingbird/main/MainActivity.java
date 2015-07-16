@@ -28,6 +28,9 @@ public class MainActivity extends BaseActivity {
     private ImageView mButtonE;
     private ImageView mButtonN;
     private ImageView mButtonS;
+    private TextView mTextE;
+    private TextView mTextN;
+    private TextView mTextS;
     private BatteryRollView mBatteryRollView;
     private TextView mBatteryView;
     private TextView mBatteryShow;
@@ -57,6 +60,9 @@ public class MainActivity extends BaseActivity {
         mButtonE = (ImageView) findViewById(R.id.mode_e);
         mButtonN = (ImageView) findViewById(R.id.mode_n);
         mButtonS = (ImageView) findViewById(R.id.mode_s);
+        mTextE = (TextView) findViewById(R.id.mode_e_text);
+        mTextN = (TextView) findViewById(R.id.mode_n_text);
+        mTextS = (TextView) findViewById(R.id.mode_s_text);
         mBatteryRollView = (BatteryRollView) findViewById(R.id.roll_view);
         mBatteryView = (TextView) findViewById(R.id.battery_num);
         mSpeedText.setIncludeFontPadding(false);
@@ -126,6 +132,9 @@ public class MainActivity extends BaseActivity {
         mButtonE.setImageBitmap(getTranBitmap());
         mButtonN.setImageBitmap(getTranBitmap());
         mButtonS.setImageBitmap(getTranBitmap());
+        mTextE.setEnabled(false);
+        mTextN.setEnabled(false);
+        mTextS.setEnabled(false);
         TypedArray ta;
         Drawable drawable;
         int[] attrs;
@@ -136,6 +145,7 @@ public class MainActivity extends BaseActivity {
                 drawable = ta.getDrawable(0);
                 ta.recycle();
                 mButtonE.setImageDrawable(drawable);
+                mTextE.setEnabled(true);
                 break;
             case StatusConfig.MODE_N:
                 attrs = new int[] { R.attr.btn_n_drawable};
@@ -143,6 +153,7 @@ public class MainActivity extends BaseActivity {
                 drawable = ta.getDrawable(0);
                 ta.recycle();
                 mButtonN.setImageDrawable(drawable);
+                mTextN.setEnabled(true);
                 break;
             case StatusConfig.MODE_S:
                 attrs = new int[] { R.attr.btn_s_drawable};
@@ -150,6 +161,7 @@ public class MainActivity extends BaseActivity {
                 drawable = ta.getDrawable(0);
                 ta.recycle();
                 mButtonS.setImageDrawable(drawable);
+                mTextS.setEnabled(true);
                 break;
         }
         //TODO 发送蓝牙指令

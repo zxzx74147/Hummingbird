@@ -35,6 +35,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
-        android:background="@color/common_gray_day"
+        android:background="@color/common_div"
         android:layout_height="@dimen/default_gap_2"/>
 </RelativeLayout>

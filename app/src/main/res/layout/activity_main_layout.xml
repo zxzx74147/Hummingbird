@@ -7,12 +7,12 @@
 
 
     <com.xbirder.bike.hummingbird.main.widget.BatteryRollView
-        android:layout_width="@dimen/default_gap_500"
+        android:layout_width="@dimen/default_gap_540"
         android:layout_centerHorizontal="true"
         android:id="@+id/roll_view"
         android:src="?attr/main_roll_drawable"
-        android:layout_marginTop="@dimen/default_gap_120"
-        android:layout_height="@dimen/default_gap_500" />
+        android:layout_marginTop="@dimen/default_gap_110"
+        android:layout_height="@dimen/default_gap_540" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -26,7 +26,7 @@
         <TextView
 
             android:id="@+id/speed_num"
-            android:textSize="@dimen/default_size_230"
+            android:textSize="@dimen/default_size_250"
             android:text="50"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
@@ -55,26 +55,63 @@
         android:textSize="@dimen/default_size_40"
         android:text="电量"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/default_gap_10"
         android:textColor="?attr/main_text_show_color"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
 
     <RelativeLayout
-        android:layout_below="@+id/battery_show"
+        android:layout_alignParentBottom="true"
         android:layout_width="@dimen/default_gap_613"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/default_gap_50"
-        android:layout_height="@dimen/default_gap_100">
+        android:layout_marginBottom="@dimen/default_gap_100"
+        android:layout_height="wrap_content">
 
         <ImageView
             android:src="?attr/model_bg"
+            android:paddingLeft="@dimen/default_gap_15"
+            android:paddingRight="@dimen/default_gap_15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <LinearLayout
+            android:layout_below="@+id/big_button_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_marginTop="@dimen/default_gap_10"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/mode_e_text"
+                style="@style/mode_text"
+                android:text="@string/mode_e_text"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="1dip"/>
+            <TextView
+                style="@style/mode_text"
+                android:id="@+id/mode_n_text"
+                android:text="@string/mode_n_text"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="1dip"/>
+            <TextView
+                style="@style/mode_text"
+                android:id="@+id/mode_s_text"
+                android:text="@string/mode_s_text"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/big_button_layout"
+            android:layout_width="match_parent"
+
+            android:layout_height="@dimen/default_gap_120">
             <ImageView
                 android:src="?attr/btn_e_drawable"
                 android:id="@+id/mode_e"
