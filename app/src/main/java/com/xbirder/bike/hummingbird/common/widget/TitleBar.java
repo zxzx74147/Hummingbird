@@ -81,6 +81,14 @@ public class TitleBar extends RelativeLayout {
         mLeftText.setText(id);
     }
 
+    public void setRightText(String text){
+        mRigntText.setText(text);
+    }
+
+    public void setRightText(int id){
+        mRigntText.setText(id);
+    }
+
     public void setRigntOnClickListener(OnClickListener listener){
         mRigntText.setOnClickListener(listener);
     }

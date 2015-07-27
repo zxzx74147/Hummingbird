@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Hummingbird</string>
+    <string name="app_name">xbird</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -11,7 +11,7 @@
     <string name="cancel">取消</string>
     <string name="login">登录</string>
     <string name="register">注册</string>
-
+    <string name="reg_user"><u>用户注册</u></string>
 
     <string name="login_by_phone">手机号码登录</string>
     <string name="register_by_phone">手机号码注册</string>
@@ -45,4 +45,25 @@
     <string name="mode_e_text">ECO</string>
     <string name="mode_n_text">NORMAL</string>
     <string name="mode_s_text">SPORT</string>
+
+    <string name="ble_not_supported">BLE is not supported</string>
+    <string name="label_data">Data:</string>
+    <string name="label_device_address">Device address:</string>
+    <string name="label_state">State:</string>
+    <string name="no_data">No data</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="title_devices">搜索蜂鸟</string>
+    <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
+
+    <string name="unknown_device">Unknown device</string>
+    <string name="unknown_characteristic">Unknown characteristic</string>
+    <string name="unknown_service">Unknown service</string>
+
+    <!-- Menu items -->
+    <string name="menu_connect">Connect</string>
+    <string name="menu_disconnect">Disconnect</string>
+    <string name="menu_scan">搜索</string>
+    <string name="menu_stop">停止</string>
+    <string name="title_activity_connect">ConnectActivity</string>
 </resources>

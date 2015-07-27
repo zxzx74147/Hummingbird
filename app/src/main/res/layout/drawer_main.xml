@@ -109,25 +109,25 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_marginLeft="@dimen/default_gap_50"
-        android:layout_marginRight="@dimen/default_gap_50"
-        android:layout_width="@dimen/default_gap_230"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_width="160dp"
         android:layout_below="@+id/setting_layout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/default_gap_100"
-        android:layout_height="@dimen/default_gap_80">
+        android:layout_height="50dp">
         <ImageView
             android:layout_centerHorizontal="true"
             android:src="@drawable/lock_bg"
-            android:layout_width="@dimen/default_gap_230"
+            android:layout_width="160dp"
             android:id="@+id/lock_bg"
-            android:layout_height="@dimen/default_gap_80" />
+            android:layout_height="50dp" />
         <ImageView
             android:src="@drawable/lock_red"
-            android:layout_width="@dimen/default_gap_230"
+            android:layout_width="160dp"
             android:id="@+id/lock_top"
             android:scaleType="fitStart"
-            android:layout_height="@dimen/default_gap_80" />
+            android:layout_height="50dp" />
 
     </RelativeLayout>
 

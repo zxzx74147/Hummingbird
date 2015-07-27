@@ -107,40 +107,42 @@
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/big_button_layout"
             android:layout_width="match_parent"
-
             android:layout_height="@dimen/default_gap_120">
             <ImageView
                 android:src="?attr/btn_e_drawable"
+                android:layout_alignParentLeft="true"
                 android:id="@+id/mode_e"
                 android:layout_width="wrap_content"
                 android:scaleType="fitStart"
                 android:layout_height="wrap_content" />
 
-            <View
-                android:layout_width="0dip"
-                android:layout_weight="1"
-                android:layout_height="1dip"/>
+            <!--<View-->
+                <!--android:layout_width="0dip"-->
+                <!--android:layout_weight="1"-->
+                <!--android:layout_height="1dip"/>-->
             <ImageView
                 android:src="?attr/btn_n_drawable"
                 android:layout_width="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:id="@+id/mode_n"
                 android:layout_height="wrap_content" />
 
-            <View
-                android:layout_width="0dip"
-                android:layout_weight="1"
-                android:layout_height="1dip"/>
+            <!--<View-->
+                <!--android:layout_width="0dip"-->
+                <!--android:layout_weight="1"-->
+                <!--android:layout_height="1dip"/>-->
             <ImageView
                 android:src="?attr/btn_s_drawable"
                 android:layout_width="wrap_content"
                 android:id="@+id/mode_s"
+                android:layout_alignParentRight="true"
                 android:scaleType="fitEnd"
                 android:layout_height="wrap_content" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </RelativeLayout>
 

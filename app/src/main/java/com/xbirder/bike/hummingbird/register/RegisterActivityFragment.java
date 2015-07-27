@@ -16,10 +16,13 @@ import com.baidu.core.net.base.HttpResponse;
 import com.xbirder.bike.hummingbird.AccountManager;
 import com.xbirder.bike.hummingbird.R;
 import com.xbirder.bike.hummingbird.base.BaseFragment;
+import com.xbirder.bike.hummingbird.bluetooth.BluetoothScanActivity;
 import com.xbirder.bike.hummingbird.common.widget.TitleBar;
 import com.xbirder.bike.hummingbird.login.data.LoginData;
 import com.xbirder.bike.hummingbird.main.MainActivity;
 import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
+
+import org.json.JSONObject;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -179,17 +182,34 @@ public class RegisterActivityFragment extends BaseFragment {
         String username = mUserNameText.getText().toString();
         String pass = mPassText.getText().toString();
         String phone = mStep1PhoneNum.getText().toString();
-        RegisterRequest request = new RegisterRequest(new HttpResponse.Listener<LoginData>() {
+        RegisterRequest request = new RegisterRequest(new HttpResponse.Listener<JSONObject>() {
             @Override
-            public void onResponse(HttpResponse<LoginData> response) {
+            public void onResponse(HttpResponse<JSONObject> response) {
                 if (response.isSuccess()) {
-                    AccountManager.sharedInstance().setToken(response.result.user.accessToken);
-                    ActivityJumpHelper.startActivity(RegisterActivityFragment.this, MainActivity.class);
-                    getActivity().finish();
+                    try {
+                        if (response.result.getString("error").equals("0")) {
+//                          AccountManager.sharedInstance().setToken(response.result.user.accessToken);
+                            ActivityJumpHelper.startActivity(RegisterActivityFragment.this, BluetoothScanActivity.class);
+                            getActivity().finish();
+                        } else {
+                            JSONObject msgObj = response.result.getJSONObject("msg");
+                            if ( msgObj != null) {
+                                if (msgObj.getString("phone") != null) {
+                                    toast(msgObj.getString("phone"));
+                                } else if (msgObj.getString("userName") != null) {
+                                    toast(msgObj.getString("userName"));
+                                }
+                                return;
+                            }
+                            toast("账号注册失败");
+                        }
+                    } catch (Exception e) {
+
+                    }
                 }
             }
         });
-        request.setParam(phone, username, pass);
+        request.setParam(phone, pass, username);
         sendRequest(request);
     }
 
@@ -207,7 +227,7 @@ public class RegisterActivityFragment extends BaseFragment {
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                toast("提交验证码成功");
+//                                toast("提交验证码成功");
                                 register();
                             }
                         });

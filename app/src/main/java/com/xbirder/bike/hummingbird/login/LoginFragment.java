@@ -12,12 +12,15 @@ import com.baidu.core.net.base.HttpResponse;
 import com.xbirder.bike.hummingbird.AccountManager;
 import com.xbirder.bike.hummingbird.R;
 import com.xbirder.bike.hummingbird.base.BaseFragment;
+import com.xbirder.bike.hummingbird.bluetooth.BluetoothScanActivity;
 import com.xbirder.bike.hummingbird.common.widget.TitleBar;
 import com.xbirder.bike.hummingbird.login.data.LoginData;
 import com.xbirder.bike.hummingbird.main.MainActivity;
 import com.xbirder.bike.hummingbird.register.RegisterActivity;
 import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
 import com.xbirder.bike.hummingbird.util.StringHelper;
+
+import org.json.JSONObject;
 
 
 /**
@@ -37,8 +40,19 @@ public class LoginFragment extends BaseFragment {
                              Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_login, container, false);
+
         mPhoneNum = (EditText) root.findViewById(R.id.login_phone_num);
+        String storePhone = AccountManager.sharedInstance().getUser();
+        if (storePhone != null && storePhone != "") {
+            mPhoneNum.setText(storePhone);
+        }
+
         mPassword = (EditText) root.findViewById(R.id.login_password);
+        String storePass = AccountManager.sharedInstance().getPass();
+        if (storePass != null && storePass != "") {
+            mPassword.setText(storePass);
+        }
+
         mTitleBar = (TitleBar) root.findViewById(R.id.title_bar);
         mStartButton = (ImageButton) root.findViewById(R.id.btn_start);
         mStartButton.setOnClickListener(mOnClickListener);
@@ -58,15 +72,23 @@ public class LoginFragment extends BaseFragment {
                 String phone = mPhoneNum.getText().toString();
                 String password = mPassword.getText().toString();
                 if(StringHelper.checkString(phone)&& StringHelper.checkString(password)) {
-                    LoginRequest request = new LoginRequest(new HttpResponse.Listener<LoginData>() {
+                    LoginRequest request = new LoginRequest(new HttpResponse.Listener<JSONObject>() {
                         @Override
-                        public void onResponse(HttpResponse<LoginData> response) {
+                        public void onResponse(HttpResponse<JSONObject> response) {
                             if (response.isSuccess()) {
-                                AccountManager.sharedInstance().setToken(response.result.user.accessToken);
-                                ActivityJumpHelper.startActivity(LoginFragment.this, MainActivity.class);
-                                getActivity().finish();
-                            } else {
-                                Toast.makeText(getActivity(), response.error.getMessage().toString(), Toast.LENGTH_SHORT);
+                                try {
+                                    if (response.result.getString("error").equals("0")) {
+                                        AccountManager.sharedInstance().setUser(mPhoneNum.getText().toString());
+                                        AccountManager.sharedInstance().setPass(mPassword.getText().toString());
+//                          AccountManager.sharedInstance().setToken(response.result.user.accessToken);
+                                        ActivityJumpHelper.startActivity(LoginFragment.this, BluetoothScanActivity.class);
+                                        getActivity().finish();
+                                    } else {
+                                        toast("登陆失败");
+                                    }
+                                } catch (Exception e) {
+
+                                }
                             }
                         }
                     });
