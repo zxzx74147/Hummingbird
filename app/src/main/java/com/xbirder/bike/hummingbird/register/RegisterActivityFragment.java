@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.method.DialerKeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +74,7 @@ public class RegisterActivityFragment extends BaseFragment {
         mUserNameText = (EditText) mStep2.findViewById(R.id.reg_username);
         mCodeText = (EditText) mStep2.findViewById(R.id.reg_code_text);
         mPassText = (EditText) mStep2.findViewById(R.id.reg_pass);
+        mPassText.setKeyListener(DialerKeyListener.getInstance());
         mAdapter = new ImageAdapter();
         mViewPager.setAdapter(mAdapter);
         mStep1Code.setOnClickListener(mOnClickListener);
@@ -182,6 +184,10 @@ public class RegisterActivityFragment extends BaseFragment {
         String username = mUserNameText.getText().toString();
         String pass = mPassText.getText().toString();
         String phone = mStep1PhoneNum.getText().toString();
+        if (pass.length() != 6) {
+            toast("密码只支持六位数字");
+            return;
+        }
         RegisterRequest request = new RegisterRequest(new HttpResponse.Listener<JSONObject>() {
             @Override
             public void onResponse(HttpResponse<JSONObject> response) {

@@ -1,6 +1,7 @@
 package com.xbirder.bike.hummingbird.login;
 
 import android.os.Bundle;
+import android.text.method.DialerKeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,7 @@ public class LoginFragment extends BaseFragment {
         if (storePass != null && storePass != "") {
             mPassword.setText(storePass);
         }
+        mPassword.setKeyListener(DialerKeyListener.getInstance());
 
         mTitleBar = (TitleBar) root.findViewById(R.id.title_bar);
         mStartButton = (ImageButton) root.findViewById(R.id.btn_start);
@@ -71,6 +73,26 @@ public class LoginFragment extends BaseFragment {
             if(v == mStartButton){
                 String phone = mPhoneNum.getText().toString();
                 String password = mPassword.getText().toString();
+
+                if (password.length() != 6) {
+                    toast("密码只支持六位数字");
+                    return;
+                }
+
+                //无网络情况下，可以直接跳过服务器验证
+                String storePhone = AccountManager.sharedInstance().getUser();
+                String storePass = AccountManager.sharedInstance().getPass();
+
+                if (storePhone != null && storePhone != "") {
+                    if (storePass != null && storePass != "") {
+                        if (storePass.equals(password) && storePhone.equals(phone)) {
+                            ActivityJumpHelper.startActivity(LoginFragment.this, BluetoothScanActivity.class);
+                            getActivity().finish();
+                            return;
+                        }
+                    }
+                }
+
                 if(StringHelper.checkString(phone)&& StringHelper.checkString(password)) {
                     LoginRequest request = new LoginRequest(new HttpResponse.Listener<JSONObject>() {
                         @Override
