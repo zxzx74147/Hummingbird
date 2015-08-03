@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.baidu.core.net.base.HttpResponse;
 import com.xbirder.bike.hummingbird.AccountManager;
@@ -15,8 +14,7 @@ import com.xbirder.bike.hummingbird.R;
 import com.xbirder.bike.hummingbird.base.BaseFragment;
 import com.xbirder.bike.hummingbird.bluetooth.BluetoothScanActivity;
 import com.xbirder.bike.hummingbird.common.widget.TitleBar;
-import com.xbirder.bike.hummingbird.login.data.LoginData;
-import com.xbirder.bike.hummingbird.main.MainActivity;
+import com.xbirder.bike.hummingbird.register.FindPasswordActivity;
 import com.xbirder.bike.hummingbird.register.RegisterActivity;
 import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
 import com.xbirder.bike.hummingbird.util.StringHelper;
@@ -33,6 +31,7 @@ public class LoginFragment extends BaseFragment {
     private EditText mPassword;
     private TitleBar mTitleBar;
     private ImageButton mStartButton;
+    private View mFindPassword;
     public LoginFragment() {
     }
 
@@ -41,6 +40,8 @@ public class LoginFragment extends BaseFragment {
                              Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_login, container, false);
+        mFindPassword = root.findViewById(R.id.find_password);
+        mFindPassword.setOnClickListener(mOnClickListener);
 
         mPhoneNum = (EditText) root.findViewById(R.id.login_phone_num);
         String storePhone = AccountManager.sharedInstance().getUser();
@@ -117,6 +118,8 @@ public class LoginFragment extends BaseFragment {
                     request.setParam(phone,password);
                     sendRequest(request);
                 }
+            }else if(v == mFindPassword){
+                ActivityJumpHelper.startActivity(LoginFragment.this, FindPasswordActivity.class);
             }
         }
     };

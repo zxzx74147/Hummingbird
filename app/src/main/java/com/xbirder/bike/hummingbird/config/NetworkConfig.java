@@ -9,4 +9,7 @@ public class NetworkConfig {
 
     public static final String REGISTER_ADDRESS = "user/register";
     public static final String LOGIN_ADDRESS = "user/login";
+    public static final String RESET_ADDRESS = "user/resetpassword";
+    public static final String REQUSET_VCODE = "user/send-verify-code";
+    public static final String VERIFY_VCODE = "user/verify";
 }

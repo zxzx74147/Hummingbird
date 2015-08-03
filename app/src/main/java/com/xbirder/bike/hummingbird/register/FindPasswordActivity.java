@@ -1,11 +1,9 @@
 package com.xbirder.bike.hummingbird.register;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.method.DialerKeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,28 +13,20 @@ import android.widget.Toast;
 
 import com.baidu.core.net.base.HttpResponse;
 import com.xbirder.bike.hummingbird.R;
-import com.xbirder.bike.hummingbird.base.BaseFragment;
-import com.xbirder.bike.hummingbird.bluetooth.BluetoothScanActivity;
+import com.xbirder.bike.hummingbird.base.BaseActivity;
 import com.xbirder.bike.hummingbird.common.widget.TitleBar;
-import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
+import com.xbirder.bike.hummingbird.login.widget.CountDownButton;
+import com.xbirder.bike.hummingbird.util.StringHelper;
 
 import org.json.JSONObject;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
-/**
- * A placeholder fragment containing a simple view.
- */
-public class RegisterActivityFragment extends BaseFragment {
-
-
+public class FindPasswordActivity extends BaseActivity {
 
     private ViewPager mViewPager;
-    private ImageAdapter mAdapter;
+    private RegisterAdapter mAdapter;
     private View mStep1;
     private View mStep2;
     private EditText mStep1PhoneNum;
@@ -45,58 +35,82 @@ public class RegisterActivityFragment extends BaseFragment {
 
     private EditText mCodeText;
     private EditText mPassText;
-    private EditText mUserNameText;
+    private EditText mPassText2;
     private View mDone;
     private String mPhoneNum;
     private Handler mHandler;
-    private View mResend;
+    private CountDownButton mResend;
 
-    public RegisterActivityFragment() {
-        mHandler = new Handler();
-    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View mRoot = inflater.inflate(R.layout.fragment_regiester, container, false);
-        mViewPager = (ViewPager) mRoot.findViewById(R.id.view_pager);
-        mStep1 = inflater.inflate(R.layout.fragment_register_step_1, null);
-        mStep2 = inflater.inflate(R.layout.fragment_register_step_2, null);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_find_password);
+        mViewPager = (ViewPager) findViewById(R.id.view_pager);
+        mTitle = (TitleBar) findViewById(R.id.title_bar);
+        mStep1 = LayoutInflater.from(this).inflate(R.layout.fragment_find_password_1, null);
         mStep1PhoneNum = (EditText) mStep1.findViewById(R.id.reg_phone_num);
         mStep1Code = (Button) mStep1.findViewById(R.id.reg_send_code);
-        mTitle = (TitleBar) mRoot.findViewById(R.id.title_bar);
+
+        mStep2 = LayoutInflater.from(this).inflate(R.layout.fragment_find_password_step_2, null);
+        mPassText = (EditText) mStep2.findViewById(R.id.find_pass);
+        mPassText2 = (EditText) mStep2.findViewById(R.id.find_pass_check);
         mDone = mStep2.findViewById(R.id.reg_done);
-        mResend = mStep2.findViewById(R.id.resend);
-        mUserNameText = (EditText) mStep2.findViewById(R.id.reg_username);
+        mResend = (CountDownButton) mStep2.findViewById(R.id.resend);
         mCodeText = (EditText) mStep2.findViewById(R.id.reg_code_text);
-        mPassText = (EditText) mStep2.findViewById(R.id.reg_pass);
-        mPassText.setKeyListener(DialerKeyListener.getInstance());
-        mAdapter = new ImageAdapter();
+        mAdapter = new RegisterAdapter();
         mViewPager.setAdapter(mAdapter);
+
         mStep1Code.setOnClickListener(mOnClickListener);
         mViewPager.addOnPageChangeListener(mOnPageChangedListener);
         mDone.setOnClickListener(mOnClickListener);
         mResend.setOnClickListener(mOnClickListener);
+        initSMSSDK();
+    }
 
-        mTitle.setBackOnClickListener(new View.OnClickListener() {
-
+    private void changePassword(){
+        ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest(new HttpResponse.Listener<JSONObject>() {
             @Override
-            public void onClick(View v) {
-                if (mViewPager.getCurrentItem() == 0) {
-                    getActivity().finish();
-                } else {
-                    mViewPager.setCurrentItem(0);
-                }
+            public void onResponse(HttpResponse<JSONObject> response) {
+                finish();
             }
         });
 
-        return mRoot;
+        sendRequest(resetPasswordRequest);
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        initSMSSDK();
+    private void requestVCode(){
+        mPhoneNum = mStep1PhoneNum.getText().toString();
+        if(!StringHelper.checkString(mPhoneNum)){
+            return;
+        }
+        RequestVCodeRequest request = new RequestVCodeRequest(new HttpResponse.Listener<JSONObject>() {
+            @Override
+            public void onResponse(HttpResponse<JSONObject> response) {
+                if(response.isSuccess()){
+                    mViewPager.setCurrentItem(1);
+                }else{
+                    toast(response.error.toString());
+                }
+            }
+        });
+        request.setParam(mPhoneNum);
+        sendRequest(request);
+    }
+
+    private void checkVCode(){
+        String vCode = mCodeText.getText().toString();
+        if(!StringHelper.checkString(vCode)){
+            return;
+        }
+        VerfifyVCodeRequest request = new VerfifyVCodeRequest(new HttpResponse.Listener<JSONObject>() {
+            @Override
+            public void onResponse(HttpResponse<JSONObject> response) {
+                changePassword();
+            }
+        });
+        request.setParam(mPhoneNum,vCode);
+        sendRequest(request);
     }
 
     private ViewPager.OnPageChangeListener mOnPageChangedListener = new ViewPager.OnPageChangeListener() {
@@ -108,11 +122,11 @@ public class RegisterActivityFragment extends BaseFragment {
         @Override
         public void onPageSelected(int position) {
             if (position == 1) {
-                mTitle.setLeftText(R.string.register);
-                mTitle.setTitle(R.string.register_account_info);
+                mTitle.setLeftText(R.string.find_password);
+                mTitle.setTitle(R.string.reset_password);
             } else {
-                mTitle.setLeftText(R.string.back);
-                mTitle.setTitle(R.string.register_by_phone);
+                mTitle.setLeftText(R.string.login);
+                mTitle.setTitle(R.string.find_password);
 
             }
         }
@@ -129,19 +143,31 @@ public class RegisterActivityFragment extends BaseFragment {
         public void onClick(View v) {
             if (v == mStep1Code || v == mResend) {
                 mPhoneNum = mStep1PhoneNum.getText().toString();
-                if(isPhoneNumberValid(mPhoneNum)){
+                if(StringHelper.isPhoneNumberValid(mPhoneNum)){
                     SMSSDK.getVerificationCode("86", mPhoneNum);
                 }else{
-                    Toast.makeText(getActivity(),"手机号码不合法",Toast.LENGTH_SHORT);
+                    Toast.makeText(FindPasswordActivity.this, "手机号码不合法", Toast.LENGTH_SHORT);
                 }
+                mResend.startCountDown(System.currentTimeMillis()+60000);
             } else if (v == mDone) {
-                String code = mCodeText.getText().toString();
-                SMSSDK.submitVerificationCode("86",mPhoneNum,code);
+
+            } else if (v == mResend){
+                if(mResend.isCountDown()){
+                    return;
+                }
+                mPhoneNum = mStep1PhoneNum.getText().toString();
+                if(StringHelper.isPhoneNumberValid(mPhoneNum)){
+                    SMSSDK.getVerificationCode("86", mPhoneNum);
+                }else{
+                    Toast.makeText(FindPasswordActivity.this, "手机号码不合法", Toast.LENGTH_SHORT);
+                }
+                mResend.startCountDown(System.currentTimeMillis()+60000);
             }
         }
     };
 
-    private class ImageAdapter extends PagerAdapter {
+
+    private class RegisterAdapter extends PagerAdapter {
         @Override
         public int getCount() {
             return 2;
@@ -176,48 +202,8 @@ public class RegisterActivityFragment extends BaseFragment {
         }
     }
 
-    private void register() {
-        String username = mUserNameText.getText().toString();
-        String pass = mPassText.getText().toString();
-        String phone = mStep1PhoneNum.getText().toString();
-        if (pass.length() != 6) {
-            toast("密码只支持六位数字");
-            return;
-        }
-        RegisterRequest request = new RegisterRequest(new HttpResponse.Listener<JSONObject>() {
-            @Override
-            public void onResponse(HttpResponse<JSONObject> response) {
-                if (response.isSuccess()) {
-                    try {
-                        if (response.result.getString("error").equals("0")) {
-//                          AccountManager.sharedInstance().setToken(response.result.user.accessToken);
-                            ActivityJumpHelper.startActivity(RegisterActivityFragment.this, BluetoothScanActivity.class);
-                            getActivity().finish();
-                        } else {
-                            JSONObject msgObj = response.result.getJSONObject("msg");
-                            if ( msgObj != null) {
-                                if (msgObj.getString("phone") != null) {
-                                    toast(msgObj.getString("phone"));
-                                } else if (msgObj.getString("userName") != null) {
-                                    toast(msgObj.getString("userName"));
-                                }
-                                return;
-                            }
-                            toast("账号注册失败");
-                        }
-                    } catch (Exception e) {
-
-                    }
-                }
-            }
-        });
-        request.setParam(phone, pass, username);
-        sendRequest(request);
-    }
-
-
     private void initSMSSDK() {
-        SMSSDK.initSDK(getActivity(),SMSConfig.APPKEY, SMSConfig.APPSECRET);
+        SMSSDK.initSDK(this, SMSConfig.APPKEY, SMSConfig.APPSECRET);
         EventHandler eh = new EventHandler() {
 
             @Override
@@ -229,8 +215,7 @@ public class RegisterActivityFragment extends BaseFragment {
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
-//                                toast("提交验证码成功");
-                                register();
+                                changePassword();
                             }
                         });
 
@@ -257,7 +242,7 @@ public class RegisterActivityFragment extends BaseFragment {
                                           }
                                       }
                                   }
-                        );
+                    );
                 }else{
                     ((Throwable) data).printStackTrace();
                 }
@@ -265,28 +250,4 @@ public class RegisterActivityFragment extends BaseFragment {
         };
         SMSSDK.registerEventHandler(eh); //注册短信回调
     }
-
-    public static boolean isPhoneNumberValid(String phoneNumber) {
-
-        boolean isValid = false;
-        /*
-         * 可接受的电话格式有：
-         */
-        String expression = "^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{5})$";
-        /*
-         * 可接受的电话格式有：
-         */
-        String expression2 = "^\\(?(\\d{3})\\)?[- ]?(\\d{4})[- ]?(\\d{4})$";
-        CharSequence inputStr = phoneNumber;
-        Pattern pattern = Pattern.compile(expression);
-        Matcher matcher = pattern.matcher(inputStr);
-
-        Pattern pattern2 = Pattern.compile(expression2);
-        Matcher matcher2 = pattern2.matcher(inputStr);
-        if (matcher.matches() || matcher2.matches()) {
-            isValid = true;
-        }
-        return isValid;
-    }
-
 }

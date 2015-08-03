@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.xbirder.bike.hummingbird"
-        minSdkVersion 17
+        minSdkVersion 18
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"

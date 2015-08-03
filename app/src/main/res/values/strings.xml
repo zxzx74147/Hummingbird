@@ -66,4 +66,9 @@
     <string name="menu_scan">搜索</string>
     <string name="menu_stop">停止</string>
     <string name="title_activity_connect">ConnectActivity</string>
+    <string name="find_password">找回密码</string>
+    <string name="reset_password">重设密码</string>
+    <string name="find_password_remind">请输入你的电话号码</string>
+    <string name="new_password">新密码</string>
+    <string name="check_password">请重复新密码</string>
 </resources>

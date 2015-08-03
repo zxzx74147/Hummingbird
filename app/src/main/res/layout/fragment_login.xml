@@ -82,6 +82,7 @@
     <TextView
         android:textColor="@color/common_text_gray_day"
         android:text="@string/foget_password"
+        android:id="@+id/find_password"
         android:layout_marginRight="@dimen/default_gap_50"
         android:gravity="center"
         android:textSize="@dimen/text_size_small"
