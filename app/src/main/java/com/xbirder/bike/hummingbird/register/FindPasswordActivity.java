@@ -65,17 +65,18 @@ public class FindPasswordActivity extends BaseActivity {
         mViewPager.addOnPageChangeListener(mOnPageChangedListener);
         mDone.setOnClickListener(mOnClickListener);
         mResend.setOnClickListener(mOnClickListener);
-        initSMSSDK();
+        mResend.setTextString(getResources().getString(R.string.resent));
     }
 
     private void changePassword(){
+        String newPass = mPassText.getText().toString();
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest(new HttpResponse.Listener<JSONObject>() {
             @Override
             public void onResponse(HttpResponse<JSONObject> response) {
                 finish();
             }
         });
-
+        resetPasswordRequest.setParam(mPhoneNum,newPass);
         sendRequest(resetPasswordRequest);
     }
 
@@ -96,6 +97,8 @@ public class FindPasswordActivity extends BaseActivity {
         });
         request.setParam(mPhoneNum);
         sendRequest(request);
+        mResend.startCountDown(System.currentTimeMillis() + 60000);
+        mViewPager.setCurrentItem(1);
     }
 
     private void checkVCode(){
@@ -142,26 +145,19 @@ public class FindPasswordActivity extends BaseActivity {
         @Override
         public void onClick(View v) {
             if (v == mStep1Code || v == mResend) {
+                if(v == mResend&& mResend.isCountDown()){
+                    return;
+                }
                 mPhoneNum = mStep1PhoneNum.getText().toString();
                 if(StringHelper.isPhoneNumberValid(mPhoneNum)){
-                    SMSSDK.getVerificationCode("86", mPhoneNum);
+                    requestVCode();
+
                 }else{
                     Toast.makeText(FindPasswordActivity.this, "手机号码不合法", Toast.LENGTH_SHORT);
                 }
                 mResend.startCountDown(System.currentTimeMillis()+60000);
             } else if (v == mDone) {
-
-            } else if (v == mResend){
-                if(mResend.isCountDown()){
-                    return;
-                }
-                mPhoneNum = mStep1PhoneNum.getText().toString();
-                if(StringHelper.isPhoneNumberValid(mPhoneNum)){
-                    SMSSDK.getVerificationCode("86", mPhoneNum);
-                }else{
-                    Toast.makeText(FindPasswordActivity.this, "手机号码不合法", Toast.LENGTH_SHORT);
-                }
-                mResend.startCountDown(System.currentTimeMillis()+60000);
+                checkVCode();
             }
         }
     };
@@ -202,52 +198,5 @@ public class FindPasswordActivity extends BaseActivity {
         }
     }
 
-    private void initSMSSDK() {
-        SMSSDK.initSDK(this, SMSConfig.APPKEY, SMSConfig.APPSECRET);
-        EventHandler eh = new EventHandler() {
 
-            @Override
-            public void afterEvent(final int event, int result, Object data) {
-
-                if (result == SMSSDK.RESULT_COMPLETE) {
-                    //回调完成
-                    if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                changePassword();
-                            }
-                        });
-
-                    } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mViewPager.setCurrentItem(1);
-                            }
-                        });
-
-                    } else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {
-                        //返回支持发送验证码的国家列表
-                    }
-                } else if(result == SMSSDK.RESULT_ERROR){
-                    mHandler.post(new Runnable() {
-                                      @Override
-                                      public void run() {
-                                          if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-                                              toast("提交验证码失败");
-                                          } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-                                              toast("获取验证码失败");
-
-                                          }
-                                      }
-                                  }
-                    );
-                }else{
-                    ((Throwable) data).printStackTrace();
-                }
-            }
-        };
-        SMSSDK.registerEventHandler(eh); //注册短信回调
-    }
 }

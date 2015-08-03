@@ -56,7 +56,7 @@ public class CountDownButton extends Button {
             if(System.currentTimeMillis()>dstTime){
                 setText(mText);
             }else{
-                int diff = (int) (dstTime-System.currentTimeMillis()/1000);
+                int diff = (int) (dstTime-System.currentTimeMillis())/1000;
                 setText(mText+"("+diff+"s)");
                 postDelayed(mCalContentRunnable,1000);
             }

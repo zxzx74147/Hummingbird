@@ -28,7 +28,7 @@ public class ResetPasswordRequest extends HttpJsonRequest<JSONObject> {
 
     @Override
     protected void onSetParameter(HashMap<String, String> params) {
-        params.put("r", NetworkConfig.LOGIN_ADDRESS);
+        params.put("r", NetworkConfig.RESET_ADDRESS);
         params.put("token", AccountManager.sharedInstance().getToken());
         params.put("phone",mPhoneNum);
         params.put("password",mPassword);
@@ -41,7 +41,7 @@ public class ResetPasswordRequest extends HttpJsonRequest<JSONObject> {
 
     @Override
     protected int method() {
-        return Request.Method.POST;
+        return Request.Method.GET;
     }
 
     public HttpResponse onResponseSuccess(JSONObject response) throws Exception{

@@ -25,7 +25,7 @@ public class RequestVCodeRequest extends HttpJsonRequest<JSONObject> {
 
     @Override
     protected void onSetParameter(HashMap<String, String> params) {
-        params.put("r", NetworkConfig.LOGIN_ADDRESS);
+        params.put("r", NetworkConfig.REQUSET_VCODE);
         params.put("phone",mPhoneNum);
     }
 
@@ -36,7 +36,7 @@ public class RequestVCodeRequest extends HttpJsonRequest<JSONObject> {
 
     @Override
     protected int method() {
-        return Request.Method.POST;
+        return Request.Method.GET;
     }
 
     public HttpResponse onResponseSuccess(JSONObject response) throws Exception{
