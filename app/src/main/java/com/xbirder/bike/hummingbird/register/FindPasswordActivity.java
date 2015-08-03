@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.baidu.core.net.base.HttpResponse;
+import com.xbirder.bike.hummingbird.AccountManager;
 import com.xbirder.bike.hummingbird.R;
 import com.xbirder.bike.hummingbird.base.BaseActivity;
 import com.xbirder.bike.hummingbird.common.widget.TitleBar;
@@ -109,6 +110,8 @@ public class FindPasswordActivity extends BaseActivity {
         VerfifyVCodeRequest request = new VerfifyVCodeRequest(new HttpResponse.Listener<JSONObject>() {
             @Override
             public void onResponse(HttpResponse<JSONObject> response) {
+                String token = response.result.optString("token");
+                AccountManager.sharedInstance().setToken(token);
                 changePassword();
             }
         });
