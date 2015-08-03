@@ -67,6 +67,14 @@ public class FindPasswordActivity extends BaseActivity {
         mDone.setOnClickListener(mOnClickListener);
         mResend.setOnClickListener(mOnClickListener);
         mResend.setTextString(getResources().getString(R.string.resent));
+        mTitle.setBackOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mViewPager.getCurrentItem() == 1){
+                    mViewPager.setCurrentItem(0);
+                }
+            }
+        });
     }
 
     private void changePassword(){

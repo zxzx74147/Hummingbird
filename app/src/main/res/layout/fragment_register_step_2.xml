@@ -39,6 +39,7 @@
             android:id="@+id/resend"
             android:textColor="@color/white"
             android:layout_width="wrap_content"
+            android:paddingRight="@dimen/default_gap_15"
             android:layout_height="match_parent" />
 
     </LinearLayout>

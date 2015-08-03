@@ -18,6 +18,7 @@ import com.xbirder.bike.hummingbird.R;
 import com.xbirder.bike.hummingbird.base.BaseFragment;
 import com.xbirder.bike.hummingbird.bluetooth.BluetoothScanActivity;
 import com.xbirder.bike.hummingbird.common.widget.TitleBar;
+import com.xbirder.bike.hummingbird.login.widget.CountDownButton;
 import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
 
 import org.json.JSONObject;
@@ -49,7 +50,7 @@ public class RegisterActivityFragment extends BaseFragment {
     private View mDone;
     private String mPhoneNum;
     private Handler mHandler;
-    private View mResend;
+    private CountDownButton mResend;
 
     public RegisterActivityFragment() {
         mHandler = new Handler();
@@ -66,7 +67,7 @@ public class RegisterActivityFragment extends BaseFragment {
         mStep1Code = (Button) mStep1.findViewById(R.id.reg_send_code);
         mTitle = (TitleBar) mRoot.findViewById(R.id.title_bar);
         mDone = mStep2.findViewById(R.id.reg_done);
-        mResend = mStep2.findViewById(R.id.resend);
+        mResend = (CountDownButton) mStep2.findViewById(R.id.resend);
         mUserNameText = (EditText) mStep2.findViewById(R.id.reg_username);
         mCodeText = (EditText) mStep2.findViewById(R.id.reg_code_text);
         mPassText = (EditText) mStep2.findViewById(R.id.reg_pass);
@@ -89,7 +90,7 @@ public class RegisterActivityFragment extends BaseFragment {
                 }
             }
         });
-
+        mResend.setTextString(getResources().getString(R.string.resent));
         return mRoot;
     }
 
@@ -239,6 +240,7 @@ public class RegisterActivityFragment extends BaseFragment {
                             @Override
                             public void run() {
                                 mViewPager.setCurrentItem(1);
+                                mResend.startCountDown(System.currentTimeMillis()+60000);
                             }
                         });
 
