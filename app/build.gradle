@@ -51,6 +51,7 @@ dependencies {
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
     compile files('libs/MobTools.jar')
     compile files('libs/SMSSDK-1.2.2.jar')
+    compile project(':Slidingmenu')
 }
 
 
