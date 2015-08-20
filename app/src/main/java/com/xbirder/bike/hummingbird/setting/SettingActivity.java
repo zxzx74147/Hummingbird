@@ -4,15 +4,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.xbirder.bike.hummingbird.AccountManager;
+import com.xbirder.bike.hummingbird.LogoActivity;
 import com.xbirder.bike.hummingbird.R;
+import com.xbirder.bike.hummingbird.register.RegisterActivity;
+import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
+
+import cn.smssdk.SMSSDK;
 
 public class SettingActivity extends AppCompatActivity {
+    private Button quitBtn = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        quitBtn = (Button)findViewById(R.id.quit_login);
+        quitBtn.setOnClickListener(mOnClickListener);
     }
 
     @Override
@@ -36,4 +49,16 @@ public class SettingActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (v == quitBtn) {
+                AccountManager.sharedInstance().setPass("");
+                AccountManager.sharedInstance().setFinalToken("");
+                finish();
+                ActivityJumpHelper.startActivity(SettingActivity.this, LogoActivity.class);
+            }
+        }
+    };
 }

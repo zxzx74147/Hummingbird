@@ -38,14 +38,11 @@ public class LogoActivity extends BaseActivity {
             }
         });
 
-//        String token = AccountManager.sharedInstance().getToken();
-//        if(StringHelper.checkString(token)){
-//            ActivityJumpHelper.startActivity(this,MainActivity.class);
-//            finish();
-//        }
+        String userName = AccountManager.sharedInstance().getUser();
+        String pass = AccountManager.sharedInstance().getPass();
+        if ((userName != null && userName != "") &&
+                (pass != null && pass != "")) {
+            ActivityJumpHelper.startActivity(this,MainActivity.class);
+        }
     }
-
-
-
-
 }

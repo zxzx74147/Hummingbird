@@ -11,7 +11,7 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/roll_view"
         android:src="?attr/main_roll_drawable"
-        android:layout_marginTop="@dimen/default_gap_110"
+        android:layout_marginTop="20dp"
         android:layout_height="@dimen/default_gap_540" />
 
     <RelativeLayout
@@ -24,10 +24,9 @@
         android:layout_alignBottom="@+id/roll_view"
         android:layout_height="wrap_content">
         <TextView
-
             android:id="@+id/speed_num"
             android:textSize="@dimen/default_size_250"
-            android:text="50"
+            android:text="0"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:textColor="?attr/main_text_value_color"
@@ -35,22 +34,21 @@
             android:layout_marginBottom="-15dp"
             android:lineSpacingMultiplier="1"
             android:layout_height="wrap_content" />
-
     </RelativeLayout>
     
     <TextView
-        android:layout_below="@+id/roll_view"
+        android:layout_below="@id/roll_view"
         android:id="@+id/battery_num"
         android:textSize="@dimen/default_size_65"
         android:layout_marginTop="@dimen/default_gap_30"
-        android:text="30%"
+        android:text="100%"
         android:layout_centerHorizontal="true"
         android:textColor="?attr/main_text_value_color"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:layout_below="@+id/battery_num"
+        android:layout_below="@id/battery_num"
         android:id="@+id/battery_show"
         android:textSize="@dimen/default_size_40"
         android:text="电量"
@@ -60,12 +58,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <ImageView
+        android:layout_below="@id/battery_show"
+        android:id="@+id/connect_bluetooth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/search" />
+
 
     <RelativeLayout
         android:layout_alignParentBottom="true"
         android:layout_width="@dimen/default_gap_613"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/default_gap_100"
+        android:layout_marginBottom="20dp"
         android:layout_height="wrap_content">
 
         <ImageView

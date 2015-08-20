@@ -14,6 +14,7 @@ import com.xbirder.bike.hummingbird.R;
 import com.xbirder.bike.hummingbird.base.BaseFragment;
 import com.xbirder.bike.hummingbird.bluetooth.BluetoothScanActivity;
 import com.xbirder.bike.hummingbird.common.widget.TitleBar;
+import com.xbirder.bike.hummingbird.main.MainActivity;
 import com.xbirder.bike.hummingbird.register.FindPasswordActivity;
 import com.xbirder.bike.hummingbird.register.RegisterActivity;
 import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
@@ -87,7 +88,7 @@ public class LoginFragment extends BaseFragment {
                 if (storePhone != null && storePhone != "") {
                     if (storePass != null && storePass != "") {
                         if (storePass.equals(password) && storePhone.equals(phone)) {
-                            ActivityJumpHelper.startActivity(LoginFragment.this, BluetoothScanActivity.class);
+                            ActivityJumpHelper.startActivity(LoginFragment.this, MainActivity.class);
                             getActivity().finish();
                             return;
                         }
@@ -103,8 +104,9 @@ public class LoginFragment extends BaseFragment {
                                     if (response.result.getString("error").equals("0")) {
                                         AccountManager.sharedInstance().setUser(mPhoneNum.getText().toString());
                                         AccountManager.sharedInstance().setPass(mPassword.getText().toString());
-//                          AccountManager.sharedInstance().setToken(response.result.user.accessToken);
-                                        ActivityJumpHelper.startActivity(LoginFragment.this, BluetoothScanActivity.class);
+                                        String accessToken = response.result.getJSONObject("user").getString("accessToken");
+                                        AccountManager.sharedInstance().setToken(accessToken);
+                                        ActivityJumpHelper.startActivity(LoginFragment.this, MainActivity.class);
                                         getActivity().finish();
                                     } else {
                                         toast("登陆失败");

@@ -12,4 +12,5 @@
     <attr name="btn_s_drawable" format="reference"/>
     <attr name="main_text_value_color" format="color"/>
     <attr name="main_text_show_color" format="color"/>
+    <attr name="search_bluetooth" format="reference" />
 </resources>

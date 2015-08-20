@@ -14,4 +14,7 @@ public class XBirdBluetoothConfig {
     public static final byte SPEED = (byte)0x05;
     public static final byte LOCK = (byte)0x06;
     public static final byte CHANGE_PASS = (byte)0x07;
+
+    public static final byte CONNECT_ERROR = (byte)0x01;
+    public static final byte LOCK_ERROR = (byte)0x02;
 }

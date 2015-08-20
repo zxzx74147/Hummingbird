@@ -1,8 +1,12 @@
 package com.xbirder.bike.hummingbird.main;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
+import android.bluetooth.BluetoothManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -10,11 +14,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,10 +29,14 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.xbirder.bike.hummingbird.AccountManager;
 import com.xbirder.bike.hummingbird.R;
@@ -45,6 +56,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends BaseActivity {
+    private Context mainContext=this;
     private final static String TAG = "MainActivity";
 
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
@@ -77,17 +89,62 @@ public class MainActivity extends BaseActivity {
     private View mSettingView;
     private View mLightView;
     private View mSideSetting;
+    private ImageView mConnectBtn;
     private ImageView mLockView;
     private boolean isLock = true;
+    private boolean mIsUseToken = true;
+
+    private BluetoothAdapter mBluetoothAdapter;
+    private boolean mScanning = false;
+    private Handler mHandler;
+    private LeDeviceListAdapter mLeDeviceListAdapter=null;
+    private AlertDialog mScanDeviceDialog;
+    public enum connectionStateEnum{isNull, isScanning, isToScan, isConnecting , isConnected, isDisconnecting};
+    public connectionStateEnum mConnectionState = connectionStateEnum.isNull;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final Intent intent = getIntent();
-        mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
-        mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
+
+        if(!initiate())
+        {
+            Toast.makeText(this, R.string.error_bluetooth_not_supported,
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        mHandler = new Handler();
+
+//        initScanAlert();
 
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+
+        // Initializes list view adapter.
+        mLeDeviceListAdapter = new LeDeviceListAdapter();
+    }
+
+    private boolean initiate()
+    {
+        // Use this check to determine whether BLE is supported on the device.
+        // Then you can
+        // selectively disable BLE-related features.
+        if (!getPackageManager().hasSystemFeature(
+                PackageManager.FEATURE_BLUETOOTH_LE)) {
+            return false;
+        }
+
+        // Initializes a Bluetooth adapter. For API level 18 and above, get a
+        // reference to
+        // BluetoothAdapter through BluetoothManager.
+        final BluetoothManager bluetoothManager = (BluetoothManager) mainContext.getSystemService(Context.BLUETOOTH_SERVICE);
+        mBluetoothAdapter = bluetoothManager.getAdapter();
+
+        // Checks if Bluetooth is supported on the device.
+        if (mBluetoothAdapter == null) {
+            return false;
+        }
+        return true;
     }
 
     // Code to manage Service lifecycle.
@@ -116,18 +173,15 @@ public class MainActivity extends BaseActivity {
             final String action = intent.getAction();
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 mConnected = true;
-//                updateConnectionState(R.string.connected);
-//                invalidateOptionsMenu();
+                AccountManager.sharedInstance().setConnectBluetooth(mDeviceName);
+                onConectionStateChange(connectionStateEnum.isConnected);
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
-//                updateConnectionState(R.string.disconnected);
-//                invalidateOptionsMenu();
-//                clearUI();
+                onConectionStateChange(connectionStateEnum.isDisconnecting);
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.
                 displayGattServices(mBluetoothLeService.getSupportedGattServices());
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-//                displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
                 byte[] bytes = intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA);
                 read(bytes);
             }
@@ -163,11 +217,17 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void writeConnectInfo() {
+    private void writeConnectInfo(boolean isUseToken) {
         byte[] value = new byte[23];
         String username = AccountManager.sharedInstance().getUser().trim();
         String pass = AccountManager.sharedInstance().getPass().trim();
-        String total = username.concat(pass);
+        String token = AccountManager.sharedInstance().getFinalToken().trim();
+        String total;
+        if (isUseToken) {
+            total = username.concat(token);
+        } else {
+            total = username.concat(pass);
+        }
         byte[] totalBytes = total.getBytes();
         value[0] = (byte) (XBirdBluetoothConfig.PREFIX & 0xFF);
         value[1] = (byte) (XBirdBluetoothConfig.CONNECT & 0xFF);
@@ -200,7 +260,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void writeLock(boolean isLock) {
-        byte[] value = {XBirdBluetoothConfig.PREFIX, XBirdBluetoothConfig.LIGHT, (byte)0x00, XBirdBluetoothConfig.END};
+        byte[] value = {XBirdBluetoothConfig.PREFIX, XBirdBluetoothConfig.LOCK, (byte)0x00, XBirdBluetoothConfig.END};
         if (isLock) {
             value[2] = (byte)0x01;
         }
@@ -208,8 +268,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private void sendToBluetooth(byte[] bytes) {
-//        mCurrentCharacteristic.setValue(XBirdBluetoothConfig.PREFIX,
-//                BluetoothGattCharacteristic.FORMAT_UINT8, 0);
         if (mCurrentCharacteristic != null) {
             mCurrentCharacteristic.setValue(bytes);
 
@@ -218,29 +276,26 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void write(String str) {
-//        byte[] value = new byte[20];
-//        value[0] = (byte) 0x00;
-//        if(str != null && str.length() > 0){
-//            //write string
-//            WriteBytes = str.getBytes();
-//        }
-////        else if(editTextNumEditText.getText().length() > 0){
-////            WriteBytes= hex2byte(editTextNumEditText.getText().toString().getBytes());
-////        }
-//        mCurrentCharacteristic.setValue(value[0],
-//                BluetoothGattCharacteristic.FORMAT_UINT8, 0);
-//        mCurrentCharacteristic.setValue(WriteBytes);
-//
-//        mBluetoothLeService.setCharacteristicNotification(mCurrentCharacteristic, true);
-    }
-
     private void read(byte[] bytes) {
         if (bytes == null || bytes.length < 3) return;
         if (bytes[0] == XBirdBluetoothConfig.PREFIX && bytes[bytes.length-1] == XBirdBluetoothConfig.END) {
             switch (bytes[1]) {
                 case XBirdBluetoothConfig.ERROR:
-                    toast("出错啦亲");
+                    if (bytes[2] == XBirdBluetoothConfig.CONNECT_ERROR) {
+                        if (mIsUseToken) {
+                            writeConnectInfo(false);
+                            mIsUseToken = false;
+                        } else {
+                            toast("连接锋鸟出错");
+                            mBluetoothLeService.disconnect();
+                            mHandler.postDelayed(mDisonnectingOverTimeRunnable, 1000);
+
+                            mConnectionState = connectionStateEnum.isDisconnecting;
+                            onConectionStateChange(mConnectionState);
+                        }
+                    } else if (bytes[2] == XBirdBluetoothConfig.CONNECT_ERROR) {
+                        toast("锁车失败");
+                    }
                     break;
                 case XBirdBluetoothConfig.INFO:
                     int battery = bytes[4];
@@ -263,34 +318,7 @@ public class MainActivity extends BaseActivity {
             mBluetoothLeService.setCharacteristicNotification(
                     mCurrentCharacteristic, true);
         }
-        writeConnectInfo();
-    }
-
-    public static String bin2hex(String bin) {
-        char[] digital = "0123456789ABCDEF".toCharArray();
-        StringBuffer sb = new StringBuffer("");
-        byte[] bs = bin.getBytes();
-        int bit;
-        for (int i = 0; i < bs.length; i++) {
-            bit = (bs[i] & 0x0f0) >> 4;
-            sb.append(digital[bit]);
-            bit = bs[i] & 0x0f;
-            sb.append(digital[bit]);
-        }
-        return sb.toString();
-    }
-    public static byte[] hex2byte(byte[] b) {
-        if ((b.length % 2) != 0) {
-            throw new IllegalArgumentException("长度不是偶数");
-        }
-        byte[] b2 = new byte[b.length / 2];
-        for (int n = 0; n < b.length; n += 2) {
-            String item = new String(b, n, 2);
-            // 两位一组，表示一个字节,把这样表示的16进制字符串，还原成一个进制字节
-            b2[n / 2] = (byte) Integer.parseInt(item, 16);
-        }
-        b = null;
-        return b2;
+        writeConnectInfo(mIsUseToken);
     }
 
     @Override
@@ -324,8 +352,10 @@ public class MainActivity extends BaseActivity {
         FontsManager.sharedInstance().setSpeedType(mSpeedText);
         FontsManager.sharedInstance().setSpeedType(mBatteryView);
         FontsManager.sharedInstance().setSpeedKMType(mBatteryShow);
-//        setBattery(80);
+        setBattery(100);
         setMode(StatusConfig.MODE_E);
+        mConnectBtn = (ImageView)findViewById(R.id.connect_bluetooth);
+        mConnectBtn.setOnClickListener(mOnClickListener);
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -362,6 +392,8 @@ public class MainActivity extends BaseActivity {
                 initView();
             }else if(v == mSideSetting){
                 ActivityJumpHelper.startActivity(MainActivity.this, SettingActivity.class);
+            }else if(v == mConnectBtn) {
+                onSearchClick();
             }
         }
     };
@@ -421,6 +453,228 @@ public class MainActivity extends BaseActivity {
         writeSpeedInfo(level);
     }
 
+    public void onConectionStateChange(connectionStateEnum theconnectionStateEnum) {
+        mConnectBtn.setImageResource(R.drawable.search);
+        AnimationDrawable animationDrawable;
+
+        mConnectionState = theconnectionStateEnum;
+
+        switch (theconnectionStateEnum) {
+            case isNull:
+                animationDrawable = (AnimationDrawable) mConnectBtn.getDrawable();
+                animationDrawable.stop();
+                mConnectBtn.setImageResource(R.drawable.search_unable);
+                break;
+            case isToScan:
+                animationDrawable = (AnimationDrawable) mConnectBtn.getDrawable();
+                animationDrawable.stop();
+                mConnectBtn.setImageResource(R.drawable.search_unable);
+                break;
+            case isScanning:
+//                mConnectBtn.setBackgroundResource(R.drawable.search);
+                animationDrawable = (AnimationDrawable) mConnectBtn.getDrawable();
+                animationDrawable.start();
+                break;
+            case isConnecting:
+                animationDrawable = (AnimationDrawable) mConnectBtn.getDrawable();
+                animationDrawable.stop();
+                mConnectBtn.setImageResource(R.drawable.search_unable);
+                break;
+            case isConnected:
+                animationDrawable = (AnimationDrawable) mConnectBtn.getDrawable();
+                animationDrawable.stop();
+                mConnectBtn.setImageResource(R.drawable.search_enable);
+                break;
+            case isDisconnecting:
+                animationDrawable = (AnimationDrawable) mConnectBtn.getDrawable();
+                animationDrawable.stop();
+                mConnectBtn.setImageResource(R.drawable.search_unable);
+                break;
+            default:
+                animationDrawable = (AnimationDrawable) mConnectBtn.getDrawable();
+                animationDrawable.stop();
+                mConnectBtn.setImageResource(R.drawable.search_unable);
+                break;
+        }
+    }
+
+    private void onSearchClick()
+    {
+        switch (mConnectionState) {
+            case isNull:
+                mConnectionState=connectionStateEnum.isScanning;
+                onConectionStateChange(mConnectionState);
+                mHandler.postDelayed(mSearchOverTimeRunnable, 3000);
+                scanLeDevice(true);
+                break;
+            case isToScan:
+                mConnectionState=connectionStateEnum.isScanning;
+                onConectionStateChange(mConnectionState);
+                mHandler.postDelayed(mSearchOverTimeRunnable, 3000);
+                scanLeDevice(true);
+                break;
+            case isScanning:
+
+                break;
+
+            case isConnecting:
+
+                break;
+            case isConnected:
+                confirmDisconnect();
+                break;
+            case isDisconnecting:
+
+                break;
+
+            default:
+                break;
+        }
+
+
+    }
+
+    private void confirmDisconnect() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("你确定要断开连接吗？");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                mBluetoothLeService.disconnect();
+                mHandler.postDelayed(mDisonnectingOverTimeRunnable, 1000);
+
+                mConnectionState = connectionStateEnum.isDisconnecting;
+                onConectionStateChange(mConnectionState);
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        builder.create().show();
+    }
+
+
+    private Runnable mConnectingOverTimeRunnable=new Runnable(){
+
+        @Override
+        public void run() {
+            if(mConnectionState==connectionStateEnum.isConnecting)
+                mConnectionState=connectionStateEnum.isToScan;
+            onConectionStateChange(mConnectionState);
+            mBluetoothLeService.close();
+        }};
+
+    private Runnable mDisonnectingOverTimeRunnable=new Runnable(){
+
+        @Override
+        public void run() {
+            if(mConnectionState==connectionStateEnum.isDisconnecting)
+                mConnectionState=connectionStateEnum.isToScan;
+            onConectionStateChange(mConnectionState);
+            mBluetoothLeService.close();
+        }};
+
+    private Runnable mSearchOverTimeRunnable=new Runnable(){
+
+        @Override
+        public void run() {
+            if(mConnectionState==connectionStateEnum.isScanning)
+                mConnectionState=connectionStateEnum.isToScan;
+            if (mLeDeviceListAdapter.getCount() == 0) {
+                toast("搜索不到锋鸟:(");
+                scanLeDevice(false);
+                onConectionStateChange(connectionStateEnum.isNull);
+            } else if (mLeDeviceListAdapter.getCount() == 1) {
+                String lastConnectBluetooth = AccountManager.sharedInstance().getConnectBluetooth();
+                BluetoothDevice device = mLeDeviceListAdapter.getDevice(0);
+                if (device == null)
+                    return;
+                mDeviceName=device.getName().toString();
+                mDeviceAddress=device.getAddress().toString();
+
+                scanLeDevice(false);
+                System.out.println("onListItemClick " + device.getName().toString());
+
+                if (!lastConnectBluetooth.equals(mDeviceName)) {
+                    scanLeDevice(false);
+                    System.out.println("onListItemClick " + device.getName().toString());
+
+                    System.out.println("Device Name:"+device.getName() + "   " + "Device Name:" + device.getAddress());
+
+                    if (mBluetoothLeService.connect(mDeviceAddress)) {
+                        Log.d(TAG, "Connect request success");
+                        mConnectionState=connectionStateEnum.isConnecting;
+                        onConectionStateChange(mConnectionState);
+//                        mHandler.postDelayed(mConnectingOverTimeRunnable, 10000);
+                    } else {
+                        Log.d(TAG, "Connect request fail");
+                        mConnectionState=connectionStateEnum.isToScan;
+                        onConectionStateChange(mConnectionState);
+                    }
+                } else {
+                    initScanAlert();
+                }
+            } else {
+                initScanAlert();
+            }
+        }};
+
+    private void initScanAlert() {
+        // Initializes and show the scan Device Dialog
+        mScanDeviceDialog = new AlertDialog.Builder(mainContext)
+                .setTitle("搜索锋鸟").setAdapter(mLeDeviceListAdapter, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        final BluetoothDevice device = mLeDeviceListAdapter.getDevice(which);
+                        if (device == null)
+                            return;
+                        scanLeDevice(false);
+                        System.out.println("onListItemClick " + device.getName().toString());
+
+                        System.out.println("Device Name:"+device.getName() + "   " + "Device Name:" + device.getAddress());
+
+                        mDeviceName=device.getName().toString();
+                        mDeviceAddress=device.getAddress().toString();
+
+                        if(mDeviceName.equals("No Device Available") && mDeviceAddress.equals("No Address Available"))  {
+                            mConnectionState=connectionStateEnum.isToScan;
+                            onConectionStateChange(mConnectionState);
+                        } else {
+                            if (mBluetoothLeService.connect(mDeviceAddress)) {
+                                Log.d(TAG, "Connect request success");
+                                mConnectionState=connectionStateEnum.isConnecting;
+                                onConectionStateChange(mConnectionState);
+                                mHandler.postDelayed(mConnectingOverTimeRunnable, 10000);
+                            } else {
+                                Log.d(TAG, "Connect request fail");
+                                mConnectionState=connectionStateEnum.isToScan;
+                                onConectionStateChange(mConnectionState);
+                            }
+                        }
+                    }
+                })
+                .setOnCancelListener(new DialogInterface.OnCancelListener(){
+
+                    @Override
+                    public void onCancel(DialogInterface arg0) {
+                        System.out.println("mBluetoothAdapter.stopLeScan");
+
+                        mConnectionState=connectionStateEnum.isToScan;
+                        onConectionStateChange(mConnectionState);
+                        mScanDeviceDialog.dismiss();
+
+                        scanLeDevice(false);
+                    }
+                }).create();
+        mScanDeviceDialog.show();
+    }
+
 
     private void setSpeed(int speed){
         mSpeedText.setText(String.valueOf(speed));
@@ -454,9 +708,10 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-        if (mBluetoothLeService != null) {
-            final boolean result = mBluetoothLeService.connect(mDeviceAddress);
-            Log.d(TAG, "Connect request result=" + result);
+
+        if (mConnectionState == connectionStateEnum.isNull ||
+                mConnectionState == connectionStateEnum.isToScan) {
+            onSearchClick();
         }
     }
 
@@ -473,4 +728,122 @@ public class MainActivity extends BaseActivity {
         mBluetoothLeService = null;
     }
 
+    // Device scan callback.
+    private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
+
+        @Override
+        public void onLeScan(final BluetoothDevice device, int rssi,
+                             byte[] scanRecord) {
+            ((Activity) mainContext).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("mLeScanCallback onLeScan run ");
+                    final String deviceName = device.getName();
+                    if (deviceName != null && deviceName.length() > 0 && deviceName.contains("XBIRD")) {
+                        mLeDeviceListAdapter.addDevice(device);
+                        mLeDeviceListAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
+        }
+
+
+    };
+
+    private class LeDeviceListAdapter extends BaseAdapter {
+        private ArrayList<BluetoothDevice> mLeDevices;
+        private LayoutInflater mInflator;
+
+        public LeDeviceListAdapter() {
+            super();
+            mLeDevices = new ArrayList<BluetoothDevice>();
+            mInflator = ((Activity) mainContext).getLayoutInflater();
+        }
+
+        public void addDevice(BluetoothDevice device) {
+            if (!mLeDevices.contains(device)) {
+                mLeDevices.add(device);
+            }
+        }
+
+        public BluetoothDevice getDevice(int position) {
+            return mLeDevices.get(position);
+        }
+
+        public void clear() {
+            mLeDevices.clear();
+        }
+
+        @Override
+        public int getCount() {
+            return mLeDevices.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return mLeDevices.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            ViewHolder viewHolder;
+            // General ListView optimization code.
+            if (view == null) {
+                view = mInflator.inflate(R.layout.listitem_device, null);
+                viewHolder = new ViewHolder();
+                viewHolder.deviceAddress = (TextView) view
+                        .findViewById(R.id.device_address);
+                viewHolder.deviceName = (TextView) view
+                        .findViewById(R.id.device_name);
+                System.out.println("mInflator.inflate  getView");
+                view.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) view.getTag();
+            }
+
+            BluetoothDevice device = mLeDevices.get(i);
+            final String deviceName = device.getName();
+            if (deviceName != null && deviceName.length() > 0 && deviceName.contains("XBIRD"))
+                viewHolder.deviceName.setText(deviceName);
+            else
+                viewHolder.deviceName.setText(R.string.unknown_device);
+            viewHolder.deviceAddress.setText(device.getAddress());
+
+            return view;
+        }
+    }
+
+    static class ViewHolder {
+        TextView deviceName;
+        TextView deviceAddress;
+    }
+
+    void scanLeDevice(final boolean enable) {
+        if (enable) {
+            System.out.println("mBluetoothAdapter.startLeScan");
+
+            if(mLeDeviceListAdapter != null)
+            {
+                mLeDeviceListAdapter.clear();
+                mLeDeviceListAdapter.notifyDataSetChanged();
+            }
+
+            if(!mScanning)
+            {
+                mScanning = true;
+                mBluetoothAdapter.startLeScan(mLeScanCallback);
+            }
+        } else {
+            if(mScanning)
+            {
+                mScanning = false;
+                mBluetoothAdapter.stopLeScan(mLeScanCallback);
+            }
+        }
+    }
 }

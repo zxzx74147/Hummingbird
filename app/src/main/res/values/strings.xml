@@ -29,8 +29,8 @@
     <string name="setting">设置</string>
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="personal_info">个人资料</string>
-    <string name="change_password">修改密码</string>
-    <string name="feedback">反馈</string>
+    <string name="change_password">修改用户密码</string>
+    <string name="feedback">重置锋鸟电动车</string>
     <string name="about">关于</string>
     <string name="vote">主人，给个好评</string>
     <string name="phone_num">手机号</string>
@@ -42,6 +42,7 @@
     <string name="password_hint">密码</string>
     <string name="reg_name">名字</string>
     <string name="done">完成</string>
+    <string name="quit_login">注销登录</string>
     <string name="mode_e_text">ECO</string>
     <string name="mode_n_text">NORMAL</string>
     <string name="mode_s_text">SPORT</string>
@@ -56,7 +57,7 @@
     <string name="title_devices">搜索蜂鸟</string>
     <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
 
-    <string name="unknown_device">Unknown device</string>
+    <string name="unknown_device">未知设备</string>
     <string name="unknown_characteristic">Unknown characteristic</string>
     <string name="unknown_service">Unknown service</string>
 

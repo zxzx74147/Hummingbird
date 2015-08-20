@@ -12,14 +12,31 @@ public class AccountManager {
     private static final String KEY_TOKEN = "xbird_token";
     private static final String KEY_USER = "xbird_user";
     private static final String KEY_PASS = "xbird_pass";
+    private static final String KEY_FINAL_TOKEN = "xbird_final_token";
+    private static final String KEY_CONNECT_BLUETOOTH = "xbird_bluetooth";
     private String mUser;
     private String mPass;
     private String mToken;
+
+    private String mFinalToken;
+
+    public String getConnectBluetooth() {
+        return mConnectBluetooth;
+    }
+
+    public void setConnectBluetooth(String connectBluetooth) {
+        this.mConnectBluetooth = mConnectBluetooth;
+        SharedPreferenceHelper.saveString(KEY_CONNECT_BLUETOOTH, connectBluetooth);
+    }
+
+    private String mConnectBluetooth;
 
     private AccountManager(){
         mUser = SharedPreferenceHelper.getString(KEY_USER, "");
         mPass = SharedPreferenceHelper.getString(KEY_PASS, "");
         mToken = SharedPreferenceHelper.getString(KEY_TOKEN, "");
+        mFinalToken = SharedPreferenceHelper.getString(mUser, "");
+        mConnectBluetooth = SharedPreferenceHelper.getString(KEY_CONNECT_BLUETOOTH, "");
     }
     public static AccountManager sharedInstance(){
         if(mInstance == null){
@@ -52,6 +69,30 @@ public class AccountManager {
 
     public void setToken(String token){
         mToken = token;
+        calFinalToken();
         SharedPreferenceHelper.saveString(KEY_TOKEN, mToken);
+    }
+
+    public void calFinalToken() {
+        StringBuffer tokenStr = new StringBuffer(6);
+        if (mToken.length() < 6) {
+            return;
+        }
+        char [] cList = mToken.toCharArray();
+        for (int i = 0; i < 6; i++) {
+            int asciiCode = cList[i]; // 65
+            int finalChar = asciiCode % 10;
+            tokenStr.append(finalChar);
+        }
+        setFinalToken(tokenStr.toString());
+    }
+
+    public String getFinalToken() {
+        return mFinalToken;
+    }
+
+    public void setFinalToken(String finalToken) {
+        mFinalToken = finalToken;
+        SharedPreferenceHelper.saveString(getUser(), mFinalToken);
     }
 }
