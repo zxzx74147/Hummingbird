@@ -7,11 +7,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xbirder.bike.hummingbird.AccountManager;
 import com.xbirder.bike.hummingbird.LogoActivity;
 import com.xbirder.bike.hummingbird.R;
+import com.xbirder.bike.hummingbird.bluetooth.XBirdBluetoothConfig;
+import com.xbirder.bike.hummingbird.bluetooth.XBirdBluetoothManager;
 import com.xbirder.bike.hummingbird.register.RegisterActivity;
 import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
 
@@ -20,12 +23,17 @@ import cn.smssdk.SMSSDK;
 public class SettingActivity extends AppCompatActivity {
     private Button quitBtn = null;
 
+    private TextView resetView = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         quitBtn = (Button)findViewById(R.id.quit_login);
         quitBtn.setOnClickListener(mOnClickListener);
+
+        resetView = (TextView)findViewById(R.id.resetXBird);
+        resetView.setOnClickListener(mOnClickListener);
     }
 
     @Override
@@ -58,6 +66,9 @@ public class SettingActivity extends AppCompatActivity {
                 AccountManager.sharedInstance().setFinalToken("");
                 finish();
                 ActivityJumpHelper.startActivity(SettingActivity.this, LogoActivity.class);
+            } else if (v == resetView) {
+                byte[] value = {XBirdBluetoothConfig.PREFIX, XBirdBluetoothConfig.RESET, XBirdBluetoothConfig.END};
+                XBirdBluetoothManager.sharedInstance().sendToBluetooth(value);
             }
         }
     };

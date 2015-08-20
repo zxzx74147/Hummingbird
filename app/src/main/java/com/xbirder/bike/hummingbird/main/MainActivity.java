@@ -44,6 +44,7 @@ import com.xbirder.bike.hummingbird.base.BaseActivity;
 import com.xbirder.bike.hummingbird.bluetooth.BluetoothLeService;
 import com.xbirder.bike.hummingbird.bluetooth.SampleGattAttributes;
 import com.xbirder.bike.hummingbird.bluetooth.XBirdBluetoothConfig;
+import com.xbirder.bike.hummingbird.bluetooth.XBirdBluetoothManager;
 import com.xbirder.bike.hummingbird.fonts.FontsManager;
 import com.xbirder.bike.hummingbird.main.widget.BatteryRollView;
 import com.xbirder.bike.hummingbird.setting.SettingActivity;
@@ -67,12 +68,8 @@ public class MainActivity extends BaseActivity {
 
     private String mDeviceName;
     private String mDeviceAddress;
-    private BluetoothLeService mBluetoothLeService;
-    private boolean mConnected = false;
-    private BluetoothGattCharacteristic mNotifyCharacteristic;
 
-    private BluetoothGattService mCurrentService;
-    private BluetoothGattCharacteristic mCurrentCharacteristic;
+    private boolean mConnected = false;
 
     private TextView mSpeedText;
 //    private TextView mKMText;
@@ -152,18 +149,18 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder service) {
-            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
-            if (!mBluetoothLeService.initialize()) {
+            XBirdBluetoothManager.sharedInstance().setBluetoothLeService(((BluetoothLeService.LocalBinder) service).getService());
+            if (!XBirdBluetoothManager.sharedInstance().getBluetoothLeService().initialize()) {
                 Log.e(TAG, "Unable to initialize Bluetooth");
                 finish();
             }
             // Automatically connects to the device upon successful start-up initialization.
-            mBluetoothLeService.connect(mDeviceAddress);
+            XBirdBluetoothManager.sharedInstance().getBluetoothLeService().connect(mDeviceAddress);
         }
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
-            mBluetoothLeService = null;
+            XBirdBluetoothManager.sharedInstance().setBluetoothLeService(null);
         }
     };
 
@@ -180,7 +177,7 @@ public class MainActivity extends BaseActivity {
                 onConectionStateChange(connectionStateEnum.isDisconnecting);
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.
-                displayGattServices(mBluetoothLeService.getSupportedGattServices());
+                displayGattServices(XBirdBluetoothManager.sharedInstance().getBluetoothLeService().getSupportedGattServices());
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 byte[] bytes = intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA);
                 read(bytes);
@@ -201,7 +198,7 @@ public class MainActivity extends BaseActivity {
         for (BluetoothGattService gattService : gattServices) {
             uuid = gattService.getUuid().toString();
             if (uuid.contains(SampleGattAttributes.XBIRD_UUID)) {
-                mCurrentService = gattService;
+                XBirdBluetoothManager.sharedInstance().setCurrentService(gattService);
                 List<BluetoothGattCharacteristic> gattCharacteristics =
                         gattService.getCharacteristics();
 
@@ -209,7 +206,7 @@ public class MainActivity extends BaseActivity {
                 for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
                     uuid = gattCharacteristic.getUuid().toString();
                     if (uuid.contains(SampleGattAttributes.XBIRD_CHARACTERISTIC)) {
-                        mCurrentCharacteristic = gattCharacteristic;
+                        XBirdBluetoothManager.sharedInstance().setCurrentCharacteristic(gattCharacteristic);
                         setCharacteristicProperty();
                     }
                 }
@@ -236,7 +233,7 @@ public class MainActivity extends BaseActivity {
             value[i + 2] = (byte) (totalBytes[i] & 0xFF - 0x30);
         }
 
-        sendToBluetooth(value);
+        XBirdBluetoothManager.sharedInstance().sendToBluetooth(value);
     }
 
     private void writeLightInfo(boolean isOpen) {
@@ -244,7 +241,7 @@ public class MainActivity extends BaseActivity {
         if (isOpen) {
             value[2] = (byte)0x01;
         }
-        sendToBluetooth(value);
+        XBirdBluetoothManager.sharedInstance().sendToBluetooth(value);
     }
 
     private void writeSpeedInfo(int speedLevel) {
@@ -256,7 +253,7 @@ public class MainActivity extends BaseActivity {
         } else if (speedLevel == 3) {
             value[2] = (byte)0x03;
         }
-        sendToBluetooth(value);
+        XBirdBluetoothManager.sharedInstance().sendToBluetooth(value);
     }
 
     private void writeLock(boolean isLock) {
@@ -264,17 +261,10 @@ public class MainActivity extends BaseActivity {
         if (isLock) {
             value[2] = (byte)0x01;
         }
-        sendToBluetooth(value);
+        XBirdBluetoothManager.sharedInstance().sendToBluetooth(value);
     }
 
-    private void sendToBluetooth(byte[] bytes) {
-        if (mCurrentCharacteristic != null) {
-            mCurrentCharacteristic.setValue(bytes);
 
-            mBluetoothLeService.setCharacteristicNotification(mCurrentCharacteristic, true);
-            mBluetoothLeService.writeCharacteristic(mCurrentCharacteristic);
-        }
-    }
 
     private void read(byte[] bytes) {
         if (bytes == null || bytes.length < 3) return;
@@ -287,7 +277,7 @@ public class MainActivity extends BaseActivity {
                             mIsUseToken = false;
                         } else {
                             toast("连接锋鸟出错");
-                            mBluetoothLeService.disconnect();
+                            XBirdBluetoothManager.sharedInstance().getBluetoothLeService().disconnect();
                             mHandler.postDelayed(mDisonnectingOverTimeRunnable, 1000);
 
                             mConnectionState = connectionStateEnum.isDisconnecting;
@@ -310,13 +300,13 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setCharacteristicProperty() {
-        if (mCurrentCharacteristic == null) return;
-        final int charaProp = mCurrentCharacteristic.getProperties();
+        if (XBirdBluetoothManager.sharedInstance().getCurrentCharacteristic() == null) return;
+        final int charaProp = XBirdBluetoothManager.sharedInstance().getCurrentCharacteristic().getProperties();
 
         if ((charaProp | BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0) {
-            mNotifyCharacteristic = mCurrentCharacteristic;
-            mBluetoothLeService.setCharacteristicNotification(
-                    mCurrentCharacteristic, true);
+            XBirdBluetoothManager.sharedInstance().setNotifyCharacteristic(XBirdBluetoothManager.sharedInstance().getCurrentCharacteristic());
+            XBirdBluetoothManager.sharedInstance().getBluetoothLeService().setCharacteristicNotification(
+                    XBirdBluetoothManager.sharedInstance().getCurrentCharacteristic(), true);
         }
         writeConnectInfo(mIsUseToken);
     }
@@ -541,7 +531,7 @@ public class MainActivity extends BaseActivity {
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                mBluetoothLeService.disconnect();
+                XBirdBluetoothManager.sharedInstance().getBluetoothLeService().disconnect();
                 mHandler.postDelayed(mDisonnectingOverTimeRunnable, 1000);
 
                 mConnectionState = connectionStateEnum.isDisconnecting;
@@ -565,7 +555,7 @@ public class MainActivity extends BaseActivity {
             if(mConnectionState==connectionStateEnum.isConnecting)
                 mConnectionState=connectionStateEnum.isToScan;
             onConectionStateChange(mConnectionState);
-            mBluetoothLeService.close();
+            XBirdBluetoothManager.sharedInstance().getBluetoothLeService().close();
         }};
 
     private Runnable mDisonnectingOverTimeRunnable=new Runnable(){
@@ -575,7 +565,7 @@ public class MainActivity extends BaseActivity {
             if(mConnectionState==connectionStateEnum.isDisconnecting)
                 mConnectionState=connectionStateEnum.isToScan;
             onConectionStateChange(mConnectionState);
-            mBluetoothLeService.close();
+            XBirdBluetoothManager.sharedInstance().getBluetoothLeService().close();
         }};
 
     private Runnable mSearchOverTimeRunnable=new Runnable(){
@@ -605,7 +595,7 @@ public class MainActivity extends BaseActivity {
 
                     System.out.println("Device Name:"+device.getName() + "   " + "Device Name:" + device.getAddress());
 
-                    if (mBluetoothLeService.connect(mDeviceAddress)) {
+                    if (XBirdBluetoothManager.sharedInstance().getBluetoothLeService().connect(mDeviceAddress)) {
                         Log.d(TAG, "Connect request success");
                         mConnectionState=connectionStateEnum.isConnecting;
                         onConectionStateChange(mConnectionState);
@@ -646,7 +636,7 @@ public class MainActivity extends BaseActivity {
                             mConnectionState=connectionStateEnum.isToScan;
                             onConectionStateChange(mConnectionState);
                         } else {
-                            if (mBluetoothLeService.connect(mDeviceAddress)) {
+                            if (XBirdBluetoothManager.sharedInstance().getBluetoothLeService().connect(mDeviceAddress)) {
                                 Log.d(TAG, "Connect request success");
                                 mConnectionState=connectionStateEnum.isConnecting;
                                 onConectionStateChange(mConnectionState);
@@ -725,7 +715,7 @@ public class MainActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         unbindService(mServiceConnection);
-        mBluetoothLeService = null;
+        XBirdBluetoothManager.sharedInstance().setBluetoothLeService(null);
     }
 
     // Device scan callback.

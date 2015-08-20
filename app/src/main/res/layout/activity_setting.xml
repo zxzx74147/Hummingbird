@@ -47,6 +47,7 @@
         android:background="@color/common_gray_day"
         android:layout_height="@dimen/default_gap_1"/>
     <TextView
+        android:id="@+id/resetXBird"
         android:layout_width="match_parent"
         style="@style/item_text"
         android:paddingRight="@dimen/default_gap_50"
