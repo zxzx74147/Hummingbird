@@ -15,6 +15,7 @@ import com.xbirder.bike.hummingbird.LogoActivity;
 import com.xbirder.bike.hummingbird.R;
 import com.xbirder.bike.hummingbird.bluetooth.XBirdBluetoothConfig;
 import com.xbirder.bike.hummingbird.bluetooth.XBirdBluetoothManager;
+import com.xbirder.bike.hummingbird.register.ChangePassWord;
 import com.xbirder.bike.hummingbird.register.RegisterActivity;
 import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
 
@@ -22,7 +23,7 @@ import cn.smssdk.SMSSDK;
 
 public class SettingActivity extends AppCompatActivity {
     private Button quitBtn = null;
-
+    private Button change_pwd;
     private TextView resetView = null;
 
     @Override
@@ -34,6 +35,8 @@ public class SettingActivity extends AppCompatActivity {
 
         resetView = (TextView)findViewById(R.id.resetXBird);
         resetView.setOnClickListener(mOnClickListener);
+        change_pwd = (Button)findViewById(R.id.change_pwd);
+        change_pwd.setOnClickListener(mOnClickListener);
     }
 
     @Override
@@ -69,6 +72,8 @@ public class SettingActivity extends AppCompatActivity {
             } else if (v == resetView) {
                 byte[] value = {XBirdBluetoothConfig.PREFIX, XBirdBluetoothConfig.RESET, XBirdBluetoothConfig.END};
                 XBirdBluetoothManager.sharedInstance().sendToBluetooth(value);
+            }else if (v == change_pwd){
+                ActivityJumpHelper.startActivity(SettingActivity.this,ChangePassWord.class);
             }
         }
     };

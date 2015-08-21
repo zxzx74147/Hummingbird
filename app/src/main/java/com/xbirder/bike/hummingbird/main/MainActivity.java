@@ -23,18 +23,16 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +44,7 @@ import com.xbirder.bike.hummingbird.bluetooth.SampleGattAttributes;
 import com.xbirder.bike.hummingbird.bluetooth.XBirdBluetoothConfig;
 import com.xbirder.bike.hummingbird.bluetooth.XBirdBluetoothManager;
 import com.xbirder.bike.hummingbird.fonts.FontsManager;
+import com.xbirder.bike.hummingbird.main.side.WiperSwitch;
 import com.xbirder.bike.hummingbird.main.widget.BatteryRollView;
 import com.xbirder.bike.hummingbird.setting.SettingActivity;
 import com.xbirder.bike.hummingbird.skin.SkinConfig;
@@ -53,7 +52,6 @@ import com.xbirder.bike.hummingbird.skin.SkinManager;
 import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends BaseActivity {
@@ -72,6 +70,8 @@ public class MainActivity extends BaseActivity {
     private boolean mConnected = false;
 
     private TextView mSpeedText;
+    private FrameLayout mLeftDrawer;
+    private WiperSwitch wiperSwitch;
 //    private TextView mKMText;
     private ImageView mButtonE;
     private ImageView mButtonN;
@@ -315,6 +315,19 @@ public class MainActivity extends BaseActivity {
     protected void initView(){
         super.initView();
         setContentView(R.layout.activity_main);
+/*        wiperSwitch = (WiperSwitch)findViewById(R.id.wiper_switch);
+        wiperSwitch.setImageResource(R.drawable.lock_bg, R.drawable.lock_green);
+        wiperSwitch.setOnSwitchStateListener(new WiperSwitch.OnSwitchListener() {
+            @Override
+            public void onSwitched(boolean isSwitchOn) {
+                if (isSwitchOn) {
+                    wiperSwitch.setImageResource(R.drawable.lock_bg, R.drawable.lock_red);
+                } else {
+                    wiperSwitch.setImageResource(R.drawable.lock_bg, R.drawable.lock_green);
+                }
+            }
+        });*/
+        mLeftDrawer = (FrameLayout)findViewById(R.id.left_drawer);
         mSpeedText = (TextView) findViewById(R.id.speed_num);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mSettingView = findViewById(R.id.main_setting);
@@ -348,6 +361,14 @@ public class MainActivity extends BaseActivity {
         mConnectBtn.setOnClickListener(mOnClickListener);
     }
 
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if(event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
+            mDrawerLayout.closeDrawer(mLeftDrawer);
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -357,11 +378,17 @@ public class MainActivity extends BaseActivity {
                 setMode(StatusConfig.MODE_N);
             }else if(v == mButtonS){
                 setMode(StatusConfig.MODE_S);
-            }else if(v == mSettingView){
-                if(!mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            }else if(v == mSettingView) {
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                /*if(!mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
                     mDrawerLayout.openDrawer(Gravity.LEFT);
                 }else{
                     mDrawerLayout.closeDrawer(Gravity.LEFT);
+                }*/
+                if (mDrawerLayout.isDrawerOpen(mLeftDrawer)) {
+                    mDrawerLayout.closeDrawer(mLeftDrawer);
+                } else {
+                    mDrawerLayout.openDrawer(Gravity.LEFT);
                 }
             }else if(v == mLockView){
                 if(isLock){

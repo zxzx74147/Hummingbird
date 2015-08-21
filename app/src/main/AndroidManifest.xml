@@ -65,6 +65,11 @@
             android:screenOrientation="portrait"
             android:label="BluetoothScanActivity" >
         </activity>
+        <activity
+            android:name=".register.ChangePassWord"
+            android:screenOrientation="portrait"
+            android:label="ChangePassWord" >
+        </activity>
         <service android:name=".bluetooth.BluetoothLeService" android:enabled="true"/>
     </application>
 

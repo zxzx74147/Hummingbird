@@ -1,72 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/common_background"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/title_bar_height">
-
-        <ImageButton
-            android:id="@+id/main_setting"
-            android:layout_width="@dimen/default_gap_70"
-            android:scaleType="fitCenter"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:paddingLeft="@dimen/default_gap_30"
-            android:src="?attr/main_setting_drawable" />
-
-        <ImageView
-            android:layout_width="@dimen/default_gap_200"
-            android:scaleType="fitCenter"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-
-            android:src="?attr/main_title_drawable" />
-
-        <ImageView
-            android:layout_width="@dimen/default_gap_120"
-            android:scaleType="fitCenter"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:paddingRight="@dimen/default_gap_30"
-            android:id="@+id/main_light"
-            android:src="?attr/main_light_drawable" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/default_gap_2"
-            android:layout_alignParentBottom="true"
-            android:background="@color/common_gray_day" />
-    </RelativeLayout>
-
-    <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/drawer_layout"
         android:orientation="vertical">
-        <!-- The main content view -->
+
         <RelativeLayout
-            android:id="@+id/content_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <include layout="@layout/activity_main_layout" />
+            <RelativeLayout
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/title_bar_height"
+                android:layout_alignParentTop="true">
 
+                <ImageButton
+                    android:id="@+id/main_setting"
+                    android:layout_width="@dimen/default_gap_70"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:onClick="true"
+                    android:paddingLeft="@dimen/default_gap_30"
+                    android:scaleType="fitCenter"
+                    android:src="?attr/main_setting_drawable" />
+
+                <ImageView
+                    android:layout_width="@dimen/default_gap_200"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:scaleType="fitCenter"
+
+                    android:src="?attr/main_title_drawable" />
+
+                <ImageView
+                    android:id="@+id/main_light"
+                    android:layout_width="@dimen/default_gap_120"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:paddingRight="@dimen/default_gap_30"
+                    android:scaleType="fitCenter"
+                    android:src="?attr/main_light_drawable" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/default_gap_2"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/common_gray_day" />
+            </RelativeLayout>
+
+            <!-- The main content view -->
+            <RelativeLayout
+                android:id="@+id/content_frame"
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <include layout="@layout/activity_main_layout" />
+
+            </RelativeLayout>
         </RelativeLayout>
+
         <!-- The navigation drawer -->
         <FrameLayout
             android:id="@+id/left_drawer"
-            android:layout_width="240dp"
+            android:layout_width="380dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:choiceMode="singleChoice">
+
             <include layout="@layout/drawer_main" />
         </FrameLayout>
 
     </android.support.v4.widget.DrawerLayout>
-</LinearLayout>
+</RelativeLayout>

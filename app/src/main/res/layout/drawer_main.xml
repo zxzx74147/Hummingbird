@@ -128,6 +128,11 @@
             android:scaleType="fitStart"
             android:layout_height="50dp" />
 
+<!--        <com.xbirder.bike.hummingbird.main.side.WiperSwitch
+            android:id="@+id/wiper_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />-->
+
     </RelativeLayout>
 
 </RelativeLayout>
