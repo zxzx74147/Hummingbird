@@ -40,12 +40,17 @@
     <string name="resent">重发</string>
     <string name="input_code_hint">请输入手机验证码</string>
     <string name="password_hint">密码</string>
+    <string name="new_password_hint">输入新密码</string>
+    <string name="repeat_new_password_hint">重复新密码</string>
+    <string name="old_password_hint">输入旧密码</string>
     <string name="reg_name">名字</string>
     <string name="done">完成</string>
     <string name="quit_login">注销登录</string>
     <string name="mode_e_text">ECO</string>
     <string name="mode_n_text">NORMAL</string>
     <string name="mode_s_text">SPORT</string>
+    <string name="change_passwrod">修改密码</string>
+    <string name="commit">提交</string>
 
     <string name="ble_not_supported">BLE is not supported</string>
     <string name="label_data">Data:</string>
