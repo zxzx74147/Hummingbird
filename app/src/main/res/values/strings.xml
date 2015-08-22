@@ -50,7 +50,13 @@
     <string name="mode_n_text">NORMAL</string>
     <string name="mode_s_text">SPORT</string>
     <string name="change_passwrod">修改密码</string>
+    <string name="my_information">个人信息</string>
     <string name="commit">提交</string>
+    <string name="setting_head_portrait">头像</string>
+    <string name="setting_name">名字</string>
+    <string name="setting_sex">性别</string>
+    <string name="change_name">修改用户名</string>
+    <string name="input_new_name">输入新的用户名</string>
 
     <string name="ble_not_supported">BLE is not supported</string>
     <string name="label_data">Data:</string>

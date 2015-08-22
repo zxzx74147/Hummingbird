@@ -15,22 +15,32 @@
         android:layout_width="match_parent"
         android:background="@color/common_gray_day"
         android:layout_height="@dimen/default_gap_1"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:paddingRight="@dimen/default_gap_50"
-        android:text="@string/phone_num"
-        android:layout_marginLeft="@dimen/default_gap_50"
-        style="@style/item_text"
-        android:drawableRight="@drawable/icon_next"
-        android:layout_height="@dimen/default_gap_100" />
+   <LinearLayout
+       android:id="@+id/cell_phone_number"
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal">
+       <TextView
+           android:layout_width="50dp"
+           android:text="@string/phone_num"
+           android:layout_marginLeft="@dimen/default_gap_50"
+           style="@style/item_text"
+           android:layout_height="@dimen/default_gap_100" />
+       <TextView
+           android:id="@+id/phone_number"
+           android:layout_width="fill_parent"
+           android:paddingRight="@dimen/default_gap_50"
+           android:layout_marginLeft="@dimen/default_gap_50"
+           style="@style/item_text"
+           android:layout_height="@dimen/default_gap_100" />
+   </LinearLayout>
     <View
         android:layout_width="match_parent"
         android:background="@color/common_gray_day"
         android:layout_marginLeft="@dimen/default_gap_50"
         android:layout_height="@dimen/default_gap_1"/>
-    <Button
+    <TextView
         android:id="@+id/change_pwd"
-        android:background="@null"
         android:layout_width="match_parent"
         android:paddingRight="@dimen/default_gap_50"
         android:layout_marginLeft="@dimen/default_gap_50"
@@ -63,6 +73,7 @@
         android:layout_marginLeft="@dimen/default_gap_50"
         android:layout_height="@dimen/default_gap_1"/>
     <TextView
+        android:id="@+id/about"
         android:layout_width="match_parent"
         style="@style/item_text"
         android:paddingRight="@dimen/default_gap_50"

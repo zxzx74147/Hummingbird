@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.xbirder.bike.hummingbird.common.widget.TitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        app:title_text="@string/my_information" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_gap_1"
+        android:layout_marginTop="@dimen/default_gap_70"
+        android:background="@color/common_gray_day" />
+
+    <TextView
+        android:id="@+id/my_head_portrait"
+        style="@style/item_text"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_gap_100"
+        android:layout_marginLeft="@dimen/default_gap_50"
+        android:background="@null"
+        android:drawableRight="@drawable/icon_next"
+        android:paddingRight="@dimen/default_gap_50"
+        android:text="@string/setting_head_portrait" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_gap_1"
+        android:background="@color/common_gray_day" />
+
+    <RelativeLayout
+        android:id="@+id/my_setting_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_name"
+            style="@style/item_text"
+            android:layout_width="50dp"
+            android:layout_height="@dimen/default_gap_100"
+            android:layout_marginLeft="@dimen/default_gap_50"
+            android:text="@string/setting_name" />
+        <TextView
+            android:id="@+id/tv_new_name"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/default_gap_100"
+            android:text="昵称"
+            android:layout_toRightOf="@+id/tv_name"
+            android:layout_toLeftOf="@+id/tv_name2"
+            style="@style/item_text"
+            android:gravity="center|right"/>
+        <TextView
+            android:id="@+id/tv_name2"
+            style="@style/item_text"
+            android:layout_width="50dp"
+            android:layout_height="@dimen/default_gap_100"
+            android:drawableRight="@drawable/icon_next"
+            android:layout_alignParentRight="true"
+            android:paddingRight="@dimen/default_gap_50"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_gap_1"
+        android:background="@color/common_gray_day" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_sex"
+            style="@style/item_text"
+            android:layout_width="50dp"
+            android:layout_height="@dimen/default_gap_100"
+            android:layout_marginLeft="@dimen/default_gap_50"
+            android:text="@string/setting_sex" />
+        <Button
+            android:id="@+id/my_setting_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/default_gap_100"
+            android:text="男"
+            android:layout_toRightOf="@+id/tv_sex"
+            android:layout_toLeftOf="@+id/tv_sex2"
+            style="@style/item_text"
+            android:background="@null"
+            android:gravity="center|right"/>
+        <TextView
+            android:id="@+id/tv_sex2"
+            style="@style/item_text"
+            android:layout_width="50dp"
+            android:layout_height="@dimen/default_gap_100"
+            android:drawableRight="@drawable/icon_next"
+            android:layout_alignParentRight="true"
+            android:paddingRight="@dimen/default_gap_50"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_gap_1"
+        android:background="@color/common_gray_day" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_gap_1"
+        android:layout_marginTop="@dimen/default_gap_120"
+        android:background="@color/common_gray_day" />
+</LinearLayout>

@@ -70,6 +70,22 @@
             android:screenOrientation="portrait"
             android:label="ChangePassWord" >
         </activity>
+        <activity
+            android:name=".setting.MySetting"
+            android:screenOrientation="portrait"
+            android:label="MySetting" >
+        </activity>
+        <activity
+            android:name=".setting.AboutXBirder"
+            android:screenOrientation="portrait"
+            android:label="AboutXBirder" >
+        </activity>
+        <activity
+            android:name=".setting.SettingName"
+            android:screenOrientation="portrait"
+            android:label="SettingName" >
+        </activity>
+
         <service android:name=".bluetooth.BluetoothLeService" android:enabled="true"/>
     </application>
 

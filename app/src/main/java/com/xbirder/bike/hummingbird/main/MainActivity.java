@@ -36,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.xbirder.bike.hummingbird.AccountManager;
 import com.xbirder.bike.hummingbird.R;
 import com.xbirder.bike.hummingbird.base.BaseActivity;
@@ -46,6 +47,7 @@ import com.xbirder.bike.hummingbird.bluetooth.XBirdBluetoothManager;
 import com.xbirder.bike.hummingbird.fonts.FontsManager;
 import com.xbirder.bike.hummingbird.main.side.WiperSwitch;
 import com.xbirder.bike.hummingbird.main.widget.BatteryRollView;
+import com.xbirder.bike.hummingbird.setting.MySetting;
 import com.xbirder.bike.hummingbird.setting.SettingActivity;
 import com.xbirder.bike.hummingbird.skin.SkinConfig;
 import com.xbirder.bike.hummingbird.skin.SkinManager;
@@ -71,6 +73,7 @@ public class MainActivity extends BaseActivity {
 
     private TextView mSpeedText;
     private FrameLayout mLeftDrawer;
+    private RoundedImageView mRoundedImageView;
     private WiperSwitch wiperSwitch;
 //    private TextView mKMText;
     private ImageView mButtonE;
@@ -327,6 +330,7 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });*/
+        mRoundedImageView = (RoundedImageView)findViewById(R.id.head);
         mLeftDrawer = (FrameLayout)findViewById(R.id.left_drawer);
         mSpeedText = (TextView) findViewById(R.id.speed_num);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -352,6 +356,7 @@ public class MainActivity extends BaseActivity {
         mSettingView.setOnClickListener(mOnClickListener);
         mLightView.setOnClickListener(mOnClickListener);
         mSideSetting.setOnClickListener(mOnClickListener);
+        mRoundedImageView.setOnClickListener(mOnClickListener);
         FontsManager.sharedInstance().setSpeedType(mSpeedText);
         FontsManager.sharedInstance().setSpeedType(mBatteryView);
         FontsManager.sharedInstance().setSpeedKMType(mBatteryShow);
@@ -411,6 +416,8 @@ public class MainActivity extends BaseActivity {
                 ActivityJumpHelper.startActivity(MainActivity.this, SettingActivity.class);
             }else if(v == mConnectBtn) {
                 onSearchClick();
+            }else if (v == mRoundedImageView){
+                ActivityJumpHelper.startActivity(MainActivity.this, MySetting.class);
             }
         }
     };

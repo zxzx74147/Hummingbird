@@ -14,9 +14,11 @@ public class AccountManager {
     private static final String KEY_PASS = "xbird_pass";
     private static final String KEY_FINAL_TOKEN = "xbird_final_token";
     private static final String KEY_CONNECT_BLUETOOTH = "xbird_bluetooth";
+    private static final String KEY_NICK_NAME = "xbird_nickname";
     private String mUser;
     private String mPass;
     private String mToken;
+    private String mNickName;
 
     private String mFinalToken;
 
@@ -57,6 +59,10 @@ public class AccountManager {
         return mPass;
     }
 
+    public String getNickname(){
+        return mNickName;
+    }
+
     public void setPass(String pass) {
         this.mPass = pass;
         SharedPreferenceHelper.saveString(KEY_PASS, mPass);
@@ -67,6 +73,10 @@ public class AccountManager {
         SharedPreferenceHelper.saveString(KEY_USER, mUser);
     }
 
+    public void setNickName(String nickName) {
+        this.mNickName = nickName;
+        SharedPreferenceHelper.saveString(KEY_NICK_NAME, mNickName);
+    }
     public void setToken(String token){
         mToken = token;
         calFinalToken();

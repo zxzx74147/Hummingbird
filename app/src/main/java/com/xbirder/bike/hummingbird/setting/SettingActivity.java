@@ -2,11 +2,13 @@ package com.xbirder.bike.hummingbird.setting;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,8 +25,11 @@ import cn.smssdk.SMSSDK;
 
 public class SettingActivity extends AppCompatActivity {
     private Button quitBtn = null;
-    private Button change_pwd;
+    private TextView change_pwd;
+    private TextView phone_number;
+    private TextView about;
     private TextView resetView = null;
+    private LinearLayout cell_phone_number;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +37,17 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setting);
         quitBtn = (Button)findViewById(R.id.quit_login);
         quitBtn.setOnClickListener(mOnClickListener);
-
+        cell_phone_number = (LinearLayout)findViewById(R.id.cell_phone_number);
+        phone_number = (TextView)findViewById(R.id.phone_number);
+        phone_number.setText(AccountManager.sharedInstance().getUser());
+        phone_number.setGravity(Gravity.RIGHT);
+        cell_phone_number.setOnClickListener(mOnClickListener);
         resetView = (TextView)findViewById(R.id.resetXBird);
         resetView.setOnClickListener(mOnClickListener);
-        change_pwd = (Button)findViewById(R.id.change_pwd);
+        change_pwd = (TextView)findViewById(R.id.change_pwd);
         change_pwd.setOnClickListener(mOnClickListener);
+        about = (TextView)findViewById(R.id.about);
+        about.setOnClickListener(mOnClickListener);
     }
 
     @Override
@@ -74,6 +85,11 @@ public class SettingActivity extends AppCompatActivity {
                 XBirdBluetoothManager.sharedInstance().sendToBluetooth(value);
             }else if (v == change_pwd){
                 ActivityJumpHelper.startActivity(SettingActivity.this,ChangePassWord.class);
+            }else if (v == cell_phone_number){
+                ActivityJumpHelper.startActivity(SettingActivity.this,MySetting.class);
+            }
+            else if (v == about){
+                ActivityJumpHelper.startActivity(SettingActivity.this,AboutXBirder.class);
             }
         }
     };

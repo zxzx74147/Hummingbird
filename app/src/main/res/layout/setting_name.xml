@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.xbirder.bike.hummingbird.common.widget.TitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        app:title_text="@string/change_name" />
+
+    <LinearLayout
+        android:background="@drawable/reg_blank"
+        android:layout_marginLeft="@dimen/default_gap_50"
+        android:layout_marginRight="@dimen/default_gap_50"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/default_gap_20"
+        android:layout_height="@dimen/default_gap_100">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/input_new_name"
+            android:textSize="15dp"/>
+
+        <EditText
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/default_gap_10"
+            android:layout_width="0dip"
+            android:paddingLeft="@dimen/default_gap_15"
+            android:gravity="left|center_vertical"
+            android:background="@null"
+            android:id="@+id/new_name"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <Button
+        android:background="@drawable/reg_btn"
+        android:layout_marginLeft="@dimen/default_gap_50"
+        android:layout_marginRight="@dimen/default_gap_50"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/default_gap_20"
+        android:text="@string/commit"
+        android:textColor="@color/white"
+        android:id="@+id/btn_succeed"
+        android:layout_height="@dimen/default_gap_100">
+    </Button>
+</LinearLayout>
