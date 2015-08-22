@@ -94,7 +94,8 @@ public class MySetting extends Activity{
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
             setIndex(i);
-            Toast.makeText(MySetting.this, "您已经选择了： " + index + ":" + sex[index], Toast.LENGTH_LONG).show();
+            Toast.makeText(MySetting.this, sex[index], Toast.LENGTH_LONG).show();
+            my_setting_sex.setText(sex[index]);
             dialogInterface.dismiss();
         }
     }
