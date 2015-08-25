@@ -28,7 +28,7 @@ public class ChangePassWord extends BaseActivity {
     private String mOldPwd;
     private String mNewPwd;
     private String mCenterNewPwd;
-    private ChangeReuest changeRequest;
+    private ChangePwdReuest changeRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class ChangePassWord extends BaseActivity {
         btn_succeed.setOnClickListener(mOnClickListener);
     }
 
-    private View.OnClickListener mOnClickListener= new View.OnClickListener() {
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             if (v == btn_succeed) {
                 storePass = AccountManager.sharedInstance().getPass();//获取首选项里的密码.
@@ -69,7 +69,7 @@ public class ChangePassWord extends BaseActivity {
 
                 if (StringHelper.checkString(mNewPwd)) {
                     final String mUser = AccountManager.sharedInstance().getUser();//获取帐号
-                    changeRequest = new ChangeReuest(new HttpResponse.Listener<JSONObject>() {
+                    changeRequest = new ChangePwdReuest(new HttpResponse.Listener<JSONObject>() {
                         @Override
                         public void onResponse(HttpResponse<JSONObject> response) {
                             if (response.isSuccess()) {
@@ -77,7 +77,7 @@ public class ChangePassWord extends BaseActivity {
                                     if (response.result.getString("error").equals("0")) {
                                         toast("修改成功");
                                         AccountManager.sharedInstance().setUser(mUser);
-                                        AccountManager.sharedInstance().setPass(et_new_pwd.getText().toString());//设置新密码
+                                        AccountManager.sharedInstance().setPass(mNewPwd);//设置新密码
                                         ActivityJumpHelper.startActivity(ChangePassWord.this, LoginActivity.class);
                                         finish();
                                     }

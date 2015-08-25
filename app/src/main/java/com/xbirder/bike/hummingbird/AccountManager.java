@@ -14,11 +14,13 @@ public class AccountManager {
     private static final String KEY_PASS = "xbird_pass";
     private static final String KEY_FINAL_TOKEN = "xbird_final_token";
     private static final String KEY_CONNECT_BLUETOOTH = "xbird_bluetooth";
-    private static final String KEY_NICK_NAME = "xbird_nickname";
+    private static final String KEY_USER_NAME = "xbird_username";
+    private static final String KEY_SEX = "xbird_sex";
     private String mUser;
     private String mPass;
     private String mToken;
-    private String mNickName;
+    private String mUserName;
+    private String mSex;
 
     private String mFinalToken;
 
@@ -38,6 +40,7 @@ public class AccountManager {
         mPass = SharedPreferenceHelper.getString(KEY_PASS, "");
         mToken = SharedPreferenceHelper.getString(KEY_TOKEN, "");
         mFinalToken = SharedPreferenceHelper.getString(mUser, "");
+        mUserName = SharedPreferenceHelper.getString(KEY_USER_NAME, "");
         mConnectBluetooth = SharedPreferenceHelper.getString(KEY_CONNECT_BLUETOOTH, "");
     }
     public static AccountManager sharedInstance(){
@@ -59,8 +62,12 @@ public class AccountManager {
         return mPass;
     }
 
-    public String getNickname(){
-        return mNickName;
+    public String getUsername(){
+        return mUserName;
+    }
+
+    public String getSex(){
+        return mSex;
     }
 
     public void setPass(String pass) {
@@ -73,10 +80,16 @@ public class AccountManager {
         SharedPreferenceHelper.saveString(KEY_USER, mUser);
     }
 
-    public void setNickName(String nickName) {
-        this.mNickName = nickName;
-        SharedPreferenceHelper.saveString(KEY_NICK_NAME, mNickName);
+    public void setUserName(String userName) {
+        this.mUserName = userName;
+        SharedPreferenceHelper.saveString(KEY_USER_NAME, mUserName);
     }
+
+    public void setSex(String sex) {
+        this.mSex = sex;
+        SharedPreferenceHelper.saveString(KEY_SEX, mSex);
+    }
+
     public void setToken(String token){
         mToken = token;
         calFinalToken();

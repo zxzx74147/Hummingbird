@@ -11,6 +11,9 @@ public class NetworkConfig {
     public static final String LOGIN_ADDRESS = "user/login";
     public static final String RESET_ADDRESS = "user/resetpassword";
     public static final String AMEND_ADDRESS = "user/changepassword";
+    public static final String USERNAME_ADDRESS = "user/changeusername";
+    public static final String VATAR_ADDRESS = "user/changeavatar";
+    public static final String SEX_ADDRESS = "user/changepassword";
     public static final String REQUSET_VCODE = "user/send-verify-code";
     public static final String VERIFY_VCODE = "user/verify";
 }

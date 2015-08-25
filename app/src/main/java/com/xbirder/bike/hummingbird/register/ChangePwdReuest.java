@@ -12,12 +12,12 @@ import java.util.HashMap;
 /**
  * Created by Administrator on 2015/8/19.
  */
-public class ChangeReuest extends HttpJsonRequest<JSONObject> {
+public class ChangePwdReuest extends HttpJsonRequest<JSONObject> {
 
     private String mPhoneNum;
     private String oldPassword;
     private String mNewPassword;
-    public ChangeReuest(HttpResponse.Listener<JSONObject> listener) {
+    public ChangePwdReuest(HttpResponse.Listener<JSONObject> listener) {
         super(listener);
     }
 

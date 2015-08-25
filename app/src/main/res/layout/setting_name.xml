@@ -44,7 +44,7 @@
         android:layout_marginTop="@dimen/default_gap_20"
         android:text="@string/commit"
         android:textColor="@color/white"
-        android:id="@+id/btn_succeed"
+        android:id="@+id/btn_succeeds"
         android:layout_height="@dimen/default_gap_100">
     </Button>
 </LinearLayout>
