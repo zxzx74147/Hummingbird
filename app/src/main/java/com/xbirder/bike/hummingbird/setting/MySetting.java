@@ -5,12 +5,20 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -38,13 +46,11 @@ import java.io.FileOutputStream;
 public class MySetting extends Activity {
 
     private String[] items = new String[]{"选择本地图片", "拍照"};
-    /* 头像名称 */
-    private static final String IMAGE_FILE_NAME = "18858668384_1440341168.jpg";
 
-    /* 请求码 */
-    private static final int IMAGE_REQUEST_CODE = 0;
-    private static final int CAMERA_REQUEST_CODE = 1;
-    private static final int RESULT_REQUEST_CODE = 2;
+    private Uri photoUri;
+
+    private final int PIC_FROM_CAMERA = 1;//照相
+    private final int PIC_FROM＿LOCALPHOTO = 0;//相册
     private String[] sex = new String[]{"男", "女"};
     private boolean[] sexState = new boolean[]{true, false};
     private RadioOnClick radioOnClick = new RadioOnClick(1);
@@ -53,7 +59,6 @@ public class MySetting extends Activity {
     private RelativeLayout my_setting_name;
     private Button my_setting_sex;
     private TextView tv_new_name;
-    private String sharedNickName;
     private RelativeLayout my_setting_head;
     private RoundedImageView my_head;
     private File file;
@@ -96,43 +101,6 @@ public class MySetting extends Activity {
         }
     };
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (20 == resultCode) {
-            String newName = data.getExtras().getString("str");
-            tv_new_name.setText(newName);
-            System.out.println("newName" + newName);
-        }
-
-        //结果码不等于取消的时候
-        if (resultCode != RESULT_CANCELED) {
-
-            switch (requestCode) {
-                case IMAGE_REQUEST_CODE:
-                    startPhotoZoom(data.getData());//裁剪
-                    break;
-                case CAMERA_REQUEST_CODE:
-                    if (Tools.hasSdcard()) {
-                        file = new File(
-                                Environment.getExternalStorageDirectory()
-                                        + IMAGE_FILE_NAME);//获取完整的图片url
-                        startPhotoZoom(Uri.fromFile(file));//裁剪?
-                    } else {
-                        Toast.makeText(MySetting.this, "未找到存储卡，无法存储照片！",
-                                Toast.LENGTH_SHORT).show();
-                    }
-
-                    break;
-                case RESULT_REQUEST_CODE:
-                    if (data != null) {
-                        getImageToView(data);
-                    }
-                    break;
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
     public void showDialog() {
         new AlertDialog.Builder(this)
                 .setTitle("设置头像")
@@ -142,30 +110,14 @@ public class MySetting extends Activity {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                Intent intentFromGallery = new Intent();
-                                intentFromGallery.setType("image/*"); // 设置文件类型
-                                intentFromGallery
-                                        .setAction(Intent.ACTION_GET_CONTENT);
-                                startActivityForResult(intentFromGallery,
-                                        IMAGE_REQUEST_CODE);
+                                doHandlerPhoto(PIC_FROM＿LOCALPHOTO);// 从相册中去获取
                                 break;
                             case 1:
-
-                                Intent intentFromCapture = new Intent(
-                                        MediaStore.ACTION_IMAGE_CAPTURE);
                                 // 判断存储卡是否可以用，可用进行存储
                                 if (Tools.hasSdcard()) {
 
-                                    intentFromCapture.putExtra(
-                                            MediaStore.EXTRA_OUTPUT,
-                                            Uri.fromFile(new File(Environment
-                                                    .getExternalStorageDirectory(),
-                                                    IMAGE_FILE_NAME)));
+                                    doHandlerPhoto(PIC_FROM_CAMERA);// 用户点击了照相获取
                                 }
-
-                                startActivityForResult(intentFromCapture,
-                                        CAMERA_REQUEST_CODE);
-                                break;
                         }
                     }
                 })
@@ -176,6 +128,37 @@ public class MySetting extends Activity {
                         dialog.dismiss();
                     }
                 }).show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (20 == resultCode) {
+            String newName = data.getExtras().getString("str");
+            tv_new_name.setText(newName);
+            System.out.println("newName" + newName);
+        }
+
+        switch (requestCode) {
+            case PIC_FROM_CAMERA: // 拍照
+                try {
+                    cropImageUriByTakePhoto();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case PIC_FROM＿LOCALPHOTO:
+                try {
+                    if (photoUri != null) {
+                        Bitmap bitmap = decodeUriAsBitmap(photoUri);
+                        Bitmap roundBitMap = getRoundedCornerBitmap(bitmap,1.0f);
+                        my_head.setImageBitmap(roundBitMap);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     class RadioOnClick implements DialogInterface.OnClickListener {
@@ -204,102 +187,110 @@ public class MySetting extends Activity {
     }
 
     /**
-     * 保存裁剪之后的图片数据
+     * 根据不同方式选择图片设置ImageView
      *
-     * @param data
+     * @param type 0-本地相册选择，非0为拍照
      */
-    private void getImageToView(Intent data) {
-        Bundle extras = data.getExtras();
-        if (extras != null) {
-            try{
-                Bitmap photo = extras.getParcelable("data");
-                Drawable drawable = new BitmapDrawable(photo);
-                String tupian = saveImg(photo,"18858668384_1440341168.jpg");
-                my_head.setImageDrawable(drawable);
-                uploadImage(tupian);
-            }catch (Exception e){
-
+    private void doHandlerPhoto(int type) {
+        try {
+            //保存裁剪后的图片文件
+            File pictureFileDir = new File(Environment.getExternalStorageDirectory(), "/pic");
+            System.out.println("pictureFileDir : " + pictureFileDir);//pictureFileDir : /storage/emulated/0/pic
+            if (!pictureFileDir.exists()) {
+                pictureFileDir.mkdirs();
             }
+            File picFile = new File(pictureFileDir, "upload.jpg");
+            System.out.println("picFile : " + picFile);//picFile : /storage/emulated/0/pic/upload.jpg
+            if (!picFile.exists()) {
+                picFile.createNewFile();
+            }
+            photoUri = Uri.fromFile(picFile);
+
+            if (type == PIC_FROM＿LOCALPHOTO) {
+                Intent intent = getCropImageIntent();
+                startActivityForResult(intent, PIC_FROM＿LOCALPHOTO);
+            } else {
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                startActivityForResult(cameraIntent, PIC_FROM_CAMERA);
+            }
+
+        } catch (Exception e) {
+            Log.i("HandlerPicError", "处理图片出现错误");
         }
     }
 
     /**
-     * 裁剪图片方法实现
-     *
-     * @param uri
+     * 调用图片剪辑程序
      */
-    public void startPhotoZoom(Uri uri) {
+    public Intent getCropImageIntent() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT, null);
+        intent.setType("image/*");
+        setIntentParams(intent);
+        return intent;
+    }
 
+    /**
+     * 启动裁剪
+     */
+    private void cropImageUriByTakePhoto() {
         Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(uri, "image/*");
-        System.out.print(uri);
-        // 设置裁剪
+        intent.setDataAndType(photoUri, "image/*");
+        setIntentParams(intent);
+        startActivityForResult(intent, PIC_FROM＿LOCALPHOTO);
+    }
+
+    /**
+     * 设置公用参数
+     */
+    private void setIntentParams(Intent intent) {
         intent.putExtra("crop", "true");
-        // aspectX aspectY 是宽高的比例
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
-        // outputX outputY 是裁剪图片宽高
-        intent.putExtra("outputX", 320);
-        intent.putExtra("outputY", 320);
-        intent.putExtra("return-data", true);
-        startActivityForResult(intent, 2);
+        intent.putExtra("outputX", 137);
+        intent.putExtra("outputY", 137);
+        intent.putExtra("noFaceDetection", true); // no face detection
+        intent.putExtra("scale", true);
+        intent.putExtra("return-data", false);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
     }
 
-    /**
-     * 上传图片到服务器
-     *
-     * @param path 图片的路径
-     */
-    public void uploadImage(String path) {
-        String url = "http://120.26.43.158/xbird/web/index.php?r=user/changeavatar";
-        File file = new File(path);
-        RequestParams params = new RequestParams();
+    private Bitmap decodeUriAsBitmap(Uri uri) {
+        Bitmap bitmap = null;
         try {
-            params.put("pic", file);
-            params.put("token", AccountManager.sharedInstance().getToken());
-            AsyncHttpClient client = new AsyncHttpClient();
-            client.post(url, params, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, String content) {//上传成功
-                    System.out.println("content:" + content);
-                }
-
-                @Override
-                public void onFailure(Throwable e, String data) {//上传失败
-                    System.out.println("图片上传失败");
-                }
-            });
+            bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
         } catch (FileNotFoundException e) {
-
+            e.printStackTrace();
+            return null;
         }
+        return bitmap;
     }
 
 
     /**
-     * 将bitmap转化成图片
-     * @param b bitmap对象
-     * @param name 图片名称
-     * @return 图片的路径
+     * 圆形图片
+     * @param bitmap
+     * @param ratio
+     * @return
      */
-    public String saveImg(Bitmap b, String name)throws Exception {
-        String path = Environment.getExternalStorageDirectory() + "/" + "18858668384_1440341168.jpg";
-        System.out.println(path);
-        File dirFile = new File(path);
-        File mediaFile = new File(path + File.separator + name);
-        if (mediaFile.exists()) {
-            mediaFile.delete();
-        }
-        if (!new File(path).exists()) {
-            new File(path).mkdirs();
-        }
-        mediaFile.createNewFile();
-        FileOutputStream fos = new FileOutputStream(mediaFile);
-        b.compress(Bitmap.CompressFormat.PNG, 100, fos);
-        fos.flush();
-        fos.close();
-        b.recycle();
-        b = null;
-        System.gc();
-        return mediaFile.getPath();
+    public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, float ratio) {
+
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        canvas.drawRoundRect(rectF, bitmap.getWidth() / ratio,
+                bitmap.getHeight() / ratio, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        return output;
     }
 }

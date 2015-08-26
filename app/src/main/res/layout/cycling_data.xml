@@ -1,0 +1,148 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_background_day">
+
+    <com.xbirder.bike.hummingbird.common.widget.TitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        app:title_text="@string/travel_Info" />
+
+    <com.makeramen.roundedimageview.RoundedImageView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/head"
+        android:layout_width="@dimen/default_gap_200"
+        android:layout_height="@dimen/default_gap_200"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/default_gap_150"
+        android:scaleType="centerInside"
+        android:src="@drawable/icon_photo_small"
+        app:riv_border_color="#00FFFFFF"
+        app:riv_border_width="2dip"
+        app:riv_corner_radius="@dimen/default_gap_100" />
+
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/head"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/default_gap_20"
+        android:text="Virgil"
+        android:textColor="@color/common_text_gray_day"
+        android:textSize="@dimen/text_size_mid" />
+
+    <RelativeLayout
+        android:id="@+id/rl_data"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/default_gap_150"
+        android:layout_below="@+id/user_name"
+        android:layout_marginTop="@dimen/default_gap_39">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_gap_3"
+            android:background="@color/common_gray_day" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/default_gap_100"
+            android:paddingTop="@dimen/default_gap_29"
+            android:text="0"
+            android:textSize="@dimen/default_gap_75" />
+
+        <TextView
+            android:id="@+id/tv_licheng"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/default_gap_239"
+            android:paddingTop="@dimen/default_gap_20"
+            android:text="@string/total_distance"
+            android:textSize="@dimen/default_gap_35" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_licheng"
+            android:paddingLeft="@dimen/default_gap_268"
+            android:paddingTop="@dimen/default_gap_20"
+            android:text="KM"
+            android:textSize="@dimen/default_gap_35" />
+
+        <View
+            android:layout_width="@dimen/default_gap_3"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@color/common_gray_day" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingRight="@dimen/default_gap_199"
+            android:paddingTop="@dimen/default_gap_30"
+            android:textColor="@android:color/holo_red_light"
+            android:text="0"
+            android:textSize="@dimen/default_gap_75" />
+
+        <TextView
+            android:id="@+id/tv_jinri"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingRight="@dimen/default_gap_40"
+            android:paddingTop="@dimen/default_gap_20"
+            android:text="今日里程"
+            android:textSize="@dimen/default_gap_35" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tv_jinri"
+            android:paddingRight="@dimen/default_gap_80"
+            android:paddingTop="@dimen/default_gap_20"
+            android:text="KM"
+            android:textSize="@dimen/default_gap_35" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_gap_3"
+            android:background="@color/common_gray_day" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_data"
+        android:layout_below="@+id/rl_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="一周低碳统计 KM/DAY (6.21-)"
+        android:textSize="@dimen/default_size_35"
+        android:layout_marginLeft="@dimen/default_gap_40"
+        android:layout_marginTop="@dimen/default_gap_20"/>
+
+    <TextView
+        android:id="@+id/tv_no_data"
+        android:layout_below="@+id/tv_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="暂无数据!"
+        android:textColor="@android:color/holo_red_light"
+        android:textSize="@dimen/default_size_35"
+        android:layout_marginLeft="@dimen/default_gap_40"
+        android:layout_marginTop="@dimen/default_gap_20"/>
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_no_data"
+        android:src="@drawable/statistic_bg_big" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_gap_3"
+        android:background="@color/common_gray_day" />
+
+</RelativeLayout>

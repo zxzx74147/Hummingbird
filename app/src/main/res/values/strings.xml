@@ -25,7 +25,8 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_setting">SettingActivity</string>
-    <string name="low_carbon">低碳统计</string>
+    <string name="cycling_records">骑行记录</string>
+    <string name="xbirder_aide">锋鸟助手</string>
     <string name="setting">设置</string>
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="personal_info">个人资料</string>
@@ -57,6 +58,10 @@
     <string name="setting_sex">性别</string>
     <string name="change_name">修改用户名</string>
     <string name="input_new_name">输入新的用户名</string>
+    <string name="travel_Info">行驶统计</string>
+    <string name="total_distance">总里程</string>
+    <string name="week_data_info">一周低碳统计 KM/DAY (6.21-)</string>
+
 
     <string name="ble_not_supported">BLE is not supported</string>
     <string name="label_data">Data:</string>

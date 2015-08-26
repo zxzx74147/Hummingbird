@@ -15,14 +15,12 @@ import java.util.HashMap;
  */
 public class ChangeAvatarReuest extends HttpJsonRequest<JSONObject> {
 
-    private String mAvatar;
     private String mPic;
     public ChangeAvatarReuest(HttpResponse.Listener<JSONObject> listener) {
         super(listener);
     }
 
     public void setParam(String avatar,String pic){
-        this.mAvatar = avatar;
         this.mPic = pic;
     }
 
@@ -31,7 +29,6 @@ public class ChangeAvatarReuest extends HttpJsonRequest<JSONObject> {
         params.put("r", NetworkConfig.VATAR_ADDRESS);
         params.put("token", AccountManager.sharedInstance().getToken());
         params.put("pic", mPic);
-        params.put("avatar",mAvatar);
     }
 
     @Override

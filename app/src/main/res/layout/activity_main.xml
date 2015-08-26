@@ -72,7 +72,7 @@
         <!-- The navigation drawer -->
         <FrameLayout
             android:id="@+id/left_drawer"
-            android:layout_width="380dp"
+            android:layout_width="@dimen/default_gap_630"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:choiceMode="singleChoice">

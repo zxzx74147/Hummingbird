@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.widget.DrawerLayout;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -33,11 +34,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.xbirder.bike.hummingbird.AccountManager;
+import com.xbirder.bike.hummingbird.Cycling.CyclingRecords;
 import com.xbirder.bike.hummingbird.R;
 import com.xbirder.bike.hummingbird.base.BaseActivity;
 import com.xbirder.bike.hummingbird.bluetooth.BluetoothLeService;
@@ -74,6 +77,7 @@ public class MainActivity extends BaseActivity {
     private TextView mSpeedText;
     private FrameLayout mLeftDrawer;
     private RoundedImageView mRoundedImageView;
+    private int screenWidth;
     private WiperSwitch wiperSwitch;
     //    private TextView mKMText;
     private ImageView mButtonE;
@@ -89,6 +93,7 @@ public class MainActivity extends BaseActivity {
     private View mSettingView;
     private View mLightView;
     private View mSideSetting;
+    private RelativeLayout mCyclingRecord;
     private ImageView mConnectBtn;
     private ImageView mLockView;
     private boolean isLock = true;
@@ -330,14 +335,24 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });*/
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        screenWidth = dm.widthPixels;//屏幕的宽
+        System.out.println("screenWidth : " + screenWidth);//screenWidth : 1080
         mRoundedImageView = (RoundedImageView) findViewById(R.id.head);
-        mLeftDrawer = (FrameLayout) findViewById(R.id.left_drawer);
         mSpeedText = (TextView) findViewById(R.id.speed_num);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mLeftDrawer = (FrameLayout) findViewById(R.id.left_drawer);
+        int leftWidth = mDrawerLayout.getMeasuredWidth();
+        int i = (int) (screenWidth / 1.2);
+        ViewGroup.LayoutParams lp = mLeftDrawer.getLayoutParams();
+        lp.width = i;
+        mLeftDrawer.setLayoutParams(lp);
         mSettingView = findViewById(R.id.main_setting);
         mLockView = (ImageView) findViewById(R.id.lock_top);
         mLightView = findViewById(R.id.main_light);
         mSideSetting = findViewById(R.id.setting_layout);
+        mCyclingRecord = (RelativeLayout) findViewById(R.id.low_cycling_records);
 //        mKMText = (TextView) findViewById(R.id.km_text);
         mBatteryShow = (TextView) findViewById(R.id.battery_show);
         mButtonE = (ImageView) findViewById(R.id.mode_e);
@@ -357,6 +372,7 @@ public class MainActivity extends BaseActivity {
         mLightView.setOnClickListener(mOnClickListener);
         mSideSetting.setOnClickListener(mOnClickListener);
         mRoundedImageView.setOnClickListener(mOnClickListener);
+        mCyclingRecord.setOnClickListener(mOnClickListener);
         FontsManager.sharedInstance().setSpeedType(mSpeedText);
         FontsManager.sharedInstance().setSpeedType(mBatteryView);
         FontsManager.sharedInstance().setSpeedKMType(mBatteryShow);
@@ -383,16 +399,15 @@ public class MainActivity extends BaseActivity {
                 setMode(StatusConfig.MODE_N);
             } else if (v == mButtonS) {
                 setMode(StatusConfig.MODE_S);
+            } else if (v == mCyclingRecord) {
+                ActivityJumpHelper.startActivity(MainActivity.this, CyclingRecords.class);
             } else if (v == mSettingView) {
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                /*if(!mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    mDrawerLayout.openDrawer(Gravity.LEFT);
-                }else{
-                    mDrawerLayout.closeDrawer(Gravity.LEFT);
-                }*/
                 if (mDrawerLayout.isDrawerOpen(mLeftDrawer)) {
                     mDrawerLayout.closeDrawer(mLeftDrawer);
                 } else {
+
+                    //System.out.println("leftWidth : " + leftWidth);//System.out﹕ leftWidth : 950
                     mDrawerLayout.openDrawer(Gravity.LEFT);
                 }
             } else if (v == mLockView) {
