@@ -628,6 +628,7 @@ public class MainActivity extends BaseActivity {
                 mConnectionState = connectionStateEnum.isToScan;
             onConectionStateChange(mConnectionState);
             HuApplication.sharedInstance().XBirdBluetoothManager().getBluetoothLeService().close();
+            onSearchClick();
         }
     };
 
@@ -652,7 +653,7 @@ public class MainActivity extends BaseActivity {
                 scanLeDevice(false);
                 System.out.println("onListItemClick " + device.getName().toString());
 
-                if (!lastConnectBluetooth.equals(mDeviceName)) {
+                if (lastConnectBluetooth.equals(mDeviceName)) {
                     scanLeDevice(false);
                     System.out.println("onListItemClick " + device.getName().toString());
 
@@ -703,7 +704,7 @@ public class MainActivity extends BaseActivity {
                                 Log.d(TAG, "Connect request success");
                                 mConnectionState = connectionStateEnum.isConnecting;
                                 onConectionStateChange(mConnectionState);
-                                mHandler.postDelayed(mConnectingOverTimeRunnable, 10000);
+//                                mHandler.postDelayed(mConnectingOverTimeRunnable, 10000);
                             } else {
                                 Log.d(TAG, "Connect request fail");
                                 mConnectionState = connectionStateEnum.isToScan;
