@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xbirder.bike.hummingbird.AccountManager;
+import com.xbirder.bike.hummingbird.HuApplication;
 import com.xbirder.bike.hummingbird.LogoActivity;
 import com.xbirder.bike.hummingbird.R;
 import com.xbirder.bike.hummingbird.bluetooth.XBirdBluetoothConfig;
@@ -82,7 +83,7 @@ public class SettingActivity extends AppCompatActivity {
                 ActivityJumpHelper.startActivity(SettingActivity.this, LogoActivity.class);
             } else if (v == resetView) {
                 byte[] value = {XBirdBluetoothConfig.PREFIX, XBirdBluetoothConfig.RESET, XBirdBluetoothConfig.END};
-                XBirdBluetoothManager.sharedInstance().sendToBluetooth(value);
+                HuApplication.sharedInstance().XBirdBluetoothManager().sendToBluetooth(value);
             }else if (v == change_pwd){
                 ActivityJumpHelper.startActivity(SettingActivity.this,ChangePassWord.class);
             }else if (v == cell_phone_number){

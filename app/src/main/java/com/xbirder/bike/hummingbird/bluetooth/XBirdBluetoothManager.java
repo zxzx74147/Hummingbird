@@ -7,7 +7,6 @@ import android.bluetooth.BluetoothGattService;
  * Created by xiangtingting on 15/8/20.
  */
 public class XBirdBluetoothManager {
-    private static XBirdBluetoothManager mInstance;
 
     public BluetoothLeService getBluetoothLeService() {
         return mBluetoothLeService;
@@ -49,19 +48,19 @@ public class XBirdBluetoothManager {
 
     private BluetoothGattCharacteristic mCurrentCharacteristic;
 
-    public static  XBirdBluetoothManager sharedInstance(){
-        if (mInstance == null) {
-            mInstance = new XBirdBluetoothManager();
-        }
-        return mInstance;
-    }
+//    public static  XBirdBluetoothManager sharedInstance(){
+//        if (mInstance == null) {
+//            mInstance = new XBirdBluetoothManager();
+//        }
+//        return mInstance;
+//    }
 
     public void sendToBluetooth(byte[] bytes) {
-        if (XBirdBluetoothManager.sharedInstance().getCurrentCharacteristic() != null) {
-            XBirdBluetoothManager.sharedInstance().getCurrentCharacteristic().setValue(bytes);
+        if (getCurrentCharacteristic() != null) {
+            getCurrentCharacteristic().setValue(bytes);
 
-            XBirdBluetoothManager.sharedInstance().getBluetoothLeService().setCharacteristicNotification(XBirdBluetoothManager.sharedInstance().getCurrentCharacteristic(), true);
-            XBirdBluetoothManager.sharedInstance().getBluetoothLeService().writeCharacteristic(XBirdBluetoothManager.sharedInstance().getCurrentCharacteristic());
+            getBluetoothLeService().setCharacteristicNotification(getCurrentCharacteristic(), true);
+            getBluetoothLeService().writeCharacteristic(getCurrentCharacteristic());
         }
     }
 }
