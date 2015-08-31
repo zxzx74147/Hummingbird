@@ -23,29 +23,29 @@
        <TextView
            android:layout_width="50dp"
            android:text="@string/phone_num"
-           android:layout_marginLeft="@dimen/default_gap_50"
+           android:layout_marginLeft="@dimen/default_gap_48"
            style="@style/item_text"
            android:layout_height="@dimen/default_gap_100" />
        <TextView
            android:id="@+id/phone_number"
            android:layout_width="fill_parent"
            android:paddingRight="@dimen/default_gap_50"
-           android:layout_marginLeft="@dimen/default_gap_50"
+           android:layout_marginLeft="@dimen/default_gap_59"
            style="@style/item_text"
            android:layout_height="@dimen/default_gap_100" />
    </LinearLayout>
     <View
         android:layout_width="match_parent"
         android:background="@color/common_gray_day"
-        android:layout_marginLeft="@dimen/default_gap_50"
+        android:layout_marginLeft="@dimen/default_gap_48"
         android:layout_height="@dimen/default_gap_1"/>
     <TextView
         android:id="@+id/change_pwd"
         android:layout_width="match_parent"
         android:paddingRight="@dimen/default_gap_50"
-        android:layout_marginLeft="@dimen/default_gap_50"
+        android:layout_marginLeft="@dimen/default_gap_48"
         android:text="@string/change_password"
-        android:drawableRight="@drawable/icon_next"
+        android:drawableRight="@drawable/icon_next_change"
         style="@style/item_text"
         android:layout_height="@dimen/default_gap_100" />
     <View
@@ -63,14 +63,14 @@
         android:layout_width="match_parent"
         style="@style/item_text"
         android:paddingRight="@dimen/default_gap_50"
-        android:layout_marginLeft="@dimen/default_gap_50"
+        android:layout_marginLeft="@dimen/default_gap_48"
         android:text="@string/feedback"
-        android:drawableRight="@drawable/icon_next"
+        android:drawableRight="@drawable/icon_next_change"
         android:layout_height="@dimen/default_gap_100" />
     <View
         android:layout_width="match_parent"
         android:background="@color/common_gray_day"
-        android:layout_marginLeft="@dimen/default_gap_50"
+        android:layout_marginLeft="@dimen/default_gap_48"
         android:layout_height="@dimen/default_gap_1"/>
     <TextView
         android:id="@+id/about"
@@ -78,8 +78,8 @@
         style="@style/item_text"
         android:paddingRight="@dimen/default_gap_50"
         android:text="@string/about"
-        android:layout_marginLeft="@dimen/default_gap_50"
-        android:drawableRight="@drawable/icon_next"
+        android:layout_marginLeft="@dimen/default_gap_48"
+        android:drawableRight="@drawable/icon_next_change"
         android:layout_height="@dimen/default_gap_100" />
     <View
         android:layout_width="match_parent"
@@ -89,13 +89,15 @@
     <Button
         android:background="@drawable/reg_btn"
         android:layout_gravity="center_horizontal"
-        android:layout_width="200dp"
-        android:layout_marginTop="50dp"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="@dimen/default_gap_50"
+        android:layout_marginRight="@dimen/default_gap_50"
+        android:layout_marginTop="@dimen/default_gap_348"
         android:text="@string/quit_login"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="@dimen/default_size_36"
         android:id="@+id/quit_login"
-        android:layout_height="50dp">
+        android:layout_height="@dimen/default_gap_93">
     </Button>
 
 

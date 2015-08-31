@@ -51,7 +51,7 @@
             android:layout_width="50dp"
             android:layout_height="@dimen/default_gap_150"
             android:layout_alignParentRight="true"
-            android:drawableRight="@drawable/icon_next"
+            android:drawableRight="@drawable/icon_next_change"
             android:paddingRight="@dimen/default_gap_50" />
 
 
@@ -92,7 +92,7 @@
             android:layout_width="50dp"
             android:layout_height="@dimen/default_gap_100"
             android:layout_alignParentRight="true"
-            android:drawableRight="@drawable/icon_next"
+            android:drawableRight="@drawable/icon_next_change"
             android:paddingRight="@dimen/default_gap_50" />
 
     </RelativeLayout>
@@ -132,7 +132,7 @@
             android:layout_width="50dp"
             android:layout_height="@dimen/default_gap_100"
             android:layout_alignParentRight="true"
-            android:drawableRight="@drawable/icon_next"
+            android:drawableRight="@drawable/icon_next_change"
             android:paddingRight="@dimen/default_gap_50" />
 
     </RelativeLayout>

@@ -11,84 +11,99 @@
         android:layout_height="@dimen/title_bar_height"
         app:title_text="@string/about" />
 
-
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="
-            浙江锋鸟车业有限公司（Zhejiang Leading Bird Electric Vehicle CO., Ltd.）是一家集研发、生产、销售和服务于一体的智能短途代步设备运营商。锋鸟公司成立于2015年，位于浙江金华。
-        我们的使命是用完美主义的工匠精神，打造用户体验一流的智能短途代步工具，改善人们的生活质量。在如今车多路窄、倡导环保的社会情况下，让出行工具更精巧、更易携带且节能环保是我们的目标。我们的口号是“随心所驭” ，也是我们所研发设计的产品对于使用群众的一个承诺。
-        在缺乏创新精神和创新能力的代步设备的阵营里， 我们的团队格外擅长外型的创新设计和结构的精简改进。扎实的专业知识基础+卓越的创新能力=锋鸟。
-" />
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:singleLine="true"
-        android:text="
-                公司地址：浙江省金华市金东区二环北路333号
-" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="浙江锋鸟车业有限公司（Zhejiang Leading Bird Electric Vehicle CO., Ltd.）是一家集研发、生产、销售和服务于一体的智能短途代步设备运营商。锋鸟公司成立于2015年，位于浙江金华。" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:singleLine="true"
-        android:text="
-                邮政编码：321000
-" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="                                           " />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:singleLine="true"
-        android:text="
-                公司网址：www.xbirder.com
-" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="我们的使命是用完美主义的工匠精神，打造用户体验一流的智能短途代步工具，改善人们的生活质量。在如今车多路窄、倡导环保的社会情况下，让出行工具更精巧、更易携带且节能环保是我们的目标。我们的口号是“随心所驭” ，也是我们所研发设计的产品对于使用群众的一个承诺。" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:singleLine="true"
-        android:text="
-                简历投递：hr@xbirder.com
-" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="                                           " />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:singleLine="true"
-        android:text="
-                客服电话：400-1020-766
-" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="在缺乏创新精神和创新能力的代步设备的阵营里， 我们的团队格外擅长外型的创新设计和结构的精简改进。扎实的专业知识基础+卓越的创新能力=锋鸟。" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:singleLine="true"
-        android:text="
-                微 信 号：xbirder
-" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="                                           " />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:singleLine="true"
-        android:text="
-                新浪微博：锋鸟X-BIRD
-" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
+            android:text="公司地址：浙江省金华市金东区二环北路333号" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
+            android:text="邮政编码：321000" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
+            android:text="公司网址：www.xbirder.com" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
+            android:text="简历投递：hr@xbirder.com" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
+            android:text="客服电话：400-1020-766" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
+            android:text="微 信 号：xbirder" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
+            android:text="新浪微博：锋鸟X-BIRD" />
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/iv_xbirder_map"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/xbirder_map" />
-
+        android:layout_height="fill_parent"
+        android:src="@drawable/about" />
 
 </LinearLayout>

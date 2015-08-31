@@ -47,4 +47,15 @@ public class FontsManager {
             e.printStackTrace();
         }
     }
+
+    public void setSpeedThickType(TextView textView){
+        try {
+            if(mSpeedType == null) {
+                mSpeedType = Typeface.createFromAsset(HuApplication.sharedInstance().getAssets(), "fonts/Helvetica.ttf");
+            }
+            textView.setTypeface(mSpeedType);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }

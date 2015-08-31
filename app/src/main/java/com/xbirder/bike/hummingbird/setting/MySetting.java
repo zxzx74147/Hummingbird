@@ -150,7 +150,7 @@ public class MySetting extends Activity {
                 try {
                     if (photoUri != null) {
                         Bitmap bitmap = decodeUriAsBitmap(photoUri);
-                        Bitmap roundBitMap = getRoundedCornerBitmap(bitmap,1.0f);
+                        Bitmap roundBitMap = getRoundedCornerBitmap(bitmap, 1.0f);
                         my_head.setImageBitmap(roundBitMap);
                     }
                 } catch (Exception e) {
@@ -270,6 +270,7 @@ public class MySetting extends Activity {
 
     /**
      * 圆形图片
+     *
      * @param bitmap
      * @param ratio
      * @return

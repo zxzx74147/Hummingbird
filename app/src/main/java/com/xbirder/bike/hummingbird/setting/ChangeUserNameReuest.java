@@ -16,11 +16,12 @@ import java.util.HashMap;
 public class ChangeUserNameReuest extends HttpJsonRequest<JSONObject> {
 
     private String mUserName;
+
     public ChangeUserNameReuest(HttpResponse.Listener<JSONObject> listener) {
         super(listener);
     }
 
-    public void setParam(String userName){
+    public void setParam(String userName) {
         this.mUserName = userName;
     }
 
@@ -29,7 +30,7 @@ public class ChangeUserNameReuest extends HttpJsonRequest<JSONObject> {
         params.put("r", NetworkConfig.USERNAME_ADDRESS);
         params.put("token", AccountManager.sharedInstance().getToken());
 
-        params.put("userName",mUserName);
+        params.put("userName", mUserName);
         System.out.print("mUserName : " + AccountManager.sharedInstance().getToken());
     }
 

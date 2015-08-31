@@ -7,4 +7,5 @@ public class StatusConfig {
     public static final int MODE_E = 0;
     public static final int MODE_N = 1;
     public static final int MODE_S = 2;
+    public static int CURRENT_MODE = MODE_E;
 }

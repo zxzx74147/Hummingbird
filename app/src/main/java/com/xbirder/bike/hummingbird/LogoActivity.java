@@ -23,7 +23,7 @@ public class LogoActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logo);
         mLoginView = findViewById(R.id.btn_login);
-        mRegisterView = (Button)findViewById(R.id.btn_reg);
+        mRegisterView = (Button) findViewById(R.id.btn_reg);
         mLoginView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,7 +42,7 @@ public class LogoActivity extends BaseActivity {
         String pass = AccountManager.sharedInstance().getPass();
         if ((userName != null && userName != "") &&
                 (pass != null && pass != "")) {
-            ActivityJumpHelper.startActivity(this,MainActivity.class);
+            ActivityJumpHelper.startActivity(this, MainActivity.class);
         }
     }
 }

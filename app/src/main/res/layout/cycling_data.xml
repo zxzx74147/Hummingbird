@@ -83,8 +83,8 @@
             android:layout_alignParentRight="true"
             android:paddingRight="@dimen/default_gap_199"
             android:paddingTop="@dimen/default_gap_30"
-            android:textColor="@android:color/holo_red_light"
             android:text="0"
+            android:textColor="@android:color/holo_red_light"
             android:textSize="@dimen/default_gap_75" />
 
         <TextView
@@ -115,24 +115,24 @@
 
     <TextView
         android:id="@+id/tv_data"
-        android:layout_below="@+id/rl_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="一周低碳统计 KM/DAY (6.21-)"
-        android:textSize="@dimen/default_size_35"
+        android:layout_below="@+id/rl_data"
         android:layout_marginLeft="@dimen/default_gap_40"
-        android:layout_marginTop="@dimen/default_gap_20"/>
+        android:layout_marginTop="@dimen/default_gap_20"
+        android:text="一周低碳统计 KM/DAY (6.21-)"
+        android:textSize="@dimen/default_size_35" />
 
     <TextView
         android:id="@+id/tv_no_data"
-        android:layout_below="@+id/tv_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_data"
+        android:layout_marginLeft="@dimen/default_gap_40"
+        android:layout_marginTop="@dimen/default_gap_20"
         android:text="暂无数据!"
         android:textColor="@android:color/holo_red_light"
-        android:textSize="@dimen/default_size_35"
-        android:layout_marginLeft="@dimen/default_gap_40"
-        android:layout_marginTop="@dimen/default_gap_20"/>
+        android:textSize="@dimen/default_size_35" />
 
     <ImageView
         android:layout_width="fill_parent"

@@ -31,6 +31,7 @@
             android:layout_width="0dip"
             android:paddingLeft="@dimen/default_gap_15"
             android:gravity="left|center_vertical"
+            android:singleLine="true"
             android:background="@null"
             android:id="@+id/new_name"
             android:layout_height="match_parent" />

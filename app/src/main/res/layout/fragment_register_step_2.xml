@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/reg_head"
         android:background="@drawable/icon_photo"
-        android:layout_marginTop="@dimen/default_gap_50"
+        android:layout_marginTop="@dimen/default_gap_80"
         android:layout_width="@dimen/default_gap_230"
         android:layout_gravity="center_horizontal"
         android:layout_height="@dimen/default_gap_210"/>
@@ -17,7 +17,7 @@
         android:layout_marginLeft="@dimen/default_gap_50"
         android:layout_marginRight="@dimen/default_gap_50"
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/default_gap_20"
+        android:layout_marginTop="@dimen/default_gap_40"
         android:layout_height="@dimen/default_gap_100">
 
         <EditText
@@ -95,7 +95,7 @@
         android:layout_marginLeft="@dimen/default_gap_50"
         android:layout_marginRight="@dimen/default_gap_50"
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/default_gap_20"
+        android:layout_marginTop="@dimen/default_gap_40"
         android:text="@string/done"
         android:textColor="@color/white"
         android:id="@+id/reg_done"

@@ -4,13 +4,12 @@
     android:layout_height="match_parent"
     android:background="@color/common_background_day">
 
-    <com.makeramen.roundedimageview.RoundedImageView
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.makeramen.roundedimageview.RoundedImageView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/head"
-        android:layout_width="@dimen/default_gap_200"
-        android:layout_height="@dimen/default_gap_200"
+        android:layout_width="@dimen/default_gap_250"
+        android:layout_height="@dimen/default_gap_250"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/default_gap_150"
+        android:layout_marginTop="@dimen/default_gap_146"
         android:scaleType="centerInside"
         android:src="@drawable/icon_photo_small"
         app:riv_border_color="#00FFFFFF"
@@ -23,165 +22,122 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/head"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/default_gap_20"
+        android:layout_marginTop="@dimen/default_gap_25"
+        android:text="Virgil"
         android:textColor="@color/common_text_gray_day"
-        android:textSize="@dimen/text_size_mid" />
+        android:textSize="@dimen/text_size_name" />
 
     <RelativeLayout
         android:id="@+id/low_cycling_records"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/default_gap_70"
+        android:layout_height="@dimen/default_gap_90"
         android:layout_below="@+id/user_name"
-        android:layout_marginLeft="@dimen/default_gap_50"
-        android:layout_marginRight="@dimen/default_gap_50"
-        android:layout_marginTop="@dimen/default_gap_150">
+        android:layout_marginTop="@dimen/default_gap_70"
+        android:background="@drawable/setting_color_one">
 
         <ImageView
             android:id="@+id/calender_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:src="@drawable/icon_calender" />
+            android:layout_marginLeft="@dimen/default_gap_50"
+            android:src="@drawable/icon_calender"
+            />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical|left"
-            android:paddingLeft="@dimen/default_gap_120"
-            android:text="@string/cycling_records"
-            android:textSize="@dimen/text_size_big" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/icon_next" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/default_gap_1"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="@dimen/default_gap_100"
-            android:layout_marginRight="@dimen/default_gap_100"
-            android:background="@color/common_gray_day" />
+        <!--        <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical|left"
+                    android:paddingLeft="@dimen/default_gap_120"
+                    android:textSize="@dimen/text_size_big" />-->
 
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/low_carbon_layout1"
+        android:id="@+id/xbirdr_helper"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/default_gap_70"
+        android:layout_height="@dimen/default_gap_90"
         android:layout_below="@+id/low_cycling_records"
-        android:layout_marginLeft="@dimen/default_gap_50"
-
-        android:layout_marginRight="@dimen/default_gap_50"
-        android:layout_marginTop="@dimen/default_gap_30">
+        android:layout_marginTop="@dimen/default_gap_21"
+        android:background="@drawable/setting_color_two">
 
         <ImageView
-            android:id="@+id/calender_image1"
+            android:id="@+id/helper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:src="@drawable/icon_calender" />
+            android:layout_marginLeft="@dimen/default_gap_50"
+            android:src="@drawable/icon_help"
+            />
 
-        <TextView
+        <!--<TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:gravity="center_vertical|left"
             android:paddingLeft="@dimen/default_gap_120"
             android:text="@string/xbirder_aide"
-            android:textSize="@dimen/text_size_big" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/icon_next" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/default_gap_1"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="@dimen/default_gap_100"
-            android:layout_marginRight="@dimen/default_gap_100"
-            android:background="@color/common_gray_day" />
+            android:textSize="@dimen/text_size_big" />-->
 
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/setting_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/default_gap_70"
-        android:layout_below="@+id/low_carbon_layout1"
-        android:layout_marginLeft="@dimen/default_gap_50"
-
-        android:layout_marginRight="@dimen/default_gap_50"
-        android:layout_marginTop="@dimen/default_gap_30">
+        android:layout_height="@dimen/default_gap_90"
+        android:layout_below="@+id/xbirdr_helper"
+        android:layout_marginTop="@dimen/default_gap_21"
+        android:background="@drawable/setting_color_three">
 
         <ImageView
+            android:id="@+id/bt_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:src="@drawable/icon_set" />
+            android:layout_marginLeft="@dimen/default_gap_50"
+            android:src="@drawable/icon_set"
+            />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical|left"
-            android:paddingLeft="@dimen/default_gap_120"
-            android:text="@string/setting"
-            android:textSize="@dimen/text_size_big" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/icon_next" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/default_gap_1"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="@dimen/default_gap_100"
-            android:layout_marginRight="@dimen/default_gap_100"
-            android:background="@color/common_gray_day" />
+        <!--        <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical|left"
+                    android:paddingLeft="@dimen/default_gap_120"
+                    android:textSize="@dimen/text_size_big" />-->
 
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="160dp"
-        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
         android:layout_below="@+id/setting_layout"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginTop="@dimen/default_gap_150">
+        android:layout_marginLeft="49dp"
+        android:layout_marginRight="49dp"
+        android:layout_marginTop="@dimen/default_gap_200">
 
         <ImageView
             android:id="@+id/lock_bg"
-            android:layout_width="160dp"
-            android:layout_height="50dp"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
             android:layout_centerHorizontal="true"
             android:src="@drawable/lock_bg" />
 
         <ImageView
             android:id="@+id/lock_top"
-            android:layout_width="160dp"
-            android:layout_height="50dp"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
             android:scaleType="fitStart"
-            android:src="@drawable/lock_red" />
+            android:src="@drawable/lock_red"
+            android:layout_centerHorizontal="true"/>
 
         <!--        <com.xbirder.bike.hummingbird.main.side.WiperSwitch
                     android:id="@+id/wiper_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />-->
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_centerHorizontal="true" />-->
 
     </RelativeLayout>
-
 </RelativeLayout>

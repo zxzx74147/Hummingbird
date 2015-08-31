@@ -9,6 +9,7 @@ import com.baidu.core.net.base.HttpResponse;
 import com.xbirder.bike.hummingbird.AccountManager;
 import com.xbirder.bike.hummingbird.R;
 import com.xbirder.bike.hummingbird.base.BaseActivity;
+import com.xbirder.bike.hummingbird.common.widget.TitleBar;
 import com.xbirder.bike.hummingbird.login.LoginActivity;
 import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
 import com.xbirder.bike.hummingbird.util.StringHelper;
@@ -20,12 +21,10 @@ import org.json.JSONObject;
  */
 public class ChangePassWord extends BaseActivity {
 
-    private EditText et_old_pwd;
     private EditText et_new_pwd;
     private EditText et_center_new_pwd;
     private Button btn_succeed;
     private String storePass;
-    private String mOldPwd;
     private String mNewPwd;
     private String mCenterNewPwd;
     private ChangePwdReuest changeRequest;
@@ -35,7 +34,6 @@ public class ChangePassWord extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.change_password);
 
-        et_old_pwd = (EditText) findViewById(R.id.et_old_pwd);
         et_new_pwd = (EditText) findViewById(R.id.et_new_pwd);
         et_center_new_pwd = (EditText) findViewById(R.id.et_center_new_pwd);
         btn_succeed = (Button) findViewById(R.id.btn_succeed);
@@ -46,14 +44,9 @@ public class ChangePassWord extends BaseActivity {
         public void onClick(View v) {
             if (v == btn_succeed) {
                 storePass = AccountManager.sharedInstance().getPass();//获取首选项里的密码.
-                mOldPwd = et_old_pwd.getText().toString();//获取输入的密码
                 //System.out.println("storePass ："+ storePass);
                 mNewPwd = et_new_pwd.getText().toString();//获取新密码
                 mCenterNewPwd = et_center_new_pwd.getText().toString();//获取再次输入的新密码
-                if (!storePass.equals(mOldPwd)) {
-                    toast("旧密码输入有误");
-                    return;
-                }
                 if (mNewPwd.length() != 6) {
                     toast("新密码只支持六位数字");
                     return;
@@ -62,7 +55,7 @@ public class ChangePassWord extends BaseActivity {
                     toast("两次密码输入不一致,请重新输入");
                     return;
                 }
-                if (mNewPwd.equals(mOldPwd)) {
+                if (mNewPwd.equals(storePass)) {
                     toast("新密码与旧密码相同,请重新输入");
                     return;
                 }
@@ -87,7 +80,7 @@ public class ChangePassWord extends BaseActivity {
                             }
                         }
                     });
-                    changeRequest.setParam(mUser, mOldPwd, mNewPwd);
+                    changeRequest.setParam(mUser, storePass, mNewPwd);
                     sendRequest(changeRequest);
                 }
             }

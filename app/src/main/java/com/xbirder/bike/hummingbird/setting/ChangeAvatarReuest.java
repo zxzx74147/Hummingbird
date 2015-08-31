@@ -16,11 +16,12 @@ import java.util.HashMap;
 public class ChangeAvatarReuest extends HttpJsonRequest<JSONObject> {
 
     private String mPic;
+
     public ChangeAvatarReuest(HttpResponse.Listener<JSONObject> listener) {
         super(listener);
     }
 
-    public void setParam(String avatar,String pic){
+    public void setParam(String avatar, String pic) {
         this.mPic = pic;
     }
 

@@ -29,6 +29,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -56,6 +57,8 @@ import com.xbirder.bike.hummingbird.skin.SkinConfig;
 import com.xbirder.bike.hummingbird.skin.SkinManager;
 import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
 
+import com.xbirder.bike.hummingbird.HuApplication;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,6 +81,7 @@ public class MainActivity extends BaseActivity {
     private FrameLayout mLeftDrawer;
     private RoundedImageView mRoundedImageView;
     private int screenWidth;
+    private int screenHeight;
     private WiperSwitch wiperSwitch;
     //    private TextView mKMText;
     private ImageView mButtonE;
@@ -158,18 +162,18 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder service) {
-            XBirdBluetoothManager.sharedInstance().setBluetoothLeService(((BluetoothLeService.LocalBinder) service).getService());
-            if (!XBirdBluetoothManager.sharedInstance().getBluetoothLeService().initialize()) {
+            HuApplication.sharedInstance().XBirdBluetoothManager().setBluetoothLeService(((BluetoothLeService.LocalBinder) service).getService());
+            if (!HuApplication.sharedInstance().XBirdBluetoothManager().getBluetoothLeService().initialize()) {
                 Log.e(TAG, "Unable to initialize Bluetooth");
                 finish();
             }
             // Automatically connects to the device upon successful start-up initialization.
-            XBirdBluetoothManager.sharedInstance().getBluetoothLeService().connect(mDeviceAddress);
+            HuApplication.sharedInstance().XBirdBluetoothManager().getBluetoothLeService().connect(mDeviceAddress);
         }
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
-            XBirdBluetoothManager.sharedInstance().setBluetoothLeService(null);
+            HuApplication.sharedInstance().XBirdBluetoothManager().setBluetoothLeService(null);
         }
     };
 
@@ -186,7 +190,7 @@ public class MainActivity extends BaseActivity {
                 onConectionStateChange(connectionStateEnum.isDisconnecting);
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.
-                displayGattServices(XBirdBluetoothManager.sharedInstance().getBluetoothLeService().getSupportedGattServices());
+                displayGattServices(HuApplication.sharedInstance().XBirdBluetoothManager().getBluetoothLeService().getSupportedGattServices());
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 byte[] bytes = intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA);
                 read(bytes);
@@ -207,7 +211,7 @@ public class MainActivity extends BaseActivity {
         for (BluetoothGattService gattService : gattServices) {
             uuid = gattService.getUuid().toString();
             if (uuid.contains(SampleGattAttributes.XBIRD_UUID)) {
-                XBirdBluetoothManager.sharedInstance().setCurrentService(gattService);
+                HuApplication.sharedInstance().XBirdBluetoothManager().setCurrentService(gattService);
                 List<BluetoothGattCharacteristic> gattCharacteristics =
                         gattService.getCharacteristics();
 
@@ -215,7 +219,7 @@ public class MainActivity extends BaseActivity {
                 for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
                     uuid = gattCharacteristic.getUuid().toString();
                     if (uuid.contains(SampleGattAttributes.XBIRD_CHARACTERISTIC)) {
-                        XBirdBluetoothManager.sharedInstance().setCurrentCharacteristic(gattCharacteristic);
+                        HuApplication.sharedInstance().XBirdBluetoothManager().setCurrentCharacteristic(gattCharacteristic);
                         setCharacteristicProperty();
                     }
                 }
@@ -242,7 +246,7 @@ public class MainActivity extends BaseActivity {
             value[i + 2] = (byte) (totalBytes[i] & 0xFF - 0x30);
         }
 
-        XBirdBluetoothManager.sharedInstance().sendToBluetooth(value);
+        HuApplication.sharedInstance().XBirdBluetoothManager().sendToBluetooth(value);
     }
 
     private void writeLightInfo(boolean isOpen) {
@@ -250,7 +254,7 @@ public class MainActivity extends BaseActivity {
         if (isOpen) {
             value[2] = (byte) 0x01;
         }
-        XBirdBluetoothManager.sharedInstance().sendToBluetooth(value);
+        HuApplication.sharedInstance().XBirdBluetoothManager().sendToBluetooth(value);
     }
 
     private void writeSpeedInfo(int speedLevel) {
@@ -262,7 +266,7 @@ public class MainActivity extends BaseActivity {
         } else if (speedLevel == 3) {
             value[2] = (byte) 0x03;
         }
-        XBirdBluetoothManager.sharedInstance().sendToBluetooth(value);
+        HuApplication.sharedInstance().XBirdBluetoothManager().sendToBluetooth(value);
     }
 
     private void writeLock(boolean isLock) {
@@ -270,7 +274,7 @@ public class MainActivity extends BaseActivity {
         if (isLock) {
             value[2] = (byte) 0x01;
         }
-        XBirdBluetoothManager.sharedInstance().sendToBluetooth(value);
+        HuApplication.sharedInstance().XBirdBluetoothManager().sendToBluetooth(value);
     }
 
 
@@ -285,7 +289,7 @@ public class MainActivity extends BaseActivity {
                             mIsUseToken = false;
                         } else {
                             toast("连接锋鸟出错");
-                            XBirdBluetoothManager.sharedInstance().getBluetoothLeService().disconnect();
+                            HuApplication.sharedInstance().XBirdBluetoothManager().getBluetoothLeService().disconnect();
                             mHandler.postDelayed(mDisonnectingOverTimeRunnable, 1000);
 
                             mConnectionState = connectionStateEnum.isDisconnecting;
@@ -308,13 +312,13 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setCharacteristicProperty() {
-        if (XBirdBluetoothManager.sharedInstance().getCurrentCharacteristic() == null) return;
-        final int charaProp = XBirdBluetoothManager.sharedInstance().getCurrentCharacteristic().getProperties();
+        if (HuApplication.sharedInstance().XBirdBluetoothManager().getCurrentCharacteristic() == null) return;
+        final int charaProp = HuApplication.sharedInstance().XBirdBluetoothManager().getCurrentCharacteristic().getProperties();
 
         if ((charaProp | BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0) {
-            XBirdBluetoothManager.sharedInstance().setNotifyCharacteristic(XBirdBluetoothManager.sharedInstance().getCurrentCharacteristic());
-            XBirdBluetoothManager.sharedInstance().getBluetoothLeService().setCharacteristicNotification(
-                    XBirdBluetoothManager.sharedInstance().getCurrentCharacteristic(), true);
+            HuApplication.sharedInstance().XBirdBluetoothManager().setNotifyCharacteristic(HuApplication.sharedInstance().XBirdBluetoothManager().getCurrentCharacteristic());
+            HuApplication.sharedInstance().XBirdBluetoothManager().getBluetoothLeService().setCharacteristicNotification(
+                    HuApplication.sharedInstance().XBirdBluetoothManager().getCurrentCharacteristic(), true);
         }
         writeConnectInfo(mIsUseToken);
     }
@@ -323,36 +327,41 @@ public class MainActivity extends BaseActivity {
     protected void initView() {
         super.initView();
         setContentView(R.layout.activity_main);
-/*        wiperSwitch = (WiperSwitch)findViewById(R.id.wiper_switch);
-        wiperSwitch.setImageResource(R.drawable.lock_bg, R.drawable.lock_green);
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        screenWidth = dm.widthPixels;//屏幕的宽
+        screenHeight = dm.heightPixels;//屏幕的高
+        System.out.println("screenWidth : " + screenWidth);//screenWidth : 1080
+/*        wiperSwitch = (WiperSwitch) findViewById(R.id.wiper_switch);
+        wiperSwitch.setImageResource(R.drawable.lock_bg, R.drawable.lock_green_change);
         wiperSwitch.setOnSwitchStateListener(new WiperSwitch.OnSwitchListener() {
             @Override
             public void onSwitched(boolean isSwitchOn) {
                 if (isSwitchOn) {
-                    wiperSwitch.setImageResource(R.drawable.lock_bg, R.drawable.lock_red);
+                    wiperSwitch.setImageResource(R.drawable.lock_bg, R.drawable.lock_red_change);
+                    ViewGroup.LayoutParams vLp = wiperSwitch.getLayoutParams();
+                    unLock();
                 } else {
-                    wiperSwitch.setImageResource(R.drawable.lock_bg, R.drawable.lock_green);
+                    wiperSwitch.setImageResource(R.drawable.lock_bg, R.drawable.lock_green_change);
+                    lock();
                 }
             }
         });*/
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        screenWidth = dm.widthPixels;//屏幕的宽
-        System.out.println("screenWidth : " + screenWidth);//screenWidth : 1080
         mRoundedImageView = (RoundedImageView) findViewById(R.id.head);
         mSpeedText = (TextView) findViewById(R.id.speed_num);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mLeftDrawer = (FrameLayout) findViewById(R.id.left_drawer);
-        int leftWidth = mDrawerLayout.getMeasuredWidth();
         int i = (int) (screenWidth / 1.2);
-        ViewGroup.LayoutParams lp = mLeftDrawer.getLayoutParams();
-        lp.width = i;
-        mLeftDrawer.setLayoutParams(lp);
+        ViewGroup.LayoutParams fLp = mLeftDrawer.getLayoutParams();
+        fLp.width = i;
+        mLeftDrawer.setLayoutParams(fLp);
         mSettingView = findViewById(R.id.main_setting);
         mLockView = (ImageView) findViewById(R.id.lock_top);
         mLightView = findViewById(R.id.main_light);
         mSideSetting = findViewById(R.id.setting_layout);
+        //bt_setting = (ImageView) findViewById(R.id.bt_setting);
         mCyclingRecord = (RelativeLayout) findViewById(R.id.low_cycling_records);
+        //calender_image = (ImageView) findViewById(R.id.calender_image);
 //        mKMText = (TextView) findViewById(R.id.km_text);
         mBatteryShow = (TextView) findViewById(R.id.battery_show);
         mButtonE = (ImageView) findViewById(R.id.mode_e);
@@ -373,13 +382,25 @@ public class MainActivity extends BaseActivity {
         mSideSetting.setOnClickListener(mOnClickListener);
         mRoundedImageView.setOnClickListener(mOnClickListener);
         mCyclingRecord.setOnClickListener(mOnClickListener);
+//        calender_image.setOnClickListener(mOnClickListener);
+//        bt_setting.setOnClickListener(mOnClickListener);
         FontsManager.sharedInstance().setSpeedType(mSpeedText);
         FontsManager.sharedInstance().setSpeedType(mBatteryView);
         FontsManager.sharedInstance().setSpeedKMType(mBatteryShow);
+       /* FontsManager.sharedInstance().setSpeedThickType(mTextE);
+        FontsManager.sharedInstance().setSpeedThickType(mTextN);
+        FontsManager.sharedInstance().setSpeedThickType(mTextS);*/
         setBattery(100);
-        setMode(StatusConfig.MODE_E);
+        setMode(StatusConfig.CURRENT_MODE, false);
         mConnectBtn = (ImageView) findViewById(R.id.connect_bluetooth);
         mConnectBtn.setOnClickListener(mOnClickListener);
+        setMode(StatusConfig.CURRENT_MODE, false);
+        mConnectBtn = (ImageView) findViewById(R.id.connect_bluetooth);
+        mConnectBtn.setOnClickListener(mOnClickListener);
+
+        if (mConnectionState == connectionStateEnum.isConnected) {
+            onConectionStateChange(connectionStateEnum.isConnected);
+        }
     }
 
     @Override
@@ -394,11 +415,11 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onClick(View v) {
             if (v == mButtonE) {
-                setMode(StatusConfig.MODE_E);
+                setMode(StatusConfig.MODE_E, true);
             } else if (v == mButtonN) {
-                setMode(StatusConfig.MODE_N);
+                setMode(StatusConfig.MODE_N, true);
             } else if (v == mButtonS) {
-                setMode(StatusConfig.MODE_S);
+                setMode(StatusConfig.MODE_S, true);
             } else if (v == mCyclingRecord) {
                 ActivityJumpHelper.startActivity(MainActivity.this, CyclingRecords.class);
             } else if (v == mSettingView) {
@@ -417,7 +438,7 @@ public class MainActivity extends BaseActivity {
                     lock();
                 }
                 isLock = !isLock;
-            } else if (v == mLightView) {
+            }  else if (v == mLightView) {
                 int mode = SkinManager.sharedInstance().getSkinMode();
                 if (mode == SkinConfig.SKIN_MODE_DAY) {
                     SkinManager.sharedInstance().setSkinMode(SkinConfig.SKIN_MODE_NIGHT);
@@ -449,7 +470,8 @@ public class MainActivity extends BaseActivity {
         writeLock(false);
     }
 
-    private void setMode(int mode) {
+    private void setMode(int mode, boolean needSend){
+        StatusConfig.CURRENT_MODE = mode;
         mButtonE.setImageBitmap(getTranBitmap());
         mButtonN.setImageBitmap(getTranBitmap());
         mButtonS.setImageBitmap(getTranBitmap());
@@ -460,9 +482,9 @@ public class MainActivity extends BaseActivity {
         Drawable drawable;
         int[] attrs;
         int level = 1;
-        switch (mode) {
+        switch (mode){
             case StatusConfig.MODE_E:
-                attrs = new int[]{R.attr.btn_e_drawable};
+                attrs = new int[] { R.attr.btn_e_drawable};
                 ta = this.obtainStyledAttributes(attrs);
                 drawable = ta.getDrawable(0);
                 ta.recycle();
@@ -471,7 +493,7 @@ public class MainActivity extends BaseActivity {
                 level = 1;
                 break;
             case StatusConfig.MODE_N:
-                attrs = new int[]{R.attr.btn_n_drawable};
+                attrs = new int[] { R.attr.btn_n_drawable};
                 ta = this.obtainStyledAttributes(attrs);
                 drawable = ta.getDrawable(0);
                 ta.recycle();
@@ -480,7 +502,7 @@ public class MainActivity extends BaseActivity {
                 level = 2;
                 break;
             case StatusConfig.MODE_S:
-                attrs = new int[]{R.attr.btn_s_drawable};
+                attrs = new int[] { R.attr.btn_s_drawable};
                 ta = this.obtainStyledAttributes(attrs);
                 drawable = ta.getDrawable(0);
                 ta.recycle();
@@ -489,7 +511,9 @@ public class MainActivity extends BaseActivity {
                 level = 3;
                 break;
         }
-        writeSpeedInfo(level);
+        if (needSend) {
+            writeSpeedInfo(level);
+        }
     }
 
     public void onConectionStateChange(connectionStateEnum theconnectionStateEnum) {
@@ -510,7 +534,7 @@ public class MainActivity extends BaseActivity {
                 mConnectBtn.setImageResource(R.drawable.search_unable);
                 break;
             case isScanning:
-//                mConnectBtn.setBackgroundResource(R.drawable.search);
+                mConnectBtn.setBackgroundResource(R.drawable.search);
                 animationDrawable = (AnimationDrawable) mConnectBtn.getDrawable();
                 animationDrawable.start();
                 break;
@@ -537,16 +561,17 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void onSearchClick() {
+    private void onSearchClick()
+    {
         switch (mConnectionState) {
             case isNull:
-                mConnectionState = connectionStateEnum.isScanning;
+                mConnectionState=connectionStateEnum.isScanning;
                 onConectionStateChange(mConnectionState);
                 mHandler.postDelayed(mSearchOverTimeRunnable, 3000);
                 scanLeDevice(true);
                 break;
             case isToScan:
-                mConnectionState = connectionStateEnum.isScanning;
+                mConnectionState=connectionStateEnum.isScanning;
                 onConectionStateChange(mConnectionState);
                 mHandler.postDelayed(mSearchOverTimeRunnable, 3000);
                 scanLeDevice(true);
@@ -562,7 +587,10 @@ public class MainActivity extends BaseActivity {
                 confirmDisconnect();
                 break;
             case isDisconnecting:
-
+                mConnectionState=connectionStateEnum.isScanning;
+                onConectionStateChange(mConnectionState);
+                mHandler.postDelayed(mSearchOverTimeRunnable, 3000);
+                scanLeDevice(true);
                 break;
 
             default:
@@ -579,7 +607,7 @@ public class MainActivity extends BaseActivity {
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                XBirdBluetoothManager.sharedInstance().getBluetoothLeService().disconnect();
+                HuApplication.sharedInstance().XBirdBluetoothManager().getBluetoothLeService().disconnect();
                 mHandler.postDelayed(mDisonnectingOverTimeRunnable, 1000);
 
                 mConnectionState = connectionStateEnum.isDisconnecting;
@@ -603,7 +631,7 @@ public class MainActivity extends BaseActivity {
             if (mConnectionState == connectionStateEnum.isConnecting)
                 mConnectionState = connectionStateEnum.isToScan;
             onConectionStateChange(mConnectionState);
-            XBirdBluetoothManager.sharedInstance().getBluetoothLeService().close();
+            HuApplication.sharedInstance().XBirdBluetoothManager().getBluetoothLeService().close();
         }
     };
 
@@ -614,7 +642,8 @@ public class MainActivity extends BaseActivity {
             if (mConnectionState == connectionStateEnum.isDisconnecting)
                 mConnectionState = connectionStateEnum.isToScan;
             onConectionStateChange(mConnectionState);
-            XBirdBluetoothManager.sharedInstance().getBluetoothLeService().close();
+            HuApplication.sharedInstance().XBirdBluetoothManager().getBluetoothLeService().close();
+            onSearchClick();
         }
     };
 
@@ -639,17 +668,17 @@ public class MainActivity extends BaseActivity {
                 scanLeDevice(false);
                 System.out.println("onListItemClick " + device.getName().toString());
 
-                if (!lastConnectBluetooth.equals(mDeviceName)) {
+                if (lastConnectBluetooth.equals(mDeviceName)) {
                     scanLeDevice(false);
                     System.out.println("onListItemClick " + device.getName().toString());
 
                     System.out.println("Device Name:" + device.getName() + "   " + "Device Name:" + device.getAddress());
 
-                    if (XBirdBluetoothManager.sharedInstance().getBluetoothLeService().connect(mDeviceAddress)) {
+                    if (HuApplication.sharedInstance().XBirdBluetoothManager().getBluetoothLeService().connect(mDeviceAddress)) {
                         Log.d(TAG, "Connect request success");
                         mConnectionState = connectionStateEnum.isConnecting;
                         onConectionStateChange(mConnectionState);
-//                        mHandler.postDelayed(mConnectingOverTimeRunnable, 10000);
+                        mHandler.postDelayed(mConnectingOverTimeRunnable, 10000);
                     } else {
                         Log.d(TAG, "Connect request fail");
                         mConnectionState = connectionStateEnum.isToScan;
@@ -686,11 +715,11 @@ public class MainActivity extends BaseActivity {
                             mConnectionState = connectionStateEnum.isToScan;
                             onConectionStateChange(mConnectionState);
                         } else {
-                            if (XBirdBluetoothManager.sharedInstance().getBluetoothLeService().connect(mDeviceAddress)) {
+                            if (HuApplication.sharedInstance().XBirdBluetoothManager().getBluetoothLeService().connect(mDeviceAddress)) {
                                 Log.d(TAG, "Connect request success");
                                 mConnectionState = connectionStateEnum.isConnecting;
                                 onConectionStateChange(mConnectionState);
-                                mHandler.postDelayed(mConnectingOverTimeRunnable, 10000);
+//                                mHandler.postDelayed(mConnectingOverTimeRunnable, 10000);
                             } else {
                                 Log.d(TAG, "Connect request fail");
                                 mConnectionState = connectionStateEnum.isToScan;
@@ -750,8 +779,10 @@ public class MainActivity extends BaseActivity {
         super.onResume();
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 
-        if (mConnectionState == connectionStateEnum.isNull ||
+/*        if (mConnectionState == connectionStateEnum.isNull ||
                 mConnectionState == connectionStateEnum.isToScan) {
+            onSearchClick();*/
+        if (mConnectionState != connectionStateEnum.isConnected) {
             onSearchClick();
         }
     }
@@ -766,7 +797,7 @@ public class MainActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         unbindService(mServiceConnection);
-        XBirdBluetoothManager.sharedInstance().setBluetoothLeService(null);
+        HuApplication.sharedInstance().XBirdBluetoothManager().setBluetoothLeService(null);
     }
 
     // Device scan callback.
@@ -883,5 +914,11 @@ public class MainActivity extends BaseActivity {
                 mBluetoothAdapter.stopLeScan(mLeScanCallback);
             }
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        return super.onTouchEvent(event);
     }
 }

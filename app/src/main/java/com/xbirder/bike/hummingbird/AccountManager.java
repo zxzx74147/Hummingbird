@@ -29,7 +29,7 @@ public class AccountManager {
     }
 
     public void setConnectBluetooth(String connectBluetooth) {
-        this.mConnectBluetooth = mConnectBluetooth;
+        this.mConnectBluetooth = connectBluetooth;
         SharedPreferenceHelper.saveString(KEY_CONNECT_BLUETOOTH, connectBluetooth);
     }
 
