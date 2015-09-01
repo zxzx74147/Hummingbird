@@ -48,6 +48,7 @@ import com.xbirder.bike.hummingbird.bluetooth.BluetoothLeService;
 import com.xbirder.bike.hummingbird.bluetooth.SampleGattAttributes;
 import com.xbirder.bike.hummingbird.bluetooth.XBirdBluetoothConfig;
 import com.xbirder.bike.hummingbird.bluetooth.XBirdBluetoothManager;
+import com.xbirder.bike.hummingbird.common.widget.FixViewPager;
 import com.xbirder.bike.hummingbird.fonts.FontsManager;
 import com.xbirder.bike.hummingbird.main.side.WiperSwitch;
 import com.xbirder.bike.hummingbird.main.widget.BatteryRollView;
@@ -420,7 +421,20 @@ public class MainActivity extends BaseActivity {
                 if (mDrawerLayout.isDrawerOpen(mLeftDrawer)) {
                     mDrawerLayout.closeDrawer(mLeftDrawer);
                 } else {
-
+                    mLeftDrawer.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View view, MotionEvent motionEvent) {
+                            switch (motionEvent.getAction()){
+                                case MotionEvent.ACTION_DOWN:
+                                    return true;
+                                case MotionEvent.ACTION_UP:
+                                    break;
+                                case MotionEvent.ACTION_MOVE:
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
                     mDrawerLayout.openDrawer(Gravity.LEFT);
                 }
             } else if (v == mLockView) {
@@ -911,6 +925,14 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                break;
+            case MotionEvent.ACTION_UP:
+                break;
+            case MotionEvent.ACTION_MOVE:
+                break;
+        }
         return super.onTouchEvent(event);
     }
 }
