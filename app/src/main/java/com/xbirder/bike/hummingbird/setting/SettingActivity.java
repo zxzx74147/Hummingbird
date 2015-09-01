@@ -93,7 +93,7 @@ public class SettingActivity extends AppCompatActivity {
                 ActivityJumpHelper.startActivity(SettingActivity.this, LogoActivity.class);
             } else if (v == resetView) {
                 byte[] value = {XBirdBluetoothConfig.PREFIX, XBirdBluetoothConfig.RESET, XBirdBluetoothConfig.END};
-                XBirdBluetoothManager.sharedInstance().sendToBluetooth(value);
+                HuApplication.sharedInstance().XBirdBluetoothManager().sendToBluetooth(value);
             } else if (v == change_pwd) {
                 showDialog();
             } else if (v == cell_phone_number) {
@@ -134,6 +134,7 @@ public class SettingActivity extends AppCompatActivity {
                         if (!storePass.equals(get_et_old_pwd)){
                             Toast.makeText(SettingActivity.this,"旧密码输入有误,请重新输入",Toast.LENGTH_LONG).show();
                         }else {
+                            customAlertDialog.dismissDialog();
                             ActivityJumpHelper.startActivity(SettingActivity.this,ChangePassWord.class);
                         }
                     }

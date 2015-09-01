@@ -1,1 +1,1 @@
-include ':netcore',':asyncTask',':cachecore',':app', ":Slidingmenu"
+include ':netcore',':asyncTask',':cachecore',':app'

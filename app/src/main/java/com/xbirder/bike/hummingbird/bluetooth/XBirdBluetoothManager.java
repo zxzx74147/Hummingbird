@@ -48,13 +48,12 @@ public class XBirdBluetoothManager {
 
     private BluetoothGattCharacteristic mCurrentCharacteristic;
 
-    public static  XBirdBluetoothManager sharedInstance(){
-        XBirdBluetoothManager mInstance = null;
-        if (mInstance == null) {
-            mInstance = new XBirdBluetoothManager();
-        }
-        return mInstance;
-    }
+//    public static  XBirdBluetoothManager sharedInstance(){
+//        if (mInstance == null) {
+//            mInstance = new XBirdBluetoothManager();
+//        }
+//        return mInstance;
+//    }
 
     public void sendToBluetooth(byte[] bytes) {
         if (getCurrentCharacteristic() != null) {

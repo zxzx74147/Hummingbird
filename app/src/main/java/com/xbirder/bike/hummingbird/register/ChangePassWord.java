@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.baidu.core.net.base.HttpResponse;
 import com.xbirder.bike.hummingbird.AccountManager;
@@ -28,6 +29,8 @@ public class ChangePassWord extends BaseActivity {
     private String mNewPwd;
     private String mCenterNewPwd;
     private ChangePwdReuest changeRequest;
+    private TextView backTitle;
+    private TitleBar mTitleBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,8 @@ public class ChangePassWord extends BaseActivity {
         et_center_new_pwd = (EditText) findViewById(R.id.et_center_new_pwd);
         btn_succeed = (Button) findViewById(R.id.btn_succeed);
         btn_succeed.setOnClickListener(mOnClickListener);
+        mTitleBar = new TitleBar(ChangePassWord.this);
+        backTitle = mTitleBar.getLeftText();
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -83,6 +88,8 @@ public class ChangePassWord extends BaseActivity {
                     changeRequest.setParam(mUser, storePass, mNewPwd);
                     sendRequest(changeRequest);
                 }
+            }else if (v == backTitle){
+                ChangePassWord.this.finish();
             }
         }
     };

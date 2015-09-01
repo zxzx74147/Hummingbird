@@ -19,6 +19,7 @@ public class TitleBar extends RelativeLayout {
     private TextView mLeftText;
     private TextView mTitleText;
     private TextView mRigntText;
+
     public TitleBar(Context context) {
         super(context);
         init(null);
@@ -34,23 +35,23 @@ public class TitleBar extends RelativeLayout {
         init(attrs);
     }
 
-    private void init(AttributeSet attrs){
-        LayoutInflater.from(getContext()).inflate(R.layout.title_bar_layout,this);
+    private void init(AttributeSet attrs) {
+        LayoutInflater.from(getContext()).inflate(R.layout.title_bar_layout, this);
         mLeftText = (TextView) findViewById(R.id.title_bar_back);
         mTitleText = (TextView) findViewById(R.id.title_bar_center);
         mRigntText = (TextView) findViewById(R.id.title_bar_right);
-        if(attrs !=null){
+        if (attrs != null) {
             TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.TitleBar);
             String backText = typedArray.getString(R.styleable.TitleBar_back_text);
             String titleText = typedArray.getString(R.styleable.TitleBar_title_text);
             String rightText = typedArray.getString(R.styleable.TitleBar_right_text);
-            if(StringHelper.checkString(backText)){
+            if (StringHelper.checkString(backText)) {
                 mLeftText.setText(backText);
             }
-            if(StringHelper.checkString(titleText)){
+            if (StringHelper.checkString(titleText)) {
                 mTitleText.setText(titleText);
             }
-            if(StringHelper.checkString(rightText)){
+            if (StringHelper.checkString(rightText)) {
                 mRigntText.setText(rightText);
             }
             typedArray.recycle();
@@ -65,35 +66,39 @@ public class TitleBar extends RelativeLayout {
         });
     }
 
-    public void setTitle(String text){
+    public void setTitle(String text) {
         mTitleText.setText(text);
     }
 
-    public void setTitle(int id){
+    public void setTitle(int id) {
         mTitleText.setText(id);
     }
 
-    public void setLeftText(String text){
+    public void setLeftText(String text) {
         mLeftText.setText(text);
     }
 
-    public void setLeftText(int id){
+    public void setLeftText(int id) {
         mLeftText.setText(id);
     }
 
-    public void setRightText(String text){
+    public void setRightText(String text) {
         mRigntText.setText(text);
     }
 
-    public void setRightText(int id){
+    public void setRightText(int id) {
         mRigntText.setText(id);
     }
 
-    public void setRigntOnClickListener(OnClickListener listener){
+    public TextView getLeftText(){
+        return mLeftText;
+    }
+
+    public void setRigntOnClickListener(OnClickListener listener) {
         mRigntText.setOnClickListener(listener);
     }
 
-    public void setBackOnClickListener(OnClickListener listener){
+    public void setBackOnClickListener(OnClickListener listener) {
         mLeftText.setOnClickListener(listener);
     }
 

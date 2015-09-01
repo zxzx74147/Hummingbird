@@ -4,6 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Hummingbird.iml" filepath="$PROJECT_DIR$/Hummingbird.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/asyncTask/asyncTask.iml" filepath="$PROJECT_DIR$/asyncTask/asyncTask.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cachecore/cachecore.iml" filepath="$PROJECT_DIR$/cachecore/cachecore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/netcore/netcore.iml" filepath="$PROJECT_DIR$/netcore/netcore.iml" />
     </modules>
   </component>
 </project>

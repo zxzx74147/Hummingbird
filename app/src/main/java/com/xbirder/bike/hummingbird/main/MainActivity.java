@@ -359,9 +359,7 @@ public class MainActivity extends BaseActivity {
         mLockView = (ImageView) findViewById(R.id.lock_top);
         mLightView = findViewById(R.id.main_light);
         mSideSetting = findViewById(R.id.setting_layout);
-        //bt_setting = (ImageView) findViewById(R.id.bt_setting);
         mCyclingRecord = (RelativeLayout) findViewById(R.id.low_cycling_records);
-        //calender_image = (ImageView) findViewById(R.id.calender_image);
 //        mKMText = (TextView) findViewById(R.id.km_text);
         mBatteryShow = (TextView) findViewById(R.id.battery_show);
         mButtonE = (ImageView) findViewById(R.id.mode_e);
@@ -382,14 +380,9 @@ public class MainActivity extends BaseActivity {
         mSideSetting.setOnClickListener(mOnClickListener);
         mRoundedImageView.setOnClickListener(mOnClickListener);
         mCyclingRecord.setOnClickListener(mOnClickListener);
-//        calender_image.setOnClickListener(mOnClickListener);
-//        bt_setting.setOnClickListener(mOnClickListener);
         FontsManager.sharedInstance().setSpeedType(mSpeedText);
         FontsManager.sharedInstance().setSpeedType(mBatteryView);
         FontsManager.sharedInstance().setSpeedKMType(mBatteryShow);
-       /* FontsManager.sharedInstance().setSpeedThickType(mTextE);
-        FontsManager.sharedInstance().setSpeedThickType(mTextN);
-        FontsManager.sharedInstance().setSpeedThickType(mTextS);*/
         setBattery(100);
         setMode(StatusConfig.CURRENT_MODE, false);
         mConnectBtn = (ImageView) findViewById(R.id.connect_bluetooth);
@@ -428,7 +421,6 @@ public class MainActivity extends BaseActivity {
                     mDrawerLayout.closeDrawer(mLeftDrawer);
                 } else {
 
-                    //System.out.println("leftWidth : " + leftWidth);//System.out﹕ leftWidth : 950
                     mDrawerLayout.openDrawer(Gravity.LEFT);
                 }
             } else if (v == mLockView) {
@@ -779,11 +771,12 @@ public class MainActivity extends BaseActivity {
         super.onResume();
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 
-/*        if (mConnectionState == connectionStateEnum.isNull ||
+        if (mConnectionState == connectionStateEnum.isNull ||
                 mConnectionState == connectionStateEnum.isToScan) {
-            onSearchClick();*/
-        if (mConnectionState != connectionStateEnum.isConnected) {
             onSearchClick();
+            if (mConnectionState != connectionStateEnum.isConnected) {
+                onSearchClick();
+            }
         }
     }
 
@@ -918,7 +911,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
         return super.onTouchEvent(event);
     }
 }
