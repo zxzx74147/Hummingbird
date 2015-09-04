@@ -31,7 +31,7 @@
             android:inputType="phone"
             android:textSize="@dimen/default_size_40"
             android:id="@+id/reg_phone_num"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
 

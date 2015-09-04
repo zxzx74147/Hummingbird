@@ -225,7 +225,7 @@ public class MySetting extends Activity {
      */
     public Intent getCropImageIntent() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT, null);
-        intent.setType("image/*");
+        intent.setType("image/*");//设置数据类型.比如要限定上传到服务器的的图片类型可以直接加"image/jpeg"活着"image/png"等类型
         setIntentParams(intent);
         return intent;
     }

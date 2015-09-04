@@ -54,6 +54,7 @@ import com.xbirder.bike.hummingbird.main.side.WiperSwitch;
 import com.xbirder.bike.hummingbird.main.widget.BatteryRollView;
 import com.xbirder.bike.hummingbird.setting.MySetting;
 import com.xbirder.bike.hummingbird.setting.SettingActivity;
+import com.xbirder.bike.hummingbird.setting.XBirderHelp;
 import com.xbirder.bike.hummingbird.skin.SkinConfig;
 import com.xbirder.bike.hummingbird.skin.SkinManager;
 import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
@@ -80,9 +81,11 @@ public class MainActivity extends BaseActivity {
 
     private TextView mSpeedText;
     private FrameLayout mLeftDrawer;
+    private ViewGroup.LayoutParams fLp;
     private RoundedImageView mRoundedImageView;
     private int screenWidth;
     private int screenHeight;
+    private int mLockBackWidth;
     private WiperSwitch wiperSwitch;
     //    private TextView mKMText;
     private ImageView mButtonE;
@@ -96,11 +99,14 @@ public class MainActivity extends BaseActivity {
     private TextView mBatteryShow;
     private DrawerLayout mDrawerLayout;
     private View mSettingView;
+    private RelativeLayout mLockBack;
     private View mLightView;
-    private View mSideSetting;
+    private RelativeLayout mSideSetting;
+    private RelativeLayout mXbirderHelper;
     private RelativeLayout mCyclingRecord;
     private ImageView mConnectBtn;
     private ImageView mLockView;
+    private ImageView mLockEnd;
     private boolean isLock = true;
     private boolean mIsUseToken = true;
 
@@ -185,16 +191,16 @@ public class MainActivity extends BaseActivity {
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 mConnected = true;
                 AccountManager.sharedInstance().setConnectBluetooth(mDeviceName);
-                onConectionStateChange(connectionStateEnum.isConnected);
+                //onConectionStateChange(connectionStateEnum.isConnected);
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
-                onConectionStateChange(connectionStateEnum.isDisconnecting);
+                //onConectionStateChange(connectionStateEnum.isDisconnecting);
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.
                 displayGattServices(HuApplication.sharedInstance().XBirdBluetoothManager().getBluetoothLeService().getSupportedGattServices());
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 byte[] bytes = intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA);
-                read(bytes);
+                //read(bytes);
             }
         }
     };
@@ -279,7 +285,7 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    private void read(byte[] bytes) {
+/*    private void read(byte[] bytes) {
         if (bytes == null || bytes.length < 3) return;
         if (bytes[0] == XBirdBluetoothConfig.PREFIX && bytes[bytes.length - 1] == XBirdBluetoothConfig.END) {
             switch (bytes[1]) {
@@ -310,10 +316,11 @@ public class MainActivity extends BaseActivity {
                     break;
             }
         }
-    }
+    }*/
 
     private void setCharacteristicProperty() {
-        if (HuApplication.sharedInstance().XBirdBluetoothManager().getCurrentCharacteristic() == null) return;
+        if (HuApplication.sharedInstance().XBirdBluetoothManager().getCurrentCharacteristic() == null)
+            return;
         final int charaProp = HuApplication.sharedInstance().XBirdBluetoothManager().getCurrentCharacteristic().getProperties();
 
         if ((charaProp | BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0) {
@@ -332,7 +339,7 @@ public class MainActivity extends BaseActivity {
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         screenWidth = dm.widthPixels;//屏幕的宽
         screenHeight = dm.heightPixels;//屏幕的高
-        System.out.println("screenWidth : " + screenWidth);//screenWidth : 1080
+        System.out.println("screenWidth : " + screenWidth + "screenHeight : " + screenHeight);//screenWidth : 720
 /*        wiperSwitch = (WiperSwitch) findViewById(R.id.wiper_switch);
         wiperSwitch.setImageResource(R.drawable.lock_bg, R.drawable.lock_green_change);
         wiperSwitch.setOnSwitchStateListener(new WiperSwitch.OnSwitchListener() {
@@ -353,13 +360,27 @@ public class MainActivity extends BaseActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mLeftDrawer = (FrameLayout) findViewById(R.id.left_drawer);
         int i = (int) (screenWidth / 1.2);
-        ViewGroup.LayoutParams fLp = mLeftDrawer.getLayoutParams();
+        fLp = mLeftDrawer.getLayoutParams();
         fLp.width = i;
         mLeftDrawer.setLayoutParams(fLp);
         mSettingView = findViewById(R.id.main_setting);
+        mLockBack = (RelativeLayout) findViewById(R.id.rl_lock);
+        int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        mLockBack.measure(w, h);
+        mLockBackWidth = mLockBack.getMeasuredWidth();
+        RelativeLayout.LayoutParams mLockBackPam = (RelativeLayout.LayoutParams) mLockBack.getLayoutParams();
+        int y = (int) (i / 1.2);
+        mLockBackPam.width = y;
+        mLockBackPam.setMargins((i - mLockBackWidth) / 2, (int) (screenHeight / 7.2), (i - mLockBackWidth) / 2, 0);
+        System.out.println("i : " + i);//600
+        System.out.println("y : " + y);//500
+        mLockBack.setLayoutParams(mLockBackPam);
         mLockView = (ImageView) findViewById(R.id.lock_top);
+        mLockEnd = (ImageView) findViewById(R.id.lock_end);
         mLightView = findViewById(R.id.main_light);
-        mSideSetting = findViewById(R.id.setting_layout);
+        mSideSetting = (RelativeLayout) findViewById(R.id.setting_layout);
+        mXbirderHelper = (RelativeLayout) findViewById(R.id.xbirdr_helper);
         mCyclingRecord = (RelativeLayout) findViewById(R.id.low_cycling_records);
 //        mKMText = (TextView) findViewById(R.id.km_text);
         mBatteryShow = (TextView) findViewById(R.id.battery_show);
@@ -372,6 +393,7 @@ public class MainActivity extends BaseActivity {
         mBatteryRollView = (BatteryRollView) findViewById(R.id.roll_view);
         mBatteryView = (TextView) findViewById(R.id.battery_num);
         mSpeedText.setIncludeFontPadding(false);
+        mLockBack.setOnClickListener(mOnClickListener);
         mButtonE.setOnClickListener(mOnClickListener);
         mButtonN.setOnClickListener(mOnClickListener);
         mButtonS.setOnClickListener(mOnClickListener);
@@ -381,20 +403,21 @@ public class MainActivity extends BaseActivity {
         mSideSetting.setOnClickListener(mOnClickListener);
         mRoundedImageView.setOnClickListener(mOnClickListener);
         mCyclingRecord.setOnClickListener(mOnClickListener);
+        mXbirderHelper.setOnClickListener(mOnClickListener);
         FontsManager.sharedInstance().setSpeedType(mSpeedText);
         FontsManager.sharedInstance().setSpeedType(mBatteryView);
         FontsManager.sharedInstance().setSpeedKMType(mBatteryShow);
         setBattery(100);
         setMode(StatusConfig.CURRENT_MODE, false);
-        mConnectBtn = (ImageView) findViewById(R.id.connect_bluetooth);
-        mConnectBtn.setOnClickListener(mOnClickListener);
+//        mConnectBtn = (ImageView) findViewById(R.id.connect_bluetooth);
+//        mConnectBtn.setOnClickListener(mOnClickListener);
         setMode(StatusConfig.CURRENT_MODE, false);
-        mConnectBtn = (ImageView) findViewById(R.id.connect_bluetooth);
-        mConnectBtn.setOnClickListener(mOnClickListener);
+//        mConnectBtn = (ImageView) findViewById(R.id.connect_bluetooth);
+//        mConnectBtn.setOnClickListener(mOnClickListener);
 
-        if (mConnectionState == connectionStateEnum.isConnected) {
+/*        if (mConnectionState == connectionStateEnum.isConnected) {
             onConectionStateChange(connectionStateEnum.isConnected);
-        }
+        }*/
     }
 
     @Override
@@ -424,7 +447,7 @@ public class MainActivity extends BaseActivity {
                     mLeftDrawer.setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View view, MotionEvent motionEvent) {
-                            switch (motionEvent.getAction()){
+                            switch (motionEvent.getAction()) {
                                 case MotionEvent.ACTION_DOWN:
                                     return true;
                                 case MotionEvent.ACTION_UP:
@@ -437,14 +460,14 @@ public class MainActivity extends BaseActivity {
                     });
                     mDrawerLayout.openDrawer(Gravity.LEFT);
                 }
-            } else if (v == mLockView) {
+            } else if (v == mLockBack || v == mLockView || v == mLockEnd) {
                 if (isLock) {
                     unLock();
                 } else {
                     lock();
                 }
                 isLock = !isLock;
-            }  else if (v == mLightView) {
+            } else if (v == mLightView) {
                 int mode = SkinManager.sharedInstance().getSkinMode();
                 if (mode == SkinConfig.SKIN_MODE_DAY) {
                     SkinManager.sharedInstance().setSkinMode(SkinConfig.SKIN_MODE_NIGHT);
@@ -456,27 +479,33 @@ public class MainActivity extends BaseActivity {
                 initView();
             } else if (v == mSideSetting) {
                 ActivityJumpHelper.startActivity(MainActivity.this, SettingActivity.class);
-            } else if (v == mConnectBtn) {
+            } else if (v == mXbirderHelper) {
+                ActivityJumpHelper.startActivity(MainActivity.this, XBirderHelp.class);
+            } /*else if (v == mConnectBtn) {
                 onSearchClick();
-            } else if (v == mRoundedImageView) {
+            } */else if (v == mRoundedImageView) {
                 ActivityJumpHelper.startActivity(MainActivity.this, MySetting.class);
             }
         }
     };
 
     private void lock() {
-        mLockView.setImageResource(R.drawable.lock_green);
-        mLockView.setScaleType(ImageView.ScaleType.FIT_START);
+//        mLockView.setImageResource(R.drawable.lock_red);
+//        mLockView.setScaleType(ImageView.ScaleType.FIT_START);
+        mLockEnd.setVisibility(View.INVISIBLE);
+        mLockView.setVisibility(View.VISIBLE);
         writeLock(true);
     }
 
     private void unLock() {
-        mLockView.setImageResource(R.drawable.lock_red);
-        mLockView.setScaleType(ImageView.ScaleType.FIT_END);
+/*        mLockEnd.setImageResource(R.drawable.lock_green);
+        mLockEnd.setScaleType(ImageView.ScaleType.FIT_END);*/
+        mLockView.setVisibility(View.INVISIBLE);
+        mLockEnd.setVisibility(View.VISIBLE);
         writeLock(false);
     }
 
-    private void setMode(int mode, boolean needSend){
+    private void setMode(int mode, boolean needSend) {
         StatusConfig.CURRENT_MODE = mode;
         mButtonE.setImageBitmap(getTranBitmap());
         mButtonN.setImageBitmap(getTranBitmap());
@@ -488,9 +517,9 @@ public class MainActivity extends BaseActivity {
         Drawable drawable;
         int[] attrs;
         int level = 1;
-        switch (mode){
+        switch (mode) {
             case StatusConfig.MODE_E:
-                attrs = new int[] { R.attr.btn_e_drawable};
+                attrs = new int[]{R.attr.btn_e_drawable};
                 ta = this.obtainStyledAttributes(attrs);
                 drawable = ta.getDrawable(0);
                 ta.recycle();
@@ -499,7 +528,7 @@ public class MainActivity extends BaseActivity {
                 level = 1;
                 break;
             case StatusConfig.MODE_N:
-                attrs = new int[] { R.attr.btn_n_drawable};
+                attrs = new int[]{R.attr.btn_n_drawable};
                 ta = this.obtainStyledAttributes(attrs);
                 drawable = ta.getDrawable(0);
                 ta.recycle();
@@ -508,7 +537,7 @@ public class MainActivity extends BaseActivity {
                 level = 2;
                 break;
             case StatusConfig.MODE_S:
-                attrs = new int[] { R.attr.btn_s_drawable};
+                attrs = new int[]{R.attr.btn_s_drawable};
                 ta = this.obtainStyledAttributes(attrs);
                 drawable = ta.getDrawable(0);
                 ta.recycle();
@@ -522,7 +551,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public void onConectionStateChange(connectionStateEnum theconnectionStateEnum) {
+    /*public void onConectionStateChange(connectionStateEnum theconnectionStateEnum) {
         mConnectBtn.setImageResource(R.drawable.search);
         AnimationDrawable animationDrawable;
 
@@ -748,7 +777,7 @@ public class MainActivity extends BaseActivity {
                     }
                 }).create();
         mScanDeviceDialog.show();
-    }
+    }*/
 
 
     private void setSpeed(int speed) {
@@ -784,14 +813,13 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-
-        if (mConnectionState == connectionStateEnum.isNull ||
+        /*if (mConnectionState == connectionStateEnum.isNull ||
                 mConnectionState == connectionStateEnum.isToScan) {
             onSearchClick();
             if (mConnectionState != connectionStateEnum.isConnected) {
                 onSearchClick();
             }
-        }
+        }*/
     }
 
     @Override
@@ -921,18 +949,5 @@ public class MainActivity extends BaseActivity {
                 mBluetoothAdapter.stopLeScan(mLeScanCallback);
             }
         }
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()){
-            case MotionEvent.ACTION_DOWN:
-                break;
-            case MotionEvent.ACTION_UP:
-                break;
-            case MotionEvent.ACTION_MOVE:
-                break;
-        }
-        return super.onTouchEvent(event);
     }
 }

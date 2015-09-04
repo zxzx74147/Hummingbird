@@ -35,7 +35,6 @@ import cn.smssdk.SMSSDK;
 public class RegisterActivityFragment extends BaseFragment {
 
 
-
     private ViewPager mViewPager;
     private ImageAdapter mAdapter;
     private View mStep1;
@@ -51,6 +50,7 @@ public class RegisterActivityFragment extends BaseFragment {
     private String mPhoneNum;
     private Handler mHandler;
     private CountDownButton mResend;
+    private boolean msgState = false;
 
     public RegisterActivityFragment() {
         mHandler = new Handler();
@@ -130,14 +130,18 @@ public class RegisterActivityFragment extends BaseFragment {
         public void onClick(View v) {
             if (v == mStep1Code || v == mResend) {
                 mPhoneNum = mStep1PhoneNum.getText().toString();
-                if(isPhoneNumberValid(mPhoneNum)){
-                    SMSSDK.getVerificationCode("86", mPhoneNum);
-                }else{
-                    Toast.makeText(getActivity(),"手机号码不合法",Toast.LENGTH_SHORT);
+                if (isPhoneNumberValid(mPhoneNum)) {
+                    SMSSDK.getVerificationCode("86", mPhoneNum);//获取验证码
+                } else {
+                    Toast.makeText(getActivity(), "手机号码不合法", Toast.LENGTH_SHORT).show();
                 }
             } else if (v == mDone) {
-                String code = mCodeText.getText().toString();
-                SMSSDK.submitVerificationCode("86",mPhoneNum,code);
+                if (msgState == true) {
+                    register();
+                } else {
+                    String code = mCodeText.getText().toString();
+                    SMSSDK.submitVerificationCode("86", mPhoneNum, code);//提交验证码
+                }
             }
         }
     };
@@ -195,12 +199,15 @@ public class RegisterActivityFragment extends BaseFragment {
                             ActivityJumpHelper.startActivity(RegisterActivityFragment.this, BluetoothScanActivity.class);
                             getActivity().finish();
                         } else {
-                            JSONObject msgObj = response.result.getJSONObject("msg");
-                            if ( msgObj != null) {
+                            JSONObject msgObj = response.result.getJSONObject("msg");//获取返回的结果
+                            if (msgObj != null) {
                                 if (msgObj.getString("phone") != null) {
                                     toast(msgObj.getString("phone"));
-                                } else if (msgObj.getString("userName") != null) {
-                                    toast(msgObj.getString("userName"));
+                                } else if (msgObj.getString("userName") == null) {
+//                                    toast(msgObj.getString("userName"));
+                                    toast("用户名不能为空,请重新输入");
+                                } else if (response.result.getString("error").equals("2")) {
+                                    toast("用户名重名,请重新输入");
                                 }
                                 return;
                             }
@@ -218,36 +225,37 @@ public class RegisterActivityFragment extends BaseFragment {
 
 
     private void initSMSSDK() {
-        SMSSDK.initSDK(getActivity(),SMSConfig.APPKEY, SMSConfig.APPSECRET);
+        SMSSDK.initSDK(getActivity(), SMSConfig.APPKEY, SMSConfig.APPSECRET);
         EventHandler eh = new EventHandler() {
 
             @Override
             public void afterEvent(final int event, int result, Object data) {
 
-                if (result == SMSSDK.RESULT_COMPLETE) {
+                if (result == SMSSDK.RESULT_COMPLETE) {//结果正确
                     //回调完成
-                    if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
+                    if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {//提交验证码
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
 //                                toast("提交验证码成功");
+                                msgState = true;
                                 register();
                             }
                         });
 
-                    } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
+                    } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {//得到验证码
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
                                 mViewPager.setCurrentItem(1);
-                                mResend.startCountDown(System.currentTimeMillis()+60000);
+                                mResend.startCountDown(System.currentTimeMillis() + 60000);
                             }
                         });
 
                     } else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {
                         //返回支持发送验证码的国家列表
                     }
-                } else if(result == SMSSDK.RESULT_ERROR){
+                } else if (result == SMSSDK.RESULT_ERROR) {//结果错误
                     mHandler.post(new Runnable() {
                                       @Override
                                       public void run() {
@@ -255,12 +263,11 @@ public class RegisterActivityFragment extends BaseFragment {
                                               toast("提交验证码失败");
                                           } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
                                               toast("获取验证码失败");
-
                                           }
                                       }
                                   }
-                        );
-                }else{
+                    );
+                } else {
                     ((Throwable) data).printStackTrace();
                 }
             }

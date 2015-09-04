@@ -33,91 +33,124 @@
         android:textColor="@color/common_text_gray_day"
         android:textSize="@dimen/text_size_mid" />
 
-    <RelativeLayout
-        android:id="@+id/rl_data"
+    <LinearLayout
+        android:id="@+id/ll_data"
         android:layout_width="fill_parent"
-        android:layout_height="@dimen/default_gap_150"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/user_name"
-        android:layout_marginTop="@dimen/default_gap_39">
+        android:orientation="horizontal">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/default_gap_3"
-            android:background="@color/common_gray_day" />
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="@dimen/default_gap_150"
+            android:layout_marginTop="@dimen/default_gap_39"
+            android:layout_weight="1">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/default_gap_100"
-            android:paddingTop="@dimen/default_gap_29"
-            android:text="0"
-            android:textSize="@dimen/default_gap_75" />
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/default_gap_3"
+                android:background="@color/common_gray_day" />
 
-        <TextView
-            android:id="@+id/tv_licheng"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/default_gap_239"
-            android:paddingTop="@dimen/default_gap_20"
-            android:text="@string/total_distance"
-            android:textSize="@dimen/default_gap_35" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="fill_parent"
+                    android:text="0"
+                    android:textSize="@dimen/default_size_80"
+                    android:gravity="center_vertical|center_horizontal"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_licheng"
-            android:paddingLeft="@dimen/default_gap_268"
-            android:paddingTop="@dimen/default_gap_20"
-            android:text="KM"
-            android:textSize="@dimen/default_gap_35" />
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="fill_parent">
+                    <TextView
+                        android:id="@+id/tv_licheng"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/total_distance"
+                        android:textSize="@dimen/default_size_30"
+                        android:layout_marginTop="@dimen/default_gap_40"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_licheng"
+                        android:text="KM"
+                        android:textSize="@dimen/default_size_30" />
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
 
         <View
             android:layout_width="@dimen/default_gap_3"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/default_gap_150"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/default_gap_39"
             android:background="@color/common_gray_day" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:paddingRight="@dimen/default_gap_199"
-            android:paddingTop="@dimen/default_gap_30"
-            android:text="0"
-            android:textColor="@android:color/holo_red_light"
-            android:textSize="@dimen/default_gap_75" />
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="@dimen/default_gap_150"
+            android:layout_marginTop="@dimen/default_gap_39"
+            android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/tv_jinri"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:paddingRight="@dimen/default_gap_40"
-            android:paddingTop="@dimen/default_gap_20"
-            android:text="今日里程"
-            android:textSize="@dimen/default_gap_35" />
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/default_gap_3"
+                android:background="@color/common_gray_day" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/tv_jinri"
-            android:paddingRight="@dimen/default_gap_80"
-            android:paddingTop="@dimen/default_gap_20"
-            android:text="KM"
-            android:textSize="@dimen/default_gap_35" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="fill_parent"
+                    android:text="0"
+                    android:textSize="@dimen/default_size_80"
+                    android:textColor="@color/cycling_data"
+                    android:gravity="center_vertical|center_horizontal"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/default_gap_3"
-            android:background="@color/common_gray_day" />
-    </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="fill_parent">
+                    <TextView
+                        android:id="@+id/tv_jinri"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/day_total_distance"
+                        android:textSize="@dimen/default_size_30"
+                        android:layout_marginTop="@dimen/default_gap_40"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_jinri"
+                        android:text="KM"
+                        android:textSize="@dimen/default_size_30" />
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view_line"
+        android:layout_below="@+id/ll_data"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/default_gap_3"
+        android:background="@color/common_gray_day" />
 
     <TextView
         android:id="@+id/tv_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rl_data"
+        android:layout_below="@+id/view_line"
         android:layout_marginLeft="@dimen/default_gap_40"
         android:layout_marginTop="@dimen/default_gap_20"
         android:text="一周低碳统计 KM/DAY (6.21-)"
@@ -131,7 +164,7 @@
         android:layout_marginLeft="@dimen/default_gap_40"
         android:layout_marginTop="@dimen/default_gap_20"
         android:text="暂无数据!"
-        android:textColor="@android:color/holo_red_light"
+        android:textColor="@color/cycling_data"
         android:textSize="@dimen/default_size_35" />
 
     <ImageView

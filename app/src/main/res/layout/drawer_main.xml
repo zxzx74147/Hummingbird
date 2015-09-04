@@ -110,28 +110,29 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="62dp"
+        android:id="@+id/rl_lock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/setting_layout"
+        android:background="@drawable/lock_bg"
+        android:layout_marginLeft="50dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="49dp"
-        android:layout_marginRight="49dp"
         android:layout_marginTop="@dimen/default_gap_200">
 
         <ImageView
-            android:id="@+id/lock_bg"
-            android:layout_width="fill_parent"
-            android:layout_height="60dp"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/lock_bg" />
+            android:id="@+id/lock_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/lock_red"/>
 
         <ImageView
-            android:id="@+id/lock_top"
-            android:layout_width="220dp"
+            android:id="@+id/lock_end"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="fitStart"
-            android:src="@drawable/lock_red"
-            android:layout_centerHorizontal="true"/>
+            android:layout_alignParentRight="true"
+            android:visibility="invisible"
+            android:src="@drawable/lock_green"/>
 
         <!--        <com.xbirder.bike.hummingbird.main.side.WiperSwitch
                     android:id="@+id/wiper_switch"

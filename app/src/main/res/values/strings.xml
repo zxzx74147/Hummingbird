@@ -60,6 +60,7 @@
     <string name="input_new_name">输入新的用户名</string>
     <string name="travel_Info">行驶统计</string>
     <string name="total_distance">总里程</string>
+    <string name="day_total_distance">今日里程</string>
     <string name="week_data_info">一周低碳统计 KM/DAY (6.21-)</string>
 
 

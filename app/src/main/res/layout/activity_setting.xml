@@ -29,7 +29,7 @@
        <TextView
            android:id="@+id/phone_number"
            android:layout_width="fill_parent"
-           android:paddingRight="@dimen/default_gap_50"
+           android:paddingRight="@dimen/default_gap_60"
            android:layout_marginLeft="@dimen/default_gap_59"
            style="@style/item_text"
            android:layout_height="@dimen/default_gap_100" />

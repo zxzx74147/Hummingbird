@@ -101,9 +101,9 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/iv_xbirder_map"
+        android:id="@+id/iv_xbirder_family"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:src="@drawable/about" />
+        android:src="@drawable/about_change" />
 
 </LinearLayout>

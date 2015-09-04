@@ -24,7 +24,7 @@
 
                 <ImageButton
                     android:id="@+id/main_setting"
-                    android:layout_width="@dimen/default_gap_70"
+                    android:layout_width="@dimen/default_gap_80"
                     android:layout_height="match_parent"
                     android:background="@null"
                     android:onClick="true"
@@ -60,9 +60,9 @@
             <!-- The main content view -->
             <RelativeLayout
                 android:id="@+id/content_frame"
-                android:layout_marginTop="@dimen/default_gap_120"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/default_gap_120">
 
                 <include layout="@layout/activity_main_layout" />
 

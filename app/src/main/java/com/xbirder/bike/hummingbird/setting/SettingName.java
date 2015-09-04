@@ -61,8 +61,7 @@ public class SettingName extends BaseActivity {
                                         finish();
                                         toast("修改成功");
                                     } else {
-                                        if (response.result.getString("error").equals("1")) {
-                                            if (new_name.getText().equals(AccountManager.sharedInstance().getUsername()))
+                                        if (response.result.getString("error").equals("1") || response.result.getString("error").equals("2")) {
                                                 toast("用户名重名,请重新修改");
                                         }
                                     }

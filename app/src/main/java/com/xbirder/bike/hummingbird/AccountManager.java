@@ -94,6 +94,7 @@ public class AccountManager {
         mToken = token;
         calFinalToken();
         SharedPreferenceHelper.saveString(KEY_TOKEN, mToken);
+        System.out.println("mToken : " + mToken);
     }
 
     public void calFinalToken() {
