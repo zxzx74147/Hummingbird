@@ -14,11 +14,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.baidu.core.net.base.HttpResponse;
+import com.xbirder.bike.hummingbird.AccountManager;
 import com.xbirder.bike.hummingbird.R;
 import com.xbirder.bike.hummingbird.base.BaseFragment;
 import com.xbirder.bike.hummingbird.bluetooth.BluetoothScanActivity;
 import com.xbirder.bike.hummingbird.common.widget.TitleBar;
 import com.xbirder.bike.hummingbird.login.widget.CountDownButton;
+import com.xbirder.bike.hummingbird.main.MainActivity;
 import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
 
 import org.json.JSONObject;
@@ -182,7 +184,7 @@ public class RegisterActivityFragment extends BaseFragment {
     }
 
     private void register() {
-        String username = mUserNameText.getText().toString();
+        final String username = mUserNameText.getText().toString();
         String pass = mPassText.getText().toString();
         String phone = mStep1PhoneNum.getText().toString();
         if (pass.length() != 6) {
@@ -195,8 +197,16 @@ public class RegisterActivityFragment extends BaseFragment {
                 if (response.isSuccess()) {
                     try {
                         if (response.result.getString("error").equals("0")) {
-//                          AccountManager.sharedInstance().setToken(response.result.user.accessToken);
-                            ActivityJumpHelper.startActivity(RegisterActivityFragment.this, BluetoothScanActivity.class);
+                            JSONObject userObj = response.result.getJSONObject("user");
+                            String phone = userObj.getString("phone");
+                            String userName = userObj.getString("userName");
+                            String token = userObj.getString("accessToken");
+                            AccountManager.sharedInstance().setUser(phone);
+                            AccountManager.sharedInstance().setUserName(userName);
+                            AccountManager.sharedInstance().setToken(token);
+                            AccountManager.sharedInstance().calFinalToken();
+                            AccountManager.sharedInstance().setPass(mPassText.getText().toString());
+                            ActivityJumpHelper.startActivity(RegisterActivityFragment.this, MainActivity.class);
                             getActivity().finish();
                         } else {
                             JSONObject msgObj = response.result.getJSONObject("msg");//获取返回的结果
@@ -208,6 +218,8 @@ public class RegisterActivityFragment extends BaseFragment {
                                     toast("用户名不能为空,请重新输入");
                                 } else if (response.result.getString("error").equals("2")) {
                                     toast("用户名重名,请重新输入");
+                                } else {
+                                    toast("账号注册失败");
                                 }
                                 return;
                             }

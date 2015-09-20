@@ -10,7 +10,11 @@ import com.xbirder.bike.hummingbird.login.data.LoginData;
 
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.Timer;
 
 /**
  * Created by zhengxin on 2015/7/13.
@@ -27,15 +31,21 @@ public class RegisterRequest extends HttpJsonRequest<JSONObject> {
     public void setParam(String phoneNum,String password,String username){
         this.mPhoneNum = phoneNum;
         this.mPassword = password;
-        this.mUserName = username;
+        try {
+            this.mUserName = URLEncoder.encode(username, "UTF-8");
+        } catch (UnsupportedEncodingException exception) {
+            this.mUserName = username;
+        }
     }
 
     @Override
     protected void onSetParameter(HashMap<String, String> params) {
+        String timeStr = String.valueOf(System.currentTimeMillis());
         params.put("r",NetworkConfig.REGISTER_ADDRESS);
         params.put("phone",mPhoneNum);
         params.put("password",mPassword);
         params.put("userName",mUserName);
+        params.put("timestamp", timeStr);
     }
 
     @Override

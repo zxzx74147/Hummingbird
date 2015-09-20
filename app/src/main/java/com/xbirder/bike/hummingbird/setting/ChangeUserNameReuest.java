@@ -8,6 +8,8 @@ import com.xbirder.bike.hummingbird.config.NetworkConfig;
 
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 /**
@@ -22,14 +24,17 @@ public class ChangeUserNameReuest extends HttpJsonRequest<JSONObject> {
     }
 
     public void setParam(String userName) {
-        this.mUserName = userName;
+        try {
+            this.mUserName = URLEncoder.encode(userName, "UTF-8");
+        } catch (UnsupportedEncodingException exception) {
+            this.mUserName = userName;
+        }
     }
 
     @Override
     protected void onSetParameter(HashMap<String, String> params) {
         params.put("r", NetworkConfig.USERNAME_ADDRESS);
         params.put("token", AccountManager.sharedInstance().getToken());
-
         params.put("userName", mUserName);
         System.out.print("mUserName : " + AccountManager.sharedInstance().getToken());
     }

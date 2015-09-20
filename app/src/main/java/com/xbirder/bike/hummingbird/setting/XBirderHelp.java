@@ -19,7 +19,7 @@ public class XBirderHelp extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.xbirder_help);
         mHelp = (WebView)findViewById(R.id.wv_help);
-        mHelp.loadUrl("http://baidu.com");
+        mHelp.loadUrl("http://www.xbirder.com/help.aspx");
         mHelp.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {

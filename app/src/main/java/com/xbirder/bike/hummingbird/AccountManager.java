@@ -2,6 +2,7 @@ package com.xbirder.bike.hummingbird;
 
 
 import com.xbirder.bike.hummingbird.bluetooth.BluetoothLeService;
+import com.xbirder.bike.hummingbird.bluetooth.XBirdBluetoothConfig;
 import com.xbirder.bike.hummingbird.util.SharedPreferenceHelper;
 
 /**

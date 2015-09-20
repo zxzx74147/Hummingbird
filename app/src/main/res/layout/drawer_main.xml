@@ -23,7 +23,7 @@
         android:layout_below="@+id/head"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/default_gap_25"
-        android:text="Virgil"
+        android:text=""
         android:textColor="@color/common_text_gray_day"
         android:textSize="@dimen/text_size_name" />
 

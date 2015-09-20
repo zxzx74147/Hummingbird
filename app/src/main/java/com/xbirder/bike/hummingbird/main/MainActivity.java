@@ -191,16 +191,16 @@ public class MainActivity extends BaseActivity {
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 mConnected = true;
                 AccountManager.sharedInstance().setConnectBluetooth(mDeviceName);
-                //onConectionStateChange(connectionStateEnum.isConnected);
+                onConectionStateChange(connectionStateEnum.isConnected);
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
-                //onConectionStateChange(connectionStateEnum.isDisconnecting);
+                onConectionStateChange(connectionStateEnum.isDisconnecting);
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.
                 displayGattServices(HuApplication.sharedInstance().XBirdBluetoothManager().getBluetoothLeService().getSupportedGattServices());
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 byte[] bytes = intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA);
-                //read(bytes);
+                read(bytes);
             }
         }
     };
@@ -235,7 +235,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void writeConnectInfo(boolean isUseToken) {
-        byte[] value = new byte[23];
+        byte[] value = new byte[20];
         String username = AccountManager.sharedInstance().getUser().trim();
         String pass = AccountManager.sharedInstance().getPass().trim();
         String token = AccountManager.sharedInstance().getFinalToken().trim();
@@ -248,7 +248,7 @@ public class MainActivity extends BaseActivity {
         byte[] totalBytes = total.getBytes();
         value[0] = (byte) (XBirdBluetoothConfig.PREFIX & 0xFF);
         value[1] = (byte) (XBirdBluetoothConfig.CONNECT & 0xFF);
-        value[22] = (byte) (XBirdBluetoothConfig.END & 0xFF);
+        value[19] = (byte) (XBirdBluetoothConfig.END & 0xFF);
         for (int i = 0; i < total.length(); i++) {
             value[i + 2] = (byte) (totalBytes[i] & 0xFF - 0x30);
         }
@@ -285,7 +285,7 @@ public class MainActivity extends BaseActivity {
     }
 
 
-/*    private void read(byte[] bytes) {
+    private void read(byte[] bytes) {
         if (bytes == null || bytes.length < 3) return;
         if (bytes[0] == XBirdBluetoothConfig.PREFIX && bytes[bytes.length - 1] == XBirdBluetoothConfig.END) {
             switch (bytes[1]) {
@@ -316,7 +316,7 @@ public class MainActivity extends BaseActivity {
                     break;
             }
         }
-    }*/
+    }
 
     private void setCharacteristicProperty() {
         if (HuApplication.sharedInstance().XBirdBluetoothManager().getCurrentCharacteristic() == null)
@@ -409,15 +409,12 @@ public class MainActivity extends BaseActivity {
         FontsManager.sharedInstance().setSpeedKMType(mBatteryShow);
         setBattery(100);
         setMode(StatusConfig.CURRENT_MODE, false);
-//        mConnectBtn = (ImageView) findViewById(R.id.connect_bluetooth);
-//        mConnectBtn.setOnClickListener(mOnClickListener);
-        setMode(StatusConfig.CURRENT_MODE, false);
-//        mConnectBtn = (ImageView) findViewById(R.id.connect_bluetooth);
-//        mConnectBtn.setOnClickListener(mOnClickListener);
+        mConnectBtn = (ImageView) findViewById(R.id.connect_bluetooth);
+        mConnectBtn.setOnClickListener(mOnClickListener);
 
-/*        if (mConnectionState == connectionStateEnum.isConnected) {
+        if (mConnectionState == connectionStateEnum.isConnected) {
             onConectionStateChange(connectionStateEnum.isConnected);
-        }*/
+        }
     }
 
     @Override
@@ -481,9 +478,9 @@ public class MainActivity extends BaseActivity {
                 ActivityJumpHelper.startActivity(MainActivity.this, SettingActivity.class);
             } else if (v == mXbirderHelper) {
                 ActivityJumpHelper.startActivity(MainActivity.this, XBirderHelp.class);
-            } /*else if (v == mConnectBtn) {
+            } else if (v == mConnectBtn) {
                 onSearchClick();
-            } */else if (v == mRoundedImageView) {
+            } else if (v == mRoundedImageView) {
                 ActivityJumpHelper.startActivity(MainActivity.this, MySetting.class);
             }
         }
@@ -551,7 +548,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    /*public void onConectionStateChange(connectionStateEnum theconnectionStateEnum) {
+    public void onConectionStateChange(connectionStateEnum theconnectionStateEnum) {
         mConnectBtn.setImageResource(R.drawable.search);
         AnimationDrawable animationDrawable;
 
@@ -777,7 +774,7 @@ public class MainActivity extends BaseActivity {
                     }
                 }).create();
         mScanDeviceDialog.show();
-    }*/
+    }
 
 
     private void setSpeed(int speed) {
@@ -813,13 +810,13 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-        /*if (mConnectionState == connectionStateEnum.isNull ||
+        if (mConnectionState == connectionStateEnum.isNull ||
                 mConnectionState == connectionStateEnum.isToScan) {
             onSearchClick();
             if (mConnectionState != connectionStateEnum.isConnected) {
                 onSearchClick();
             }
-        }*/
+        }
     }
 
     @Override

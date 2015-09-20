@@ -87,6 +87,10 @@
             android:name=".Cycling.CyclingRecords"
             android:label="CyclingRecords"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".setting.XBirderHelp"
+            android:label="XBirderHelp"
+            android:screenOrientation="portrait"></activity>
 
         <service
             android:name=".bluetooth.BluetoothLeService"
