@@ -710,8 +710,8 @@ public class MainActivity extends BaseActivity {
                         Log.d(TAG, "Connect request success");
                         mConnectionState = connectionStateEnum.isConnecting;
                         onConectionStateChange(mConnectionState);
-                        mHandler.postDelayed(mConnectingOverTimeRunnable, 10000);
-                    } else {
+//                        mHandler.postDelayed(mConnectingOverTimeRunnable, 10000);
+                    } else { 
                         Log.d(TAG, "Connect request fail");
                         mConnectionState = connectionStateEnum.isToScan;
                         onConectionStateChange(mConnectionState);
