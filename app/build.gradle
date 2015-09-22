@@ -49,6 +49,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.makeramen:roundedimageview:2.1.1'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
+    //compile 'org.quanqi:mpandroidchart:1.7.5'
+    compile files('libs/mpandroidchartlibrary-1-7-4.jar')
     compile files('libs/MobTools.jar')
     compile files('libs/SMSSDK-1.2.2.jar')
 }

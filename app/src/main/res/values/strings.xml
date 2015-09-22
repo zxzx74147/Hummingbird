@@ -63,6 +63,12 @@
     <string name="day_total_distance">今日里程</string>
     <string name="week_data_info">一周低碳统计 KM/DAY (6.21-)</string>
 
+    <string name="today_mileage">今日里程 KM</string>
+    <string name="total_mileage">总里程 KM</string>
+    <string name="today_time">今日时间 Mins</string>
+    <string name="reduce_carbon_emissions">减少碳排放</string>
+
+
 
     <string name="ble_not_supported">BLE is not supported</string>
     <string name="label_data">Data:</string>

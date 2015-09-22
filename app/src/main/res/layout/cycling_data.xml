@@ -10,6 +10,31 @@
         android:layout_height="@dimen/title_bar_height"
         app:title_text="@string/travel_Info" />
 
+    <TextView
+        android:id="@+id/tv_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_bar"
+        android:layout_marginLeft="@dimen/default_gap_40"
+        android:layout_marginTop="@dimen/default_gap_100"
+        android:text="一周低碳统计 KM/DAY (6.21-)"
+        android:textSize="@dimen/default_size_35"
+        android:layout_centerHorizontal="true"
+        />
+
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/chart"
+        android:layout_above="@+id/lc_data"
+        android:layout_below="@+id/tv_data"
+        android:layout_marginBottom="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/default_gap_20"
+        android:scaleType="centerInside"/>
+
+<!--
     <com.makeramen.roundedimageview.RoundedImageView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/head"
         android:layout_width="@dimen/default_gap_200"
@@ -26,18 +51,19 @@
         android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/head"
+        android:layout_below="@+id/chart"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/default_gap_20"
         android:text="Virgil"
         android:textColor="@color/common_text_gray_day"
         android:textSize="@dimen/text_size_mid" />
-
+    -->
+    <!--
     <LinearLayout
         android:id="@+id/ll_data"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/user_name"
+        android:layout_above="@+id/view_line"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -141,41 +167,299 @@
 
     <View
         android:id="@+id/view_line"
-        android:layout_below="@+id/ll_data"
+        android:layout_above="@+id/time_selection_button_layout"
+        android:layout_marginBottom="40dp"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/default_gap_3"
         android:background="@color/common_gray_day" />
+-->
 
-    <TextView
-        android:id="@+id/tv_data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/view_line"
-        android:layout_marginLeft="@dimen/default_gap_40"
-        android:layout_marginTop="@dimen/default_gap_20"
-        android:text="一周低碳统计 KM/DAY (6.21-)"
-        android:textSize="@dimen/default_size_35" />
-
-    <TextView
-        android:id="@+id/tv_no_data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_data"
-        android:layout_marginLeft="@dimen/default_gap_40"
-        android:layout_marginTop="@dimen/default_gap_20"
-        android:text="暂无数据!"
-        android:textColor="@color/cycling_data"
-        android:textSize="@dimen/default_size_35" />
-
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_no_data"
-        android:src="@drawable/statistic_bg_big" />
-
-    <View
+    <RelativeLayout
+        android:id="@+id/lc_data"
+        android:layout_above="@+id/time_selection_RadioGroup"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/default_gap_3"
-        android:background="@color/common_gray_day" />
+        android:layout_height="@dimen/default_gap_300"
+        android:layout_marginBottom="@dimen/default_gap_39">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_gap_3"
+            android:background="@color/common_gray_day" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_gap_3"
+            android:layout_centerVertical="true"
+            android:background="@color/common_gray_day" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_gap_3"
+            android:background="@color/common_gray_day"
+            android:layout_alignParentBottom="true"/>
+        <View
+            android:layout_width="@dimen/default_gap_3"
+            android:layout_height="@dimen/default_gap_300"
+            android:background="@color/common_gray_day"
+            android:layout_centerHorizontal="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/default_gap_150"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/today_mileage"
+                        android:textSize="@dimen/default_size_30"
+                        android:layout_marginTop="@dimen/default_gap_10"
+                        android:gravity="center_vertical|center_horizontal"
+                        />
+                    <TextView
+                        android:id="@+id/today_mileage_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="20"
+                        android:textSize="@dimen/default_size_80"
+                        android:textColor="@color/cycling_data"
+                        android:gravity="center_vertical|center_horizontal"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/default_gap_150"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/total_mileage"
+                        android:textSize="@dimen/default_size_30"
+                        android:layout_marginTop="@dimen/default_gap_10"
+                        android:gravity="center_vertical|center_horizontal"
+                        />
+                    <TextView
+                        android:id="@+id/total_mileage_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="20"
+                        android:textSize="@dimen/default_size_80"
+                        android:textColor="@color/cycling_data"
+                        android:gravity="center_vertical|center_horizontal"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/default_gap_150"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/today_time"
+                        android:textSize="@dimen/default_size_30"
+                        android:layout_marginTop="@dimen/default_gap_10"
+                        android:gravity="center_vertical|center_horizontal"
+                        />
+                    <TextView
+                        android:id="@+id/today_time_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="20"
+                        android:textSize="@dimen/default_size_80"
+                        android:textColor="@color/cycling_data"
+                        android:gravity="center_vertical|center_horizontal"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/default_gap_150"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/reduce_carbon_emissions"
+                        android:textSize="@dimen/default_size_30"
+                        android:layout_marginTop="@dimen/default_gap_10"
+                        android:gravity="center_vertical|center_horizontal"
+                        />
+                    <TextView
+                        android:id="@+id/reduce_carbon_emissions_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="20"
+                        android:textSize="@dimen/default_size_80"
+                        android:textColor="@color/cycling_data"
+                        android:gravity="center_vertical|center_horizontal"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+
+    <!--
+        <TextView
+            android:id="@+id/tv_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view_line"
+            android:layout_marginLeft="@dimen/default_gap_40"
+            android:layout_marginTop="@dimen/default_gap_20"
+            android:text="一周低碳统计 KM/DAY (6.21-)"
+            android:textSize="@dimen/default_size_35" />
+
+        <TextView
+            android:id="@+id/tv_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_data"
+            android:layout_marginLeft="@dimen/default_gap_40"
+            android:layout_marginTop="@dimen/default_gap_20"
+            android:text="暂无数据!"
+            android:textColor="@color/cycling_data"
+            android:textSize="@dimen/default_size_35" />
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_no_data"
+            android:src="@drawable/statistic_bg_big" />
+    -->
+
+
+    <!--<LinearLayout-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_marginBottom="20dp"-->
+        <!--android:id="@+id/time_selection_button_layout"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerHorizontal="true">-->
+        <!--<Button-->
+            <!--android:state_pressed="true"-->
+            <!--android:id="@+id/mode_week"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="周"-->
+            <!--android:background="@drawable/selector_cycling"-->
+            <!--/>-->
+
+        <!--&lt;!&ndash;<View&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="0dip"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="1dip"/>&ndash;&gt;-->
+      <!--&lt;!&ndash;  <ImageView-->
+            <!--android:src="?attr/btn_n_drawable"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:id="@+id/mode_month"-->
+            <!--android:layout_height="wrap_content" />-->
+       <!--&ndash;&gt;-->
+        <!--<Button-->
+
+            <!--android:id="@+id/mode_month"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="月"-->
+            <!--android:background="@drawable/selector_cycling"-->
+            <!--/>-->
+        <!--&lt;!&ndash;<View&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="0dip"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="1dip"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;<ImageView&ndash;&gt;-->
+            <!--&lt;!&ndash;android:src="?attr/btn_s_drawable"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:id="@+id/mode_year"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_alignParentRight="true"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:scaleType="fitEnd"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="wrap_content" />&ndash;&gt;-->
+        <!--<Button-->
+
+            <!--android:id="@+id/mode_year"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="年"-->
+            <!--android:background="@drawable/selector_cycling"-->
+            <!--/>-->
+    <!--</LinearLayout>-->
+
+
+    <RadioGroup
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/time_selection_RadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true">
+        <RadioButton
+            android:id="@+id/btn_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_cycling"
+            android:text="周"
+            android:textColor="@color/selector_color_cycling"
+            android:textSize="17.0sp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:checked="true"
+            android:button="@null"
+            />
+        <RadioButton
+            android:id="@+id/btn_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="月"
+            android:textSize="17.0sp"
+            android:textColor="@color/selector_color_cycling"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:button="@null"
+            android:background="@drawable/selector_cycling"
+            />
+        <RadioButton
+            android:id="@+id/btn_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="年"
+            android:textSize="17.0sp"
+            android:textColor="@color/selector_color_cycling"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:button="@null"
+            android:background="@drawable/selector_cycling"
+            />
+    </RadioGroup>
+
+
+
+
 
 </RelativeLayout>
