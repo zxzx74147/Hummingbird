@@ -65,8 +65,8 @@
 
     <string name="today_mileage">今日里程 KM</string>
     <string name="total_mileage">总里程 KM</string>
-    <string name="today_time">今日时间 Mins</string>
-    <string name="reduce_carbon_emissions">减少碳排放</string>
+    <string name="today_time">今日时间</string>
+    <string name="reduce_carbon_emissions">减少碳排放 KG</string>
 
 
 

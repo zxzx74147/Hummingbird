@@ -39,17 +39,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.core.net.base.HttpResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.xbirder.bike.hummingbird.AccountManager;
-import com.xbirder.bike.hummingbird.Cycling.CyclingRecords;
+import com.xbirder.bike.hummingbird.cycling.CyclingRecords;
 import com.xbirder.bike.hummingbird.R;
 import com.xbirder.bike.hummingbird.base.BaseActivity;
 import com.xbirder.bike.hummingbird.bluetooth.BluetoothLeService;
 import com.xbirder.bike.hummingbird.bluetooth.SampleGattAttributes;
 import com.xbirder.bike.hummingbird.bluetooth.XBirdBluetoothConfig;
-import com.xbirder.bike.hummingbird.bluetooth.XBirdBluetoothManager;
-import com.xbirder.bike.hummingbird.common.widget.FixViewPager;
 import com.xbirder.bike.hummingbird.fonts.FontsManager;
+import com.xbirder.bike.hummingbird.login.LoginRequest;
 import com.xbirder.bike.hummingbird.main.side.WiperSwitch;
 import com.xbirder.bike.hummingbird.main.widget.BatteryRollView;
 import com.xbirder.bike.hummingbird.setting.MySetting;
@@ -61,7 +61,12 @@ import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
 
 import com.xbirder.bike.hummingbird.HuApplication;
 
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends BaseActivity {
@@ -78,6 +83,7 @@ public class MainActivity extends BaseActivity {
     private String mDeviceAddress;
 
     private boolean mConnected = false;
+    private static final int REQUEST_ENABLE_BT = 1;
 
     private TextView mSpeedText;
     private FrameLayout mLeftDrawer;
@@ -109,12 +115,21 @@ public class MainActivity extends BaseActivity {
     private ImageView mLockEnd;
     private boolean isLock = true;
     private boolean mIsUseToken = true;
+    private boolean mIsFirstConnect = false;
+    private boolean mIsChangeMode = false;
+    private boolean mIsReconnect = false;
+    private boolean mNeedToast = true;
 
     private BluetoothAdapter mBluetoothAdapter;
     private boolean mScanning = false;
     private Handler mHandler;
     private LeDeviceListAdapter mLeDeviceListAdapter = null;
     private AlertDialog mScanDeviceDialog;
+
+    private int mTotalDistance = 0;
+    private int mTotalTime = 0;
+    private int mDisEdge = 0;
+    private int mTimeEdge = 0;
 
     public enum connectionStateEnum {isNull, isScanning, isToScan, isConnecting, isConnected, isDisconnecting}
 
@@ -125,13 +140,15 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mHandler = new Handler();
+
+        sendCurrentRidingDate();
+
         if (!initiate()) {
             Toast.makeText(this, R.string.error_bluetooth_not_supported,
                     Toast.LENGTH_SHORT).show();
             return;
         }
-
-        mHandler = new Handler();
 
 //        initScanAlert();
 
@@ -190,11 +207,16 @@ public class MainActivity extends BaseActivity {
             final String action = intent.getAction();
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 mConnected = true;
+                mIsReconnect = false;
                 AccountManager.sharedInstance().setConnectBluetooth(mDeviceName);
                 onConectionStateChange(connectionStateEnum.isConnected);
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
+                mIsFirstConnect = false;
                 onConectionStateChange(connectionStateEnum.isDisconnecting);
+                if (mIsReconnect == false) {
+                    mHandler.postDelayed(mDisonnectingOverTimeRunnable, 1000);
+                }
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.
                 displayGattServices(HuApplication.sharedInstance().XBirdBluetoothManager().getBluetoothLeService().getSupportedGattServices());
@@ -284,6 +306,13 @@ public class MainActivity extends BaseActivity {
         HuApplication.sharedInstance().XBirdBluetoothManager().sendToBluetooth(value);
     }
 
+    private Runnable mChangingModeRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            mIsChangeMode = false;
+        }
+    };
 
     private void read(byte[] bytes) {
         if (bytes == null || bytes.length < 3) return;
@@ -297,6 +326,7 @@ public class MainActivity extends BaseActivity {
                         } else {
                             toast("连接锋鸟出错");
                             HuApplication.sharedInstance().XBirdBluetoothManager().getBluetoothLeService().disconnect();
+//                            mIsReconnect = true;
                             mHandler.postDelayed(mDisonnectingOverTimeRunnable, 1000);
 
                             mConnectionState = connectionStateEnum.isDisconnecting;
@@ -307,15 +337,146 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
                 case XBirdBluetoothConfig.INFO:
+                    int mode = bytes[2];
+                    if (mIsFirstConnect == false) {
+                        mIsFirstConnect = true;
+                        if (mode != StatusConfig.CURRENT_MODE) {
+                            setMode(StatusConfig.CURRENT_MODE, true);
+                        }
+                    }
+                    if (mode != StatusConfig.CURRENT_MODE && !mIsChangeMode) {
+                        setMode(StatusConfig.CURRENT_MODE, false);
+                    }
                     int battery = bytes[4];
                     int speed = bytes[5];
                     setBattery(battery);
                     setSpeed(speed);
+
+                    int tempDistance = 0;
+                    for (int i = 6; i < 10; i++) {
+                        tempDistance = 256 * tempDistance + bytes[i];
+                    }
+
+                    int tempTime = 0;
+                    for (int i = 14; i < 18; i++) {
+                        tempTime = 256 * tempTime + bytes[i];
+                    }
+                    setStoreRidingData(tempDistance, tempTime);
+
                     break;
                 default:
                     break;
             }
         }
+    }
+
+    private void setStoreRidingData(int dis, int time) {
+        if (dis == mTotalDistance) {
+            return;
+        }
+
+        String storeDate = AccountManager.sharedInstance().getStoreDate();
+        final String currentDate = getTodayString();
+        String storeDis = AccountManager.sharedInstance().getStoreDistance();
+        String storeTime = AccountManager.sharedInstance().getStoreRuntime();
+
+        if (storeDate == null || storeDate == "") {
+            AccountManager.sharedInstance().setStoreDate(currentDate);
+            AccountManager.sharedInstance().setStoreDistance("0");
+            AccountManager.sharedInstance().setStoreRuntime("0");
+        }
+
+        if (!currentDate.equals(storeDate)) {
+            //send to server
+            RidingRequest request = new RidingRequest(new HttpResponse.Listener<JSONObject>() {
+                @Override
+                public void onResponse(HttpResponse<JSONObject> response) {
+                    if (response.isSuccess()) {
+                        try {
+                            if (response.result.getString("error").equals("0")) {
+                                AccountManager.sharedInstance().setStoreDate(currentDate);
+                                AccountManager.sharedInstance().setStoreDistance("0");
+                                AccountManager.sharedInstance().setStoreRuntime("0");
+                            } else {
+                                toast("失败");
+                            }
+                        } catch (Exception e) {
+
+                        }
+                    }
+                }
+            });
+            String token = AccountManager.sharedInstance().getToken();
+            request.setParam(storeDate, storeDis, storeTime, token);
+            sendRequest(request);
+        }
+
+        int localDisInt = Integer.parseInt(storeDis);
+        int localTimeInt = Integer.parseInt(storeTime);
+
+        int tempDisEdge = dis - localDisInt - mDisEdge;
+        if (Math.abs(tempDisEdge) > 1) {
+            mDisEdge = dis - localDisInt;
+            mTimeEdge = time - localTimeInt;
+        }
+        mTotalDistance = dis - mDisEdge;
+        if (mTotalDistance < 0) {
+            mTotalDistance = 0;
+        }
+        mTotalTime = time - mTimeEdge;
+        if (mTotalTime < 0) {
+            mTotalTime = 0;
+        }
+
+        AccountManager.sharedInstance().setStoreDistance(String.valueOf(mTotalDistance));
+        AccountManager.sharedInstance().setStoreRuntime(String.valueOf(mTotalTime));
+    }
+
+    private void sendCurrentRidingDate () {
+        String storeDate = AccountManager.sharedInstance().getStoreDate();
+        String storeDis = AccountManager.sharedInstance().getStoreDistance();
+        String storeTime = AccountManager.sharedInstance().getStoreRuntime();
+
+        int storeDisInt = Integer.parseInt(storeDis) * 100;
+        storeDis = String.valueOf(storeDisInt);
+
+        if (storeDate == null || storeDate == "") {
+            return;
+        }
+
+        if (storeDisInt >= 1) {
+            //send to server
+            RidingRequest request = new RidingRequest(new HttpResponse.Listener<JSONObject>() {
+                @Override
+                public void onResponse(HttpResponse<JSONObject> response) {
+                    if (response.isSuccess()) {
+                        try {
+                            if (response.result.getString("error").equals("0")) {
+                                AccountManager.sharedInstance().setStoreDate("");
+                                AccountManager.sharedInstance().setStoreDistance("0");
+                                AccountManager.sharedInstance().setStoreRuntime("0");
+                            } else {
+                                toast("失败");
+                            }
+                        } catch (Exception e) {
+
+                        }
+                    }
+                }
+            });
+            String token = AccountManager.sharedInstance().getToken();
+            request.setParam(storeDate, storeDis, storeTime, token);
+            sendRequest(request);
+        }
+    }
+
+    private String getTodayString () {
+        Date today = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd"); //设置时间格式
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(today);
+        String todayStr = sdf.format(cal.getTime());
+        return todayStr;
     }
 
     private void setCharacteristicProperty() {
@@ -340,21 +501,6 @@ public class MainActivity extends BaseActivity {
         screenWidth = dm.widthPixels;//屏幕的宽
         screenHeight = dm.heightPixels;//屏幕的高
         System.out.println("screenWidth : " + screenWidth + "screenHeight : " + screenHeight);//screenWidth : 720
-/*        wiperSwitch = (WiperSwitch) findViewById(R.id.wiper_switch);
-        wiperSwitch.setImageResource(R.drawable.lock_bg, R.drawable.lock_green_change);
-        wiperSwitch.setOnSwitchStateListener(new WiperSwitch.OnSwitchListener() {
-            @Override
-            public void onSwitched(boolean isSwitchOn) {
-                if (isSwitchOn) {
-                    wiperSwitch.setImageResource(R.drawable.lock_bg, R.drawable.lock_red_change);
-                    ViewGroup.LayoutParams vLp = wiperSwitch.getLayoutParams();
-                    unLock();
-                } else {
-                    wiperSwitch.setImageResource(R.drawable.lock_bg, R.drawable.lock_green_change);
-                    lock();
-                }
-            }
-        });*/
         mRoundedImageView = (RoundedImageView) findViewById(R.id.head);
         mSpeedText = (TextView) findViewById(R.id.speed_num);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -408,6 +554,11 @@ public class MainActivity extends BaseActivity {
         FontsManager.sharedInstance().setSpeedType(mBatteryView);
         FontsManager.sharedInstance().setSpeedKMType(mBatteryShow);
         setBattery(100);
+
+        String storeModeStr = AccountManager.sharedInstance().getLastSpeedLevel();
+        if (storeModeStr != "") {
+            StatusConfig.CURRENT_MODE = Integer.parseInt(storeModeStr);
+        }
         setMode(StatusConfig.CURRENT_MODE, false);
         mConnectBtn = (ImageView) findViewById(R.id.connect_bluetooth);
         mConnectBtn.setOnClickListener(mOnClickListener);
@@ -487,16 +638,12 @@ public class MainActivity extends BaseActivity {
     };
 
     private void lock() {
-//        mLockView.setImageResource(R.drawable.lock_red);
-//        mLockView.setScaleType(ImageView.ScaleType.FIT_START);
         mLockEnd.setVisibility(View.INVISIBLE);
         mLockView.setVisibility(View.VISIBLE);
         writeLock(true);
     }
 
     private void unLock() {
-/*        mLockEnd.setImageResource(R.drawable.lock_green);
-        mLockEnd.setScaleType(ImageView.ScaleType.FIT_END);*/
         mLockView.setVisibility(View.INVISIBLE);
         mLockEnd.setVisibility(View.VISIBLE);
         writeLock(false);
@@ -513,7 +660,8 @@ public class MainActivity extends BaseActivity {
         TypedArray ta;
         Drawable drawable;
         int[] attrs;
-        int level = 1;
+        int level = mode;
+        AccountManager.sharedInstance().setLastSpeedLevel(String.valueOf(level));
         switch (mode) {
             case StatusConfig.MODE_E:
                 attrs = new int[]{R.attr.btn_e_drawable};
@@ -522,7 +670,6 @@ public class MainActivity extends BaseActivity {
                 ta.recycle();
                 mButtonE.setImageDrawable(drawable);
                 mTextE.setEnabled(true);
-                level = 1;
                 break;
             case StatusConfig.MODE_N:
                 attrs = new int[]{R.attr.btn_n_drawable};
@@ -531,7 +678,6 @@ public class MainActivity extends BaseActivity {
                 ta.recycle();
                 mButtonN.setImageDrawable(drawable);
                 mTextN.setEnabled(true);
-                level = 2;
                 break;
             case StatusConfig.MODE_S:
                 attrs = new int[]{R.attr.btn_s_drawable};
@@ -540,11 +686,12 @@ public class MainActivity extends BaseActivity {
                 ta.recycle();
                 mButtonS.setImageDrawable(drawable);
                 mTextS.setEnabled(true);
-                level = 3;
                 break;
         }
         if (needSend) {
+            mIsChangeMode = true;
             writeSpeedInfo(level);
+            mHandler.postDelayed(mChangingModeRunnable, 500);
         }
     }
 
@@ -571,9 +718,12 @@ public class MainActivity extends BaseActivity {
                 animationDrawable.start();
                 break;
             case isConnecting:
+//                animationDrawable = (AnimationDrawable) mConnectBtn.getDrawable();
+//                animationDrawable.stop();
+//                mConnectBtn.setImageResource(R.drawable.search_unable);
+                mConnectBtn.setBackgroundResource(R.drawable.search);
                 animationDrawable = (AnimationDrawable) mConnectBtn.getDrawable();
-                animationDrawable.stop();
-                mConnectBtn.setImageResource(R.drawable.search_unable);
+                animationDrawable.start();
                 break;
             case isConnected:
                 animationDrawable = (AnimationDrawable) mConnectBtn.getDrawable();
@@ -611,7 +761,6 @@ public class MainActivity extends BaseActivity {
             case isScanning:
 
                 break;
-
             case isConnecting:
 
                 break;
@@ -624,7 +773,6 @@ public class MainActivity extends BaseActivity {
                 mHandler.postDelayed(mSearchOverTimeRunnable, 3000);
                 scanLeDevice(true);
                 break;
-
             default:
                 break;
         }
@@ -640,8 +788,9 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 HuApplication.sharedInstance().XBirdBluetoothManager().getBluetoothLeService().disconnect();
+                mIsReconnect = true;
                 mHandler.postDelayed(mDisonnectingOverTimeRunnable, 1000);
-
+                mIsFirstConnect = false;
                 mConnectionState = connectionStateEnum.isDisconnecting;
                 onConectionStateChange(mConnectionState);
             }
@@ -675,6 +824,7 @@ public class MainActivity extends BaseActivity {
                 mConnectionState = connectionStateEnum.isToScan;
             onConectionStateChange(mConnectionState);
             HuApplication.sharedInstance().XBirdBluetoothManager().getBluetoothLeService().close();
+            mNeedToast = true;
             onSearchClick();
         }
     };
@@ -686,9 +836,13 @@ public class MainActivity extends BaseActivity {
             if (mConnectionState == connectionStateEnum.isScanning)
                 mConnectionState = connectionStateEnum.isToScan;
             if (mLeDeviceListAdapter.getCount() == 0) {
-                toast("搜索不到锋鸟:(");
+                if (mNeedToast) {
+                    toast("搜索不到锋鸟:(");
+                    mNeedToast = false;
+                }
                 scanLeDevice(false);
                 onConectionStateChange(connectionStateEnum.isNull);
+                onSearchClick();
             } else if (mLeDeviceListAdapter.getCount() == 1) {
                 String lastConnectBluetooth = AccountManager.sharedInstance().getConnectBluetooth();
                 BluetoothDevice device = mLeDeviceListAdapter.getDevice(0);
@@ -711,7 +865,7 @@ public class MainActivity extends BaseActivity {
                         mConnectionState = connectionStateEnum.isConnecting;
                         onConectionStateChange(mConnectionState);
 //                        mHandler.postDelayed(mConnectingOverTimeRunnable, 10000);
-                    } else { 
+                    } else {
                         Log.d(TAG, "Connect request fail");
                         mConnectionState = connectionStateEnum.isToScan;
                         onConectionStateChange(mConnectionState);
@@ -809,20 +963,23 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (mBluetoothAdapter == null) {
+            return;
+        }
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-        if (mConnectionState == connectionStateEnum.isNull ||
-                mConnectionState == connectionStateEnum.isToScan) {
+        if (mConnectionState != connectionStateEnum.isConnected) {
             onSearchClick();
-            if (mConnectionState != connectionStateEnum.isConnected) {
-                onSearchClick();
-            }
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(mGattUpdateReceiver);
+//        unregisterReceiver(mGattUpdateReceiver);
     }
 
     @Override
@@ -846,6 +1003,26 @@ public class MainActivity extends BaseActivity {
                     if (deviceName != null && deviceName.length() > 0 && deviceName.contains("XBIRD")) {
                         mLeDeviceListAdapter.addDevice(device);
                         mLeDeviceListAdapter.notifyDataSetChanged();
+
+                        if (mIsReconnect == false) {
+                            String lastConnectBluetooth = AccountManager.sharedInstance().getConnectBluetooth();
+
+                            if (lastConnectBluetooth != "" && lastConnectBluetooth.equals(deviceName)) {
+                                mHandler.removeCallbacks(mSearchOverTimeRunnable);
+                                scanLeDevice(false);
+                                mDeviceName = deviceName;
+                                mDeviceAddress = device.getAddress().toString();
+                                if (HuApplication.sharedInstance().XBirdBluetoothManager().getBluetoothLeService().connect(mDeviceAddress)) {
+                                    Log.d(TAG, "Connect request success");
+                                    mConnectionState = connectionStateEnum.isConnecting;
+                                    onConectionStateChange(mConnectionState);
+                                } else {
+                                    Log.d(TAG, "Connect request fail");
+                                    mConnectionState = connectionStateEnum.isToScan;
+                                    onConectionStateChange(mConnectionState);
+                                }
+                            }
+                        }
                     }
                 }
             });
@@ -946,5 +1123,15 @@ public class MainActivity extends BaseActivity {
                 mBluetoothAdapter.stopLeScan(mLeScanCallback);
             }
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // User chose not to enable Bluetooth.
+        if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_CANCELED) {
+            finish();
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

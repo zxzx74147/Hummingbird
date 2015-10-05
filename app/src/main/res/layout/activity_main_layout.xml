@@ -11,7 +11,7 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/roll_view"
         android:src="?attr/main_roll_drawable"
-        android:layout_marginTop="49dp"
+        android:layout_marginTop="20dp"
         android:layout_height="@dimen/default_gap_540" />
 
     <RelativeLayout
@@ -65,7 +65,7 @@
         android:layout_height="wrap_content"
         android:background="@null"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:src="@drawable/search" />
 
 
@@ -73,7 +73,7 @@
         android:layout_alignParentBottom="true"
         android:layout_width="@dimen/default_gap_613"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_height="wrap_content">
 
         <ImageView

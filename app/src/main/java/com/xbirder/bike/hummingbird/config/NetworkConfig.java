@@ -6,6 +6,7 @@ package com.xbirder.bike.hummingbird.config;
 public class NetworkConfig {
 
     public static final String SERVER_ADDRESS = "http://120.26.43.158/xbird/web/index.php";
+//    public static final String SERVER_ADDRESS_DEV = "http://120.26.43.158/xbird_dev/web/index.php";
 
     public static final String REGISTER_ADDRESS = "user/register";
     public static final String LOGIN_ADDRESS = "user/login";
@@ -16,4 +17,9 @@ public class NetworkConfig {
     public static final String SEX_ADDRESS = "user/changepassword";
     public static final String REQUSET_VCODE = "user/send-verify-code";
     public static final String VERIFY_VCODE = "user/verify";
+    public static final String ADD_RECORD = "record/add";
+    public static final String GET_RECORD_DAY = "record/get-stat-day";
+    public static final String GET_RECORD_MONTH = "record/get-stat-month";
+    public static final String CLEAR_RECORD = "record/clear";
+
 }

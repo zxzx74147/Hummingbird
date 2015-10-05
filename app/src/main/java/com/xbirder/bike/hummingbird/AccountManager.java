@@ -17,13 +17,48 @@ public class AccountManager {
     private static final String KEY_CONNECT_BLUETOOTH = "xbird_bluetooth";
     private static final String KEY_USER_NAME = "xbird_username";
     private static final String KEY_SEX = "xbird_sex";
+    private static final String KEY_LAST_SPEED_LEVEL = "last_speed_level";
+    private static final String KEY_STORE_DATE = "store_date";
+    private static final String KEY_STORE_DISTANCE = "store_distance";
+    private static final String KEY_STORE_RUNTIME = "store_runtime";
     private String mUser;
     private String mPass;
     private String mToken;
     private String mUserName;
     private String mSex;
-
+    private String mLastSpeedLevel;
     private String mFinalToken;
+    private String mStoreDate;
+    private String mStoreDistance;
+    private String mStoreRuntime;
+
+
+    public String getStoreDate() {
+        return mStoreDate;
+    }
+
+    public void setStoreDate(String storeDate) {
+        this.mStoreDate = storeDate;
+        SharedPreferenceHelper.saveString(KEY_STORE_DATE + mUser, this.mStoreDate);
+    }
+
+    public String getStoreDistance() {
+        return mStoreDistance;
+    }
+
+    public void setStoreDistance(String storeDistance) {
+        this.mStoreDistance = storeDistance;
+        SharedPreferenceHelper.saveString(KEY_STORE_DISTANCE + mUser, this.mStoreDistance);
+    }
+
+    public String getStoreRuntime() {
+        return mStoreRuntime;
+    }
+
+    public void setStoreRuntime(String storeRuntime) {
+        this.mStoreRuntime = storeRuntime;
+        SharedPreferenceHelper.saveString(KEY_STORE_RUNTIME + mUser, this.mStoreRuntime);
+    }
 
     public String getConnectBluetooth() {
         return mConnectBluetooth;
@@ -43,6 +78,10 @@ public class AccountManager {
         mFinalToken = SharedPreferenceHelper.getString(mUser, "");
         mUserName = SharedPreferenceHelper.getString(KEY_USER_NAME, "");
         mConnectBluetooth = SharedPreferenceHelper.getString(KEY_CONNECT_BLUETOOTH, "");
+        mLastSpeedLevel = SharedPreferenceHelper.getString(KEY_LAST_SPEED_LEVEL + mUser, "");
+        mStoreDate = SharedPreferenceHelper.getString(KEY_STORE_DATE + mUser, "");
+        mStoreDistance = SharedPreferenceHelper.getString(KEY_STORE_DISTANCE + mUser, "");
+        mStoreRuntime = SharedPreferenceHelper.getString(KEY_STORE_RUNTIME + mUser, "");
     }
     public static AccountManager sharedInstance(){
         if(mInstance == null){
@@ -120,4 +159,14 @@ public class AccountManager {
         mFinalToken = finalToken;
         SharedPreferenceHelper.saveString(getUser(), mFinalToken);
     }
+
+    public String getLastSpeedLevel() {
+        return mLastSpeedLevel;
+    }
+
+    public void setLastSpeedLevel(String lastSpeedLevel) {
+        this.mLastSpeedLevel = lastSpeedLevel;
+        SharedPreferenceHelper.saveString(KEY_LAST_SPEED_LEVEL + mUser, this.mLastSpeedLevel);
+    }
+
 }

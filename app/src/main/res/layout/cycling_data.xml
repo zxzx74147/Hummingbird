@@ -228,7 +228,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:text="20"
+                        android:text="0"
                         android:textSize="@dimen/default_size_80"
                         android:textColor="@color/cycling_data"
                         android:gravity="center_vertical|center_horizontal"
@@ -253,7 +253,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:text="20"
+                        android:text="0"
                         android:textSize="@dimen/default_size_80"
                         android:textColor="@color/cycling_data"
                         android:gravity="center_vertical|center_horizontal"
@@ -284,7 +284,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:text="20"
+                        android:text="0"
                         android:textSize="@dimen/default_size_80"
                         android:textColor="@color/cycling_data"
                         android:gravity="center_vertical|center_horizontal"
@@ -309,7 +309,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:text="20"
+                        android:text="0"
                         android:textSize="@dimen/default_size_80"
                         android:textColor="@color/cycling_data"
                         android:gravity="center_vertical|center_horizontal"
@@ -423,7 +423,7 @@
             android:id="@+id/btn_0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/selector_cycling"
+            android:background="@drawable/selector_cycling_left"
             android:text="周"
             android:textColor="@color/selector_color_cycling"
             android:textSize="17.0sp"
@@ -442,7 +442,7 @@
             android:gravity="center"
             android:layout_weight="1"
             android:button="@null"
-            android:background="@drawable/selector_cycling"
+            android:background="@drawable/selector_cycling_center"
             />
         <RadioButton
             android:id="@+id/btn_2"
@@ -454,12 +454,7 @@
             android:gravity="center"
             android:layout_weight="1"
             android:button="@null"
-            android:background="@drawable/selector_cycling"
+            android:background="@drawable/selector_cycling_right"
             />
     </RadioGroup>
-
-
-
-
-
 </RelativeLayout>
