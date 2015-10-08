@@ -98,7 +98,19 @@ public class FindPasswordActivity extends BaseActivity {
             @Override
             public void onResponse(HttpResponse<JSONObject> response) {
                 if(response.isSuccess()){
-                    mViewPager.setCurrentItem(1);
+                    try {
+                        String errorStr = response.result.getString("error");
+                        if (errorStr.equals("0")) {
+                            mViewPager.setCurrentItem(1);
+                        } else if (errorStr.equals("1")){
+                            toast("手机号未注册，请返回注册");
+                        } else if (errorStr.equals("2")){
+                            toast("验证码发送失败，请重新发送");
+                        }
+                    } catch (Exception e) {
+
+                    }
+
                 }else{
                     toast(response.error.toString());
                 }
@@ -107,7 +119,7 @@ public class FindPasswordActivity extends BaseActivity {
         request.setParam(mPhoneNum);
         sendRequest(request);
         mResend.startCountDown(System.currentTimeMillis() + 60000);
-        mViewPager.setCurrentItem(1);
+//        mViewPager.setCurrentItem(1);
     }
 
     private void checkVCode(){

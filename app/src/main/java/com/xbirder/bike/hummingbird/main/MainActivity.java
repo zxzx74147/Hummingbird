@@ -384,6 +384,7 @@ public class MainActivity extends BaseActivity {
             AccountManager.sharedInstance().setStoreDate(currentDate);
             AccountManager.sharedInstance().setStoreDistance("0");
             AccountManager.sharedInstance().setStoreRuntime("0");
+            storeDate = currentDate;
         }
 
         if (!currentDate.equals(storeDate)) {

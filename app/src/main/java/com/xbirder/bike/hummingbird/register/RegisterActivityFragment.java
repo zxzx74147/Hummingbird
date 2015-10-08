@@ -17,7 +17,6 @@ import com.baidu.core.net.base.HttpResponse;
 import com.xbirder.bike.hummingbird.AccountManager;
 import com.xbirder.bike.hummingbird.R;
 import com.xbirder.bike.hummingbird.base.BaseFragment;
-import com.xbirder.bike.hummingbird.bluetooth.BluetoothScanActivity;
 import com.xbirder.bike.hummingbird.common.widget.TitleBar;
 import com.xbirder.bike.hummingbird.login.widget.CountDownButton;
 import com.xbirder.bike.hummingbird.main.MainActivity;
@@ -99,7 +98,7 @@ public class RegisterActivityFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        initSMSSDK();
+//        initSMSSDK();
     }
 
     private ViewPager.OnPageChangeListener mOnPageChangedListener = new ViewPager.OnPageChangeListener() {
@@ -133,20 +132,49 @@ public class RegisterActivityFragment extends BaseFragment {
             if (v == mStep1Code || v == mResend) {
                 mPhoneNum = mStep1PhoneNum.getText().toString();
                 if (isPhoneNumberValid(mPhoneNum)) {
-                    SMSSDK.getVerificationCode("86", mPhoneNum);//获取验证码
+                    sendVCode();
+//                    SMSSDK.getVerificationCode("86", mPhoneNum);//获取验证码
                 } else {
                     Toast.makeText(getActivity(), "手机号码不合法", Toast.LENGTH_SHORT).show();
                 }
             } else if (v == mDone) {
-                if (msgState == true) {
-                    register();
-                } else {
-                    String code = mCodeText.getText().toString();
-                    SMSSDK.submitVerificationCode("86", mPhoneNum, code);//提交验证码
-                }
+                register();
+//                if (msgState == true) {
+//                    register();
+//                } else {
+//                    String code = mCodeText.getText().toString();
+//                    SMSSDK.submitVerificationCode("86", mPhoneNum, code);//提交验证码
+//                }
             }
         }
     };
+
+    private void sendVCode() {
+        RequestVCodeRegisterRequest request = new RequestVCodeRegisterRequest(new HttpResponse.Listener<JSONObject>() {
+            @Override
+            public void onResponse(HttpResponse<JSONObject> response) {
+                if(response.isSuccess()){
+                    try {
+                        String errorStr = response.result.getString("error");
+                        if (errorStr.equals("0")) {
+                            mViewPager.setCurrentItem(1);
+                        } else if (errorStr.equals("1")){
+                            toast("手机号已经注册，请直接登录");
+                        } else if (errorStr.equals("2")){
+                            toast("验证码发送失败，请重新发送");
+                        }
+                    } catch (Exception e) {
+
+                    }
+
+                }else{
+                    toast(response.error.toString());
+                }
+            }
+        });
+        request.setParam(mPhoneNum);
+        sendRequest(request);
+    }
 
     private class ImageAdapter extends PagerAdapter {
         @Override
@@ -187,11 +215,16 @@ public class RegisterActivityFragment extends BaseFragment {
         final String username = mUserNameText.getText().toString();
         String pass = mPassText.getText().toString();
         String phone = mStep1PhoneNum.getText().toString();
+        String code = mCodeText.getText().toString();
         if (pass.length() != 6) {
             toast("密码只支持六位数字");
             return;
         }
-        RegisterRequest request = new RegisterRequest(new HttpResponse.Listener<JSONObject>() {
+        if (code == null || code.equals("")) {
+            toast("请填写验证码");
+            return;
+        }
+        RegisterV2Request request = new RegisterV2Request(new HttpResponse.Listener<JSONObject>() {
             @Override
             public void onResponse(HttpResponse<JSONObject> response) {
                 if (response.isSuccess()) {
@@ -212,9 +245,13 @@ public class RegisterActivityFragment extends BaseFragment {
                             JSONObject msgObj = response.result.getJSONObject("msg");//获取返回的结果
                             if (msgObj != null) {
                                 if (msgObj.getString("phone") != null) {
-                                    toast(msgObj.getString("phone"));
+                                    String msg = msgObj.getString("phone");
+                                    if (msg.contains("has already been taken")) {
+                                        toast("手机号:" + mStep1PhoneNum.getText().toString() + "已经被注册");
+                                    } else {
+                                        toast(msg);
+                                    }
                                 } else if (msgObj.getString("userName") == null) {
-//                                    toast(msgObj.getString("userName"));
                                     toast("用户名不能为空,请重新输入");
                                 } else if (response.result.getString("error").equals("2")) {
                                     toast("用户名重名,请重新输入");
@@ -231,7 +268,8 @@ public class RegisterActivityFragment extends BaseFragment {
                 }
             }
         });
-        request.setParam(phone, pass, username);
+
+        request.setParam(phone, pass, username, code);
         sendRequest(request);
     }
 

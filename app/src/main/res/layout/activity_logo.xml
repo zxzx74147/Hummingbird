@@ -8,7 +8,7 @@
 
 
     <ImageButton
-        android:background="@drawable/login_login_btn"
+        android:background="@drawable/icon_start_login_drawable"
         android:id="@+id/btn_login"
         android:scaleType="fitCenter"
         android:layout_centerHorizontal="true"

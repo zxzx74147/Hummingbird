@@ -1,6 +1,7 @@
 package com.xbirder.bike.hummingbird.cycling;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -81,7 +82,6 @@ public class CyclingRecords extends BaseActivity{
         mTotalTextView = (TextView)findViewById(R.id.total_mileage_data);
         mTodayTimeTextView = (TextView)findViewById(R.id.today_time_data);
         mTotalCostTextView = (TextView)findViewById(R.id.reduce_carbon_emissions_data);
-
 
         RadioGroup group = (RadioGroup)this.findViewById(R.id.time_selection_RadioGroup);
 
@@ -213,6 +213,7 @@ public class CyclingRecords extends BaseActivity{
                                 mMonthData = recordList;
                                 mBarData = getBarDataMonth();
                                 showBarChart(mBarChart, mBarData);
+                                mBarChart.setDrawYValues(false);
                             }
                         } else {
                             toast("失败");
@@ -282,49 +283,42 @@ public class CyclingRecords extends BaseActivity{
     }
 
     private void showBarChart(BarChart barChart, BarData barData) {
-
-        barChart.setDrawVerticalGrid(false); // 是否显示水平的表格
-
         barChart.setDescription("");// 数据描述
 
         // 如果没有数据的时候，会显示这个，类似ListView的EmptyView
         barChart.setNoDataTextDescription("对不起，当前没有数据");
-        //barChart.setDrawVerticalGrid(false);
+        barChart.setDrawVerticalGrid(false);
         barChart.setDrawGridBackground(false); // 是否显示表格颜色
-        //barChart.setGridColor(Color.WHITE & 0x70FFFFFF);
-        //barChart.setGridBackgroundColor(Color.WHITE & 0x70FFFFFF); // 表格的的颜色，在这里是是给颜色设置一个透明度
 
         barChart.setDrawYValues(true);
 
-        barChart.setTouchEnabled(false); // 设置是否可以触摸
-        barChart.setDragEnabled(false);// 是否可以拖拽
-        barChart.setScaleEnabled(false);// 是否可以缩放
-
+        barChart.setTouchEnabled(true); // 设置是否可以触摸
+        barChart.setDragEnabled(true);// 是否可以拖拽
+        barChart.setScaleEnabled(true);// 是否可以缩放
         barChart.setPinchZoom(false);//
 
-//      barChart.setBackgroundColor();// 设置背景
-        barChart.setDrawBorder(false);
+        barChart.setDrawBorder(true);
         barChart.setDrawBarShadow(false);
 
         barChart.setData(barData); // 设置数据
 
         Legend mLegend = barChart.getLegend(); // 设置比例图标示
 
-        mLegend.setForm(Legend.LegendForm.CIRCLE);// 样式
+        mLegend.setForm(Legend.LegendForm.LINE);// 样式
         mLegend.setFormSize(6f);// 字体
         mLegend.setTextColor(Color.BLACK);// 颜色
 
         YLabels y = barChart.getYLabels(); // y轴的标示
         y.setTextColor(Color.BLACK);
-       // y.setTypeface(mTf);
-        y.setTextSize(16F);
+        y.setTypeface(Typeface.DEFAULT);
+        y.setTextSize(12F);
         y.setLabelCount(6); // y轴上的标签的显示的个数
 
         XLabels x = barChart.getXLabels(); // x轴显示的标签
         x.setTextColor(Color.BLACK);
         x.setPosition(XLabels.XLabelPosition.BOTTOM.BOTTOM);
         x.setCenterXLabelText(true);
-        x.setTextSize(16F);
+        x.setTextSize(12F);
        // x.setTypeface(mTf);
         barChart.animateY(2000); // 立即执行的动画,y轴
     }

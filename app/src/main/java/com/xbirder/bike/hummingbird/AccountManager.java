@@ -80,8 +80,8 @@ public class AccountManager {
         mConnectBluetooth = SharedPreferenceHelper.getString(KEY_CONNECT_BLUETOOTH, "");
         mLastSpeedLevel = SharedPreferenceHelper.getString(KEY_LAST_SPEED_LEVEL + mUser, "");
         mStoreDate = SharedPreferenceHelper.getString(KEY_STORE_DATE + mUser, "");
-        mStoreDistance = SharedPreferenceHelper.getString(KEY_STORE_DISTANCE + mUser, "");
-        mStoreRuntime = SharedPreferenceHelper.getString(KEY_STORE_RUNTIME + mUser, "");
+        mStoreDistance = SharedPreferenceHelper.getString(KEY_STORE_DISTANCE + mUser, "0");
+        mStoreRuntime = SharedPreferenceHelper.getString(KEY_STORE_RUNTIME + mUser, "0");
     }
     public static AccountManager sharedInstance(){
         if(mInstance == null){

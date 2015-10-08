@@ -99,7 +99,7 @@
         android:layout_marginTop="@dimen/default_gap_120"
         android:layout_width="@dimen/default_gap_300"
         android:background="@null"
-        android:src="@drawable/start"
+        android:src="@drawable/btn_start"
         android:layout_height="@dimen/default_gap_300" />
 
 
