@@ -92,6 +92,15 @@ public class SettingActivity extends AppCompatActivity {
                 finish();
                 ActivityJumpHelper.startActivity(SettingActivity.this, LogoActivity.class);
             } else if (v == resetView) {
+                boolean isConnect = HuApplication.sharedInstance().XBirdBluetoothManager().getIsConnect();
+//                if (isConnect) {
+//                    byte[] value = {XBirdBluetoothConfig.PREFIX, XBirdBluetoothConfig.RESET, XBirdBluetoothConfig.END};
+//                    HuApplication.sharedInstance().XBirdBluetoothManager().sendToBluetooth(value);
+//                } else {
+//                    Toast toast = Toast.makeText(getApplicationContext(),
+//                            "请先连接锋鸟电动车", Toast.LENGTH_LONG);
+//                    toast.show();
+//                }
                 byte[] value = {XBirdBluetoothConfig.PREFIX, XBirdBluetoothConfig.RESET, XBirdBluetoothConfig.END};
                 HuApplication.sharedInstance().XBirdBluetoothManager().sendToBluetooth(value);
             } else if (v == change_pwd) {

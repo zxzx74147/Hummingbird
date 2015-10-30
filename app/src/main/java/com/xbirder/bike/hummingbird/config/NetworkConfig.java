@@ -6,7 +6,7 @@ package com.xbirder.bike.hummingbird.config;
 public class NetworkConfig {
 
     public static final String SERVER_ADDRESS = "http://120.26.43.158/xbird/web/index.php";
-    public static final String SERVER_ADDRESS_DEV = "http://120.26.43.158/xbird_new_dev/web/index.php";
+//    public static final String SERVER_ADDRESS_DEV = "http://120.26.43.158/xbird_new_dev/web/index.php";
 
     public static final String REGISTER_ADDRESS = "user/register";
     public static final String LOGIN_ADDRESS = "user/login";

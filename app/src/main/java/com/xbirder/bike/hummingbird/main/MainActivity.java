@@ -213,6 +213,7 @@ public class MainActivity extends BaseActivity {
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
                 mIsFirstConnect = false;
+                HuApplication.sharedInstance().XBirdBluetoothManager().setIsConnect(false);
                 onConectionStateChange(connectionStateEnum.isDisconnecting);
                 if (mIsReconnect == false) {
                     mHandler.postDelayed(mDisonnectingOverTimeRunnable, 1000);
@@ -338,6 +339,7 @@ public class MainActivity extends BaseActivity {
                     break;
                 case XBirdBluetoothConfig.INFO:
                     int mode = bytes[2];
+                    HuApplication.sharedInstance().XBirdBluetoothManager().setIsConnect(true);
                     if (mIsFirstConnect == false) {
                         mIsFirstConnect = true;
                         if (mode != StatusConfig.CURRENT_MODE) {
@@ -1106,6 +1108,7 @@ public class MainActivity extends BaseActivity {
     }
 
     void scanLeDevice(final boolean enable) {
+        HuApplication.sharedInstance().XBirdBluetoothManager().setIsConnect(false);
         if (enable) {
             System.out.println("mBluetoothAdapter.startLeScan");
 

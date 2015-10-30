@@ -224,6 +224,10 @@ public class RegisterActivityFragment extends BaseFragment {
             toast("请填写验证码");
             return;
         }
+        if (username == null || username.equals("")) {
+            toast("请输入用户名");
+            return;
+        }
         RegisterV2Request request = new RegisterV2Request(new HttpResponse.Listener<JSONObject>() {
             @Override
             public void onResponse(HttpResponse<JSONObject> response) {
@@ -242,28 +246,20 @@ public class RegisterActivityFragment extends BaseFragment {
                             ActivityJumpHelper.startActivity(RegisterActivityFragment.this, MainActivity.class);
                             getActivity().finish();
                         } else {
-                            JSONObject msgObj = response.result.getJSONObject("msg");//获取返回的结果
-                            if (msgObj != null) {
-                                if (msgObj.getString("phone") != null) {
-                                    String msg = msgObj.getString("phone");
-                                    if (msg.contains("has already been taken")) {
-                                        toast("手机号:" + mStep1PhoneNum.getText().toString() + "已经被注册");
-                                    } else {
-                                        toast(msg);
-                                    }
-                                } else if (msgObj.getString("userName") == null) {
-                                    toast("用户名不能为空,请重新输入");
-                                } else if (response.result.getString("error").equals("2")) {
-                                    toast("用户名重名,请重新输入");
-                                } else {
-                                    toast("账号注册失败");
-                                }
-                                return;
+                            String error = response.result.getString("error");
+//                            JSONObject msgObj = response.result.getJSONObject("msg");//获取返回的结果
+                            if (error.equals("1")) {
+                                toast("亲，手机号:" + mStep1PhoneNum.getText().toString() + "已经被注册，请换一个哟");
+                            } else if (error.equals("2")) {
+                                toast("亲，用户名:" + mUserNameText.getText().toString() + "已经被注册，请换一个哟");
+                            } else if (error.equals("3")) {
+                                toast("验证码验证失败");
+                            } else {
+                                toast("账号注册失败");
                             }
-                            toast("账号注册失败");
                         }
                     } catch (Exception e) {
-
+                        toast("账号注册失败");
                     }
                 }
             }

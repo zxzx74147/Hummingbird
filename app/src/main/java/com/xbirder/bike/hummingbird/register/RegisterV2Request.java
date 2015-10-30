@@ -38,7 +38,7 @@ public class RegisterV2Request extends HttpJsonRequest<JSONObject> {
     @Override
     protected void onSetParameter(HashMap<String, String> params) {
         String timeStr = String.valueOf(System.currentTimeMillis());
-        params.put("r",NetworkConfig.REGISTER_ADDRESS);
+        params.put("r",NetworkConfig.REGISTER_NEW_ADDRESS);
         params.put("phone",mPhoneNum);
         params.put("password",mPassword);
         params.put("userName",mUserName);
@@ -48,7 +48,7 @@ public class RegisterV2Request extends HttpJsonRequest<JSONObject> {
 
     @Override
     protected String url() {
-        return NetworkConfig.SERVER_ADDRESS_DEV;
+        return NetworkConfig.SERVER_ADDRESS;
     }
 
     @Override
