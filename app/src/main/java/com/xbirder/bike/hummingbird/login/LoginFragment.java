@@ -12,7 +12,6 @@ import com.baidu.core.net.base.HttpResponse;
 import com.xbirder.bike.hummingbird.AccountManager;
 import com.xbirder.bike.hummingbird.R;
 import com.xbirder.bike.hummingbird.base.BaseFragment;
-import com.xbirder.bike.hummingbird.bluetooth.BluetoothScanActivity;
 import com.xbirder.bike.hummingbird.common.widget.TitleBar;
 import com.xbirder.bike.hummingbird.main.MainActivity;
 import com.xbirder.bike.hummingbird.register.FindPasswordActivity;
@@ -41,6 +40,14 @@ public class LoginFragment extends BaseFragment {
                              Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_login, container, false);
+
+//        VideoView mVideoView = (VideoView) root.findViewById(R.id.login_videoView);
+//        Uri uri = Uri.parse("android.resource://com.xbirder.bike.hummingbird/drawable/login.mp4");
+//       // Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath()+"/login.mp4");
+//        mVideoView.setMediaController(new MediaController(getActivity()));
+//        mVideoView.setVideoURI(uri);
+//        mVideoView.start();
+
         mFindPassword = root.findViewById(R.id.find_password);
         mFindPassword.setOnClickListener(mOnClickListener);
 

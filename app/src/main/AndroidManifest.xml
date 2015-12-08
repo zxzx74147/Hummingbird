@@ -28,7 +28,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme.Day">
         <activity
-            android:name=".LogoActivity"
+            android:name=".GuideActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -92,9 +92,18 @@
             android:label="XBirderHelp"
             android:screenOrientation="portrait"></activity>
 
+        <activity
+            android:name=".LogoActivity"
+            android:label="LogoActivity"
+            android:screenOrientation="portrait"></activity>
+
         <service
             android:name=".bluetooth.BluetoothLeService"
             android:enabled="true" />
+
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="MPGYMzaGWOql1AC4SBXMgC86" />
     </application>
 
     <uses-feature
@@ -103,5 +112,15 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
 </manifest>

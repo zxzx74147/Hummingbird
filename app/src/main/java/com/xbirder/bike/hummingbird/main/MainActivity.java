@@ -42,14 +42,14 @@ import android.widget.Toast;
 import com.baidu.core.net.base.HttpResponse;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.xbirder.bike.hummingbird.AccountManager;
-import com.xbirder.bike.hummingbird.cycling.CyclingRecords;
+import com.xbirder.bike.hummingbird.HuApplication;
 import com.xbirder.bike.hummingbird.R;
 import com.xbirder.bike.hummingbird.base.BaseActivity;
 import com.xbirder.bike.hummingbird.bluetooth.BluetoothLeService;
 import com.xbirder.bike.hummingbird.bluetooth.SampleGattAttributes;
 import com.xbirder.bike.hummingbird.bluetooth.XBirdBluetoothConfig;
+import com.xbirder.bike.hummingbird.cycling.CyclingRecords;
 import com.xbirder.bike.hummingbird.fonts.FontsManager;
-import com.xbirder.bike.hummingbird.login.LoginRequest;
 import com.xbirder.bike.hummingbird.main.side.WiperSwitch;
 import com.xbirder.bike.hummingbird.main.widget.BatteryRollView;
 import com.xbirder.bike.hummingbird.setting.MySetting;
@@ -58,8 +58,6 @@ import com.xbirder.bike.hummingbird.setting.XBirderHelp;
 import com.xbirder.bike.hummingbird.skin.SkinConfig;
 import com.xbirder.bike.hummingbird.skin.SkinManager;
 import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
-
-import com.xbirder.bike.hummingbird.HuApplication;
 
 import org.json.JSONObject;
 

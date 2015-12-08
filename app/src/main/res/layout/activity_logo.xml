@@ -2,10 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_bg"
     tools:context=".LogoActivity">
-
-
+    <com.xbirder.bike.hummingbird.common.widget.MyVideoView
+        android:layout_centerInParent="true"
+        android:layout_height="match_parent"
+        android:id="@+id/logo_videoView"
+        android:layout_width="wrap_content"/>
 
     <ImageButton
         android:background="@drawable/icon_start_login_drawable"
