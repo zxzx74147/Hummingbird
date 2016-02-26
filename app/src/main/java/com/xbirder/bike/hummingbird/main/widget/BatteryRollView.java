@@ -25,7 +25,7 @@ public class BatteryRollView extends ImageView {
     private Paint mImagePaint = null;
     private ColorFilter mFilter = null;
     private RectF mRect;
-    private float mPercent = 0;
+    private float mPercent = 100;
 
     public BatteryRollView(Context context) {
         super(context);

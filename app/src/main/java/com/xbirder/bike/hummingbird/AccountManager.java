@@ -135,7 +135,7 @@ public class AccountManager {
 
         mBikeCurrentVersion = SharedPreferenceHelper.getString(KEY_BIKE_CURRENT_VERSION, "");
         mOffLineMode = SharedPreferenceHelper.getString(KEY_OFF_LINE_MODE, "");
-        mAvatarName= SharedPreferenceHelper.getString(KEY_AVATAR_NAME + mUser, "");
+        mAvatarName = SharedPreferenceHelper.getString(KEY_AVATAR_NAME + mUser, "");
     }
     public static AccountManager sharedInstance(){
         if(mInstance == null){
@@ -143,9 +143,6 @@ public class AccountManager {
         }
         return mInstance;
     }
-
-
-
 
     public String getToken(){
         return mToken;

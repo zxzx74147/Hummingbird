@@ -23,7 +23,7 @@
                 android:background="?attr/main_head_bg"
                 android:layout_alignParentTop="true">
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/main_setting"
                     android:layout_width="@dimen/default_gap_70"
                     android:layout_height="match_parent"

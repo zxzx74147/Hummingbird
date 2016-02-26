@@ -16,6 +16,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -152,7 +154,7 @@ public class MainActivity extends BaseActivity {
     private TextView mBatteryViewUint;
     //private TextView mBatteryShow;
     private DrawerLayout mDrawerLayout;
-    private View mSettingView;
+    private ImageView mSettingView;
     private RelativeLayout mLockBack;
     private View mLightView;
     private RelativeLayout mSideSetting;
@@ -183,9 +185,7 @@ public class MainActivity extends BaseActivity {
     private String mWeatherTextString = null;
     private TextView mUser_name;
 
-    public enum connectionStateEnum {isNull, isScanning, isToScan, isConnecting, isConnected, isDisconnecting}
-
-    ;
+    public enum connectionStateEnum {isNull, isScanning, isToScan, isConnecting, isConnected, isDisconnecting};
     public connectionStateEnum mConnectionState = connectionStateEnum.isNull;
 
     // 定位相关
@@ -207,13 +207,10 @@ public class MainActivity extends BaseActivity {
 
     private BDLocation mBDLocation = null;
 
-
-
     private TextView mdc_speed_num;
     private TextView mdc_mileage_num;
     private TextView mdc_power_num;
     private RelativeLayout mpenContent;
-
 
     private ImageView mImageView_navigation_back;
     private ImageView mImageView_navigation_baidumap;
@@ -226,10 +223,6 @@ public class MainActivity extends BaseActivity {
     private boolean isFirstIn = true; // 是否首次进入
 
     private String avatarName;
-    //private ImageView mdc_show2;
-
-//    private TranslateAnimation mTranslateAnimation = null;
-//    private TranslateAnimation mTranslateAnimation2 = null;
 
     private LinearLayout flexible_menu;
 
@@ -257,7 +250,6 @@ public class MainActivity extends BaseActivity {
 
         // Initializes list view adapter.
         mLeDeviceListAdapter = new LeDeviceListAdapter();
-
     }
 
     private boolean initiate() {
@@ -482,7 +474,6 @@ public class MainActivity extends BaseActivity {
 //                        }
 //                    }
 
-
                     int bikeCurrentVersion = bytes[18];
                     if(!AccountManager.sharedInstance().getBikeCurrentVersion().equals(""+bikeCurrentVersion)) {
                         AccountManager.sharedInstance().setBikeCurrentVersion("" + bikeCurrentVersion);
@@ -498,7 +489,6 @@ public class MainActivity extends BaseActivity {
                     }
 
                     setStoreRidingData(tempDistance, tempTime);
-
                     break;
                 default:
                     break;
@@ -655,164 +645,192 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initView() {
         super.initView();
-        setContentView(R.layout.activity_main);
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        screenWidth = dm.widthPixels;//屏幕的宽
-        screenHeight = dm.heightPixels;//屏幕的高
-        System.out.println("screenWidth : " + screenWidth + "screenHeight : " + screenHeight);//screenWidth : 720
-        mRoundedImageView = (RoundedImageView) findViewById(R.id.head);
+        if(isFirstIn) {
+            isFirstIn = false;
 
-         avatarName = AccountManager.sharedInstance().getAvatarName();
-        if(avatarName != null && avatarName.length()>0){
-            avatarName = avatarName.substring(avatarName.lastIndexOf("/")+1,avatarName.length());
-            String picPath = Environment.getExternalStorageDirectory()+"/xbird/pic";
-            File picfile = new File(picPath,avatarName);
-            if (picfile.exists()) {
-                Bitmap bitmap = decodeUriAsBitmap(Uri.fromFile(picfile));
-                Bitmap roundBitMap = MySetting.getRoundedCornerBitmap(bitmap, 1.0f);
-                mRoundedImageView.setImageBitmap(roundBitMap);
+            setContentView(R.layout.activity_main);
+            DisplayMetrics dm = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(dm);
+            screenWidth = dm.widthPixels;//屏幕的宽
+            screenHeight = dm.heightPixels;//屏幕的高
+            //System.out.println("screenWidth : " + screenWidth + "screenHeight : " + screenHeight);//screenWidth : 720
+            mRoundedImageView = (RoundedImageView) findViewById(R.id.head);
+
+            avatarName = AccountManager.sharedInstance().getAvatarName();
+            if (avatarName != null && avatarName.length() > 0) {
+                avatarName = avatarName.substring(avatarName.lastIndexOf("/") + 1, avatarName.length());
+                String picPath = Environment.getExternalStorageDirectory() + "/xbird/pic";
+                File picfile = new File(picPath, avatarName);
+                if (picfile.exists()) {
+                    Bitmap bitmap = decodeUriAsBitmap(Uri.fromFile(picfile));
+                    Bitmap roundBitMap = MySetting.getRoundedCornerBitmap(bitmap, 1.0f);
+                    mRoundedImageView.setImageBitmap(roundBitMap);
+                }
             }
-        }
+            mSpeedText = (TextView) findViewById(R.id.speed_num);
+            mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+            mLeftDrawer = (FrameLayout) findViewById(R.id.left_drawer);
+            int i = (int) (screenWidth / 1.2);
+            fLp = mLeftDrawer.getLayoutParams();
+            fLp.width = i;
+            mLeftDrawer.setLayoutParams(fLp);
+            mSettingView = (ImageView) findViewById(R.id.main_setting);
+            mLockBack = (RelativeLayout) findViewById(R.id.rl_lock);
+            int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+            int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+            mLockBack.measure(w, h);
+            mLockBackWidth = mLockBack.getMeasuredWidth();
+            RelativeLayout.LayoutParams mLockBackPam = (RelativeLayout.LayoutParams) mLockBack.getLayoutParams();
+            int y = (int) (i / 1.2);
+            mLockBackPam.width = y;
+            mLockBackPam.setMargins((i - mLockBackWidth) / 2, (int) (screenHeight / 7.2), (i - mLockBackWidth) / 2, 0);
+//        System.out.println("i : " + i);//600
+//        System.out.println("y : " + y);//500
+            mLockBack.setLayoutParams(mLockBackPam);
+            mLockView = (ImageView) findViewById(R.id.lock_top);
+            mLockEnd = (ImageView) findViewById(R.id.lock_end);
+            mLightView = findViewById(R.id.main_light);
+            mSideSetting = (RelativeLayout) findViewById(R.id.setting_layout);
+            mXbirderHelper = (RelativeLayout) findViewById(R.id.xbirdr_helper);
+            mCyclingRecord = (RelativeLayout) findViewById(R.id.low_cycling_records);
 
-        mSpeedText = (TextView) findViewById(R.id.speed_num);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mLeftDrawer = (FrameLayout) findViewById(R.id.left_drawer);
-        int i = (int) (screenWidth / 1.2);
-        fLp = mLeftDrawer.getLayoutParams();
-        fLp.width = i;
-        mLeftDrawer.setLayoutParams(fLp);
-        mSettingView = findViewById(R.id.main_setting);
-        mLockBack = (RelativeLayout) findViewById(R.id.rl_lock);
-        int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        mLockBack.measure(w, h);
-        mLockBackWidth = mLockBack.getMeasuredWidth();
-        RelativeLayout.LayoutParams mLockBackPam = (RelativeLayout.LayoutParams) mLockBack.getLayoutParams();
-        int y = (int) (i / 1.2);
-        mLockBackPam.width = y;
-        mLockBackPam.setMargins((i - mLockBackWidth) / 2, (int) (screenHeight / 7.2), (i - mLockBackWidth) / 2, 0);
-        System.out.println("i : " + i);//600
-        System.out.println("y : " + y);//500
-        mLockBack.setLayoutParams(mLockBackPam);
-        mLockView = (ImageView) findViewById(R.id.lock_top);
-        mLockEnd = (ImageView) findViewById(R.id.lock_end);
-        mLightView = findViewById(R.id.main_light);
-        mSideSetting = (RelativeLayout) findViewById(R.id.setting_layout);
-        mXbirderHelper = (RelativeLayout) findViewById(R.id.xbirdr_helper);
-        mCyclingRecord = (RelativeLayout) findViewById(R.id.low_cycling_records);
+            mUser_name = (TextView) findViewById(R.id.user_name);
+            String muserName = AccountManager.sharedInstance().getUsername();
+            if (muserName != null && muserName.length() > 0) {
+                mUser_name.setText(muserName);
+            }
+
+
+            mpenContent = (RelativeLayout) findViewById(R.id.pencontent);
+            mdc_speed_num = (TextView) findViewById(R.id.dc_speed_num);
+            mdc_mileage_num = (TextView) findViewById(R.id.dc_mileage_num);
+            mdc_power_num = (TextView) findViewById(R.id.dc_power_num);
+            mImageView_navigation_back = (ImageView) findViewById(R.id.imageView_navigation_back);
+            mImageView_navigation_back.setOnClickListener(mOnClickListener);
+
+            mImageView_navigation_baidumap = (ImageView) findViewById(R.id.imageView_navigation_baidumap);
+            mImageView_navigation_baidumap.setOnClickListener(mOnClickListener);
+
+            mImageView_navigation_backtolocation = (ImageView) findViewById(R.id.imageView_navigation_backtolocation);
+            mImageView_navigation_backtolocation.setOnClickListener(mOnClickListener);
+
+            mdc_show = (ImageView) findViewById(R.id.dc_show);
+            mdc_show.setOnClickListener(mOnClickListener);
+
+//         avatarName = AccountManager.sharedInstance().getAvatarName();
+//        if(avatarName != null && avatarName.length()>0){
+//            avatarName = avatarName.substring(avatarName.lastIndexOf("/")+1,avatarName.length());
+//            String picPath = Environment.getExternalStorageDirectory()+"/xbird/pic";
+//            File picfile = new File(picPath,avatarName);
+//            if (picfile.exists()) {
+//                Bitmap bitmap = decodeUriAsBitmap(Uri.fromFile(picfile));
+//                Bitmap roundBitMap = MySetting.getRoundedCornerBitmap(bitmap, 1.0f);
+//                mRoundedImageView.setImageBitmap(roundBitMap);
+//            }
+//        }
+//
+//        mSpeedText = (TextView) findViewById(R.id.speed_num);
+//        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        mLeftDrawer = (FrameLayout) findViewById(R.id.left_drawer);
+//        int i = (int) (screenWidth / 1.2);
+//        fLp = mLeftDrawer.getLayoutParams();
+//        fLp.width = i;
+//        mLeftDrawer.setLayoutParams(fLp);
+//        mSettingView = findViewById(R.id.main_setting);
+//        mLockBack = (RelativeLayout) findViewById(R.id.rl_lock);
+//        int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+//        int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+//        mLockBack.measure(w, h);
+//        mLockBackWidth = mLockBack.getMeasuredWidth();
+//        RelativeLayout.LayoutParams mLockBackPam = (RelativeLayout.LayoutParams) mLockBack.getLayoutParams();
+//        int y = (int) (i / 1.2);
+//        mLockBackPam.width = y;
+//        mLockBackPam.setMargins((i - mLockBackWidth) / 2, (int) (screenHeight / 7.2), (i - mLockBackWidth) / 2, 0);
+////        System.out.println("i : " + i);//600
+////        System.out.println("y : " + y);//500
+//        mLockBack.setLayoutParams(mLockBackPam);
+//        mLockView = (ImageView) findViewById(R.id.lock_top);
+//        mLockEnd = (ImageView) findViewById(R.id.lock_end);
+//        mLightView = findViewById(R.id.main_light);
+//        mSideSetting = (RelativeLayout) findViewById(R.id.setting_layout);
+//        mXbirderHelper = (RelativeLayout) findViewById(R.id.xbirdr_helper);
+//        mCyclingRecord = (RelativeLayout) findViewById(R.id.low_cycling_records);
 //        mKMText = (TextView) findViewById(R.id.km_text);
-        //mBatteryShow = (TextView) findViewById(R.id.battery_show);
-        mButtonE = (ImageView) findViewById(R.id.mode_e);
-        mButtonN = (ImageView) findViewById(R.id.mode_n);
-        mButtonS = (ImageView) findViewById(R.id.mode_s);
-        mTextE = (TextView) findViewById(R.id.mode_e_text);
-        mTextN = (TextView) findViewById(R.id.mode_n_text);
-        mTextS = (TextView) findViewById(R.id.mode_s_text);
-        mBatteryRollView = (BatteryRollView) findViewById(R.id.roll_view);
-        mVelocityRollView = (VelocityRollView) findViewById(R.id.velocity_view);
-        mBatteryView = (TextView) findViewById(R.id.battery_num);
-        mBatteryViewUint = (TextView) findViewById(R.id.battery_num_unit);
+            //mBatteryShow = (TextView) findViewById(R.id.battery_show);
+            mButtonE = (ImageView) findViewById(R.id.mode_e);
+            mButtonN = (ImageView) findViewById(R.id.mode_n);
+            mButtonS = (ImageView) findViewById(R.id.mode_s);
+            mTextE = (TextView) findViewById(R.id.mode_e_text);
+            mTextN = (TextView) findViewById(R.id.mode_n_text);
+            mTextS = (TextView) findViewById(R.id.mode_s_text);
+            mBatteryRollView = (BatteryRollView) findViewById(R.id.roll_view);
+            mVelocityRollView = (VelocityRollView) findViewById(R.id.velocity_view);
+            mBatteryView = (TextView) findViewById(R.id.battery_num);
+            mBatteryViewUint = (TextView) findViewById(R.id.battery_num_unit);
 
+            mSpeedText.setIncludeFontPadding(false);
 
-        mSpeedText.setIncludeFontPadding(false);
-
-        //mWeatherText = (TextView) findViewById(R.id.weather_text);
-        mUser_name = (TextView) findViewById(R.id.user_name);
-        String muserName = AccountManager.sharedInstance().getUsername();
-        if(muserName != null && muserName.length() > 0){
-            mUser_name.setText(muserName);
-        }
-
-
-        mLockBack.setOnClickListener(mOnClickListener);
-        mButtonE.setOnClickListener(mOnClickListener);
-        mButtonN.setOnClickListener(mOnClickListener);
-        mButtonS.setOnClickListener(mOnClickListener);
-        mLockView.setOnClickListener(mOnClickListener);
-        mSettingView.setOnClickListener(mOnClickListener);
-        mLightView.setOnClickListener(mOnClickListener);
-        mSideSetting.setOnClickListener(mOnClickListener);
-        mRoundedImageView.setOnClickListener(mOnClickListener);
-        mCyclingRecord.setOnClickListener(mOnClickListener);
-        mXbirderHelper.setOnClickListener(mOnClickListener);
-
-
-
-        FontsManager.sharedInstance().setSpeedType(mSpeedText);
-        FontsManager.sharedInstance().setBatteryType(mBatteryView);
-
-
-        mpenContent = (RelativeLayout) findViewById( R.id.pencontent );
-//        mpenContentHeight = (int) (mpenContent.getMeasuredHeight() * 0.81f);
-       // mpenContent.setOnClickListener(mOnClickListener);
-
-        mdc_speed_num = (TextView) findViewById( R.id.dc_speed_num );
-        mdc_mileage_num = (TextView) findViewById( R.id.dc_mileage_num );
-        mdc_power_num = (TextView) findViewById( R.id.dc_power_num );
-        mImageView_navigation_back = (ImageView)findViewById( R.id.imageView_navigation_back);
-        mImageView_navigation_back.setOnClickListener(mOnClickListener);
-
-
-        mImageView_navigation_baidumap = (ImageView)findViewById( R.id.imageView_navigation_baidumap);
-        mImageView_navigation_baidumap.setOnClickListener(mOnClickListener);
-
-        mImageView_navigation_backtolocation = (ImageView)findViewById( R.id.imageView_navigation_backtolocation);
-        mImageView_navigation_backtolocation.setOnClickListener(mOnClickListener);
-
-        mdc_show = (ImageView)findViewById(R.id.dc_show);
-        mdc_show.setOnClickListener(mOnClickListener);
-
-//        mdc_show2 = (ImageView)findViewById(R.id.dc_show2);
-//        mdc_show2.setOnClickListener(mOnClickListener);
-
-        //FontsManager.sharedInstance().setBatteryType(mWeatherText);
-        //FontsManager.sharedInstance().setSpeedKMType(mBatteryShow);
-//        if(isFirstIn) {
-//            mWeatherText = (TextView) findViewById(R.id.weather_text);
-//            isFirstIn = false;
-//            setBattery(100);
-//            setSpeed(0);
-//            ValueAnimator animator = createSpeedStartAnimator(mpenContent, 0, 70);
-//            animator.setDuration(2000);
-//            animator.start();
+            //mWeatherText = (TextView) findViewById(R.id.weather_text);
+//        mUser_name = (TextView) findViewById(R.id.user_name);
+//        String muserName = AccountManager.sharedInstance().getUsername();
+//        if(muserName != null && muserName.length() > 0){
+//            mUser_name.setText(muserName);
 //        }
 
-        String storeModeStr = AccountManager.sharedInstance().getLastSpeedLevel();
-        if (storeModeStr != "") {
-            StatusConfig.CURRENT_MODE = Integer.parseInt(storeModeStr);
-        }
-        setMode(StatusConfig.CURRENT_MODE, false);
-        mConnectBtn = (ImageView) findViewById(R.id.connect_bluetooth);
-        mConnectBtn.setOnClickListener(mOnClickListener);
+            mLockBack.setOnClickListener(mOnClickListener);
+            mButtonE.setOnClickListener(mOnClickListener);
+            mButtonN.setOnClickListener(mOnClickListener);
+            mButtonS.setOnClickListener(mOnClickListener);
+            mLockView.setOnClickListener(mOnClickListener);
+            mSettingView.setOnClickListener(mOnClickListener);
+            mLightView.setOnClickListener(mOnClickListener);
+            mSideSetting.setOnClickListener(mOnClickListener);
+            mRoundedImageView.setOnClickListener(mOnClickListener);
+            mCyclingRecord.setOnClickListener(mOnClickListener);
+            mXbirderHelper.setOnClickListener(mOnClickListener);
 
-        if (mConnectionState == connectionStateEnum.isConnected) {
-            onConectionStateChange(connectionStateEnum.isConnected);
-        }
+            FontsManager.sharedInstance().setSpeedType(mSpeedText);
+            FontsManager.sharedInstance().setBatteryType(mBatteryView);
 
-        mRightDrawer = (FrameLayout) findViewById(R.id.right_drawer);
-        int j = (int) (screenWidth);
-        RightfLp = mRightDrawer.getLayoutParams();
-        RightfLp.width = j;
-        mRightDrawer.setLayoutParams(RightfLp);
+//        mpenContent = (RelativeLayout) findViewById( R.id.pencontent );
+//        mdc_speed_num = (TextView) findViewById( R.id.dc_speed_num );
+//        mdc_mileage_num = (TextView) findViewById( R.id.dc_mileage_num );
+//        mdc_power_num = (TextView) findViewById( R.id.dc_power_num );
+//        mImageView_navigation_back = (ImageView)findViewById( R.id.imageView_navigation_back);
+//        mImageView_navigation_back.setOnClickListener(mOnClickListener);
+//
+//        mImageView_navigation_baidumap = (ImageView)findViewById( R.id.imageView_navigation_baidumap);
+//        mImageView_navigation_baidumap.setOnClickListener(mOnClickListener);
+//
+//        mImageView_navigation_backtolocation = (ImageView)findViewById( R.id.imageView_navigation_backtolocation);
+//        mImageView_navigation_backtolocation.setOnClickListener(mOnClickListener);
+//
+//        mdc_show = (ImageView)findViewById(R.id.dc_show);
+//        mdc_show.setOnClickListener(mOnClickListener);
 
-        flexible_menu = (LinearLayout) findViewById(R.id.flexible_menu);
-        //MultiDirectionSlidingDrawer mMultiDirectionSlidingDrawer = (MultiDirectionSlidingDrawer) findViewById( R.id.drawer );
-        setBattery(100);
-        setSpeed(0);
-        mWeatherText = (TextView) findViewById(R.id.weather_text);
-        if(mWeatherTextString != null){
-            mWeatherText.setText(mWeatherTextString);
-        }
+            String storeModeStr = AccountManager.sharedInstance().getLastSpeedLevel();
+            if (storeModeStr != "") {
+                StatusConfig.CURRENT_MODE = Integer.parseInt(storeModeStr);
+            }
+            setMode(StatusConfig.CURRENT_MODE, false);
+            mConnectBtn = (ImageView) findViewById(R.id.connect_bluetooth);
+            mConnectBtn.setOnClickListener(mOnClickListener);
 
-        if(isFirstIn) {
-            //mWeatherText = (TextView) findViewById(R.id.weather_text);
-            isFirstIn = false;
-//            setBattery(100);
-//            setSpeed(0);
-            ValueAnimator animator = createSpeedStartAnimator(0, 70);
-            animator.setDuration(2000);
-            animator.start();
+            if (mConnectionState == connectionStateEnum.isConnected) {
+                onConectionStateChange(connectionStateEnum.isConnected);
+            }
+
+            mRightDrawer = (FrameLayout) findViewById(R.id.right_drawer);
+            int j = (int) (screenWidth);
+            RightfLp = mRightDrawer.getLayoutParams();
+            RightfLp.width = j;
+            mRightDrawer.setLayoutParams(RightfLp);
+
+            flexible_menu = (LinearLayout) findViewById(R.id.flexible_menu);
+            mWeatherText = (TextView) findViewById(R.id.weather_text);
+            if (mWeatherTextString != null) {
+                mWeatherText.setText(mWeatherTextString);
+            }
 
             // 地图初始化
             mMapView = (MapView) findViewById(R.id.bmapView);
@@ -841,28 +859,72 @@ public class MainActivity extends BaseActivity {
             mLocClient.setLocOption(option);
             mLocClient.start();
 
+//                if(isFirstIn) {
+//                    isFirstIn = false;
+            ValueAnimator animator = createSpeedStartAnimator(0, 70);
+            animator.setDuration(2000);
+            animator.start();
             checkNameAndAvatar();
-        }
+            // }
+//        if(isFirstIn) {
 
-        ActionBarDrawerToggle drawerbar = new ActionBarDrawerToggle(this, mDrawerLayout, null, R.string.ok, R.string.back) {
+            // isFirstIn = false;
+//            setBattery(100);
+//            setSpeed(0);
+//            ValueAnimator animator = createSpeedStartAnimator(0, 70);
+//            animator.setDuration(2000);
+//            animator.start();
 
-            //菜单打开
+//            // 地图初始化
+//            mMapView = (MapView) findViewById(R.id.bmapView);
+//            mBaiduMap = mMapView.getMap();
+//            //普通地图
+//            mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
+//            // 开启定位图层
+//            mBaiduMap.setMyLocationEnabled(true);
+//            mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder().zoom(15).build()));
+//
+//            mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
+//
+//            mBaiduMap
+//                    .setMyLocationConfigeration(new MyLocationConfiguration(
+//                            mCurrentMode, true, null));
+//            mMapView.onPause();
+//            // 定位初始化
+//            mLocClient = new LocationClient(this);
+//            mLocClient.registerLocationListener(myListener);
+//            LocationClientOption option = new LocationClientOption();
+//            option.setOpenGps(true); // 打开gps
+//            option.setCoorType("bd09ll"); // 设置坐标类型
+//            option.setScanSpan(1000);
+//            option.setIsNeedAddress(true);
+//            option.setNeedDeviceDirect(true);
+//            mLocClient.setLocOption(option);
+            //          mLocClient.start();
 
-            @Override
+            //         checkNameAndAvatar();
 
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                if(drawerView == mLeftDrawer){
+            //}
 
-                    mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED,mRightDrawer);
-                }else if(drawerView == mRightDrawer){
-                    mMapView.onResume();
-                    mLocClient.start();
-                    isBaiduMapDistanceEnable = true;
+            ActionBarDrawerToggle drawerbar = new ActionBarDrawerToggle(this, mDrawerLayout, null, R.string.ok, R.string.back) {
 
-                    mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED,mLeftDrawer);
-                    mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN,mRightDrawer);
-                }
+                //菜单打开
+
+                @Override
+
+                public void onDrawerOpened(View drawerView) {
+                    super.onDrawerOpened(drawerView);
+                    if (drawerView == mLeftDrawer) {
+
+                        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, mRightDrawer);
+                    } else if (drawerView == mRightDrawer) {
+                        mMapView.onResume();
+                        mLocClient.start();
+                        isBaiduMapDistanceEnable = true;
+
+                        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, mLeftDrawer);
+                        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN, mRightDrawer);
+                    }
 
 
 //                if (mDrawerLayout.isDrawerOpen(mLeftDrawer)) {
@@ -877,29 +939,72 @@ public class MainActivity extends BaseActivity {
 ////                    mpenContent.startAnimation(mv);
 //
 //                }
-            }
-
-            // 菜单关闭
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                if(drawerView == mRightDrawer) {
-                    mMapView.onPause();
-                    mLocClient.stop();
-                    isBaiduMapDistanceEnable = false;
-                    mlishiTempDistance = mTotalTempDistance;
-
                 }
-                super.onDrawerClosed(drawerView);
-                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-            }
-            @Override
-            public void onDrawerStateChanged(int newState){
+
+                // 菜单关闭
+                @Override
+                public void onDrawerClosed(View drawerView) {
+                    if (drawerView == mRightDrawer) {
+                        mMapView.onPause();
+                        mLocClient.stop();
+                        isBaiduMapDistanceEnable = false;
+                        mlishiTempDistance = mTotalTempDistance;
+
+                    }
+                    super.onDrawerClosed(drawerView);
+                    mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                }
+
+                @Override
+                public void onDrawerStateChanged(int newState) {
                     super.onDrawerStateChanged(newState);
 
-            }
-        };
-        mDrawerLayout.setDrawerListener(drawerbar);
+                }
+            };
+            mDrawerLayout.setDrawerListener(drawerbar);
+        }
     }
+
+    private void changeAppThemeMode(boolean isDay){
+        RelativeLayout  drawer_main = (RelativeLayout) findViewById(R.id.drawer_main);
+        ImageView  model_bg = (ImageView) findViewById(R.id.model_bg);
+        RelativeLayout  title = (RelativeLayout) findViewById(R.id.title);
+        ImageView  weather_ic_img = (ImageView) findViewById(R.id.weather_ic_img);
+        ImageView  weather_line = (ImageView) findViewById(R.id.weather_line);
+        Resources resource = (Resources) getBaseContext().getResources();
+
+        if (isDay) {
+            drawer_main.setBackgroundResource(R.color.common_background_day);
+            mSettingView.setImageResource(R.drawable.icon_setting);
+            ColorStateList csl1 = (ColorStateList) resource.getColorStateList(R.color.common_orange_day);
+            if (csl1 != null) {
+                mSpeedText.setTextColor(csl1);
+            }
+            mButtonE.setImageResource(R.drawable.icon_e_drawable);
+            mButtonN.setImageResource(R.drawable.icon_n_drawable);
+            mButtonS.setImageResource(R.drawable.icon_s_drawable);
+            model_bg.setImageResource(R.drawable.model);
+            title.setBackgroundResource(R.drawable.icon_head_bg);
+            weather_ic_img.setImageResource(R.drawable.icon_lc);
+            weather_line.setImageResource(R.drawable.line);
+        } else {
+            drawer_main.setBackgroundResource(R.color.common_background_night);
+            mSettingView.setImageResource(R.drawable.icon_setting_night);
+            ColorStateList csl1 = (ColorStateList) resource.getColorStateList(R.color.white);
+            if (csl1 != null) {
+                mSpeedText.setTextColor(csl1);
+            }
+            mButtonE.setImageResource(R.drawable.icon_e_drawable_night);
+            mButtonN.setImageResource(R.drawable.icon_n_drawable_night);
+            mButtonS.setImageResource(R.drawable.icon_s_drawable_night);
+            model_bg.setImageResource(R.drawable.model_night);
+            title.setBackgroundResource(R.color.common_background_night);
+            weather_ic_img.setImageResource(R.drawable.icon_lc_night);
+            weather_line.setImageResource(R.drawable.line_night);
+        }
+        setMode(StatusConfig.CURRENT_MODE, false);
+    }
+
     private void baiduMapStart(){
         mLocClient.start();
     }
@@ -1075,11 +1180,13 @@ public class MainActivity extends BaseActivity {
                 if (mode == SkinConfig.SKIN_MODE_DAY) {
                     SkinManager.sharedInstance().setSkinMode(SkinConfig.SKIN_MODE_NIGHT);
                     writeLightInfo(true);
+                    changeAppThemeMode(false);
                 } else {
                     SkinManager.sharedInstance().setSkinMode(SkinConfig.SKIN_MODE_DAY);
                     writeLightInfo(false);
+                    changeAppThemeMode(true);
                 }
-                initView();
+                //initView();
             } else if (v == mSideSetting) {
                 ActivityJumpHelper.startActivity(MainActivity.this, SettingActivity.class);
             } else if (v == mXbirderHelper) {
@@ -1116,15 +1223,15 @@ public class MainActivity extends BaseActivity {
     private ValueAnimator createSpeedStartAnimator(int start, int end){
         ValueAnimator animator = ValueAnimator.ofInt(start,end);
         animator.addUpdateListener(
-                new ValueAnimator.AnimatorUpdateListener(){
+                new ValueAnimator.AnimatorUpdateListener() {
 
                     @Override
-                    public void onAnimationUpdate(ValueAnimator valueAnimator){
+                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
                         int value = (Integer) valueAnimator.getAnimatedValue();
-                        if(value > 35){
+                        if (value > 35) {
                             value = 70 - value;
                         }
-                            setSpeed(value);
+                        setSpeed(value);
                     }
                 });
         return animator;
@@ -1156,29 +1263,48 @@ public class MainActivity extends BaseActivity {
         int[] attrs;
         int level = mode;
         AccountManager.sharedInstance().setLastSpeedLevel(String.valueOf(level));
+
+        int skinMode = SkinManager.sharedInstance().getSkinMode();
         switch (mode) {
             case StatusConfig.MODE_E:
-                attrs = new int[]{R.attr.btn_e_drawable};
-                ta = this.obtainStyledAttributes(attrs);
-                drawable = ta.getDrawable(0);
-                ta.recycle();
-                mButtonE.setImageDrawable(drawable);
+//                attrs = new int[]{R.attr.btn_e_drawable};
+//                ta = this.obtainStyledAttributes(attrs);
+//                drawable = ta.getDrawable(0);
+//                ta.recycle();
+
+                if (skinMode == SkinConfig.SKIN_MODE_DAY) {
+                    mButtonE.setImageResource(R.drawable.icon_e);
+                }else{
+                    mButtonE.setImageResource(R.drawable.icon_e_night);
+                }
+
+               //mButtonE.setImageDrawable(drawable);
                 mTextE.setEnabled(true);
                 break;
             case StatusConfig.MODE_N:
-                attrs = new int[]{R.attr.btn_n_drawable};
-                ta = this.obtainStyledAttributes(attrs);
-                drawable = ta.getDrawable(0);
-                ta.recycle();
-                mButtonN.setImageDrawable(drawable);
+//                attrs = new int[]{R.attr.btn_n_drawable};
+//                ta = this.obtainStyledAttributes(attrs);
+//                drawable = ta.getDrawable(0);
+//                ta.recycle();
+                //mButtonN.setImageDrawable(drawable);
+                if (skinMode == SkinConfig.SKIN_MODE_DAY) {
+                    mButtonN.setImageResource(R.drawable.icon_n);
+                }else{
+                    mButtonN.setImageResource(R.drawable.icon_n_night);
+                }
                 mTextN.setEnabled(true);
                 break;
             case StatusConfig.MODE_S:
-                attrs = new int[]{R.attr.btn_s_drawable};
-                ta = this.obtainStyledAttributes(attrs);
-                drawable = ta.getDrawable(0);
-                ta.recycle();
-                mButtonS.setImageDrawable(drawable);
+//                attrs = new int[]{R.attr.btn_s_drawable};
+//                ta = this.obtainStyledAttributes(attrs);
+//                drawable = ta.getDrawable(0);
+//                ta.recycle();
+                //mButtonS.setImageDrawable(drawable);
+                if (skinMode == SkinConfig.SKIN_MODE_DAY) {
+                    mButtonS.setImageResource(R.drawable.icon_s);
+                }else{
+                    mButtonS.setImageResource(R.drawable.icon_s_night);
+                }
                 mTextS.setEnabled(true);
                 break;
         }
@@ -1403,9 +1529,9 @@ public class MainActivity extends BaseActivity {
                         if (device == null)
                             return;
                         scanLeDevice(false);
-                        System.out.println("onListItemClick " + device.getName().toString());
+                        //System.out.println("onListItemClick " + device.getName().toString());
 
-                        System.out.println("Device Name:" + device.getName() + "   " + "Device Name:" + device.getAddress());
+                        //System.out.println("Device Name:" + device.getName() + "   " + "Device Name:" + device.getAddress());
 
                         mDeviceName = device.getName().toString();
                         mDeviceAddress = device.getAddress().toString();
@@ -1497,7 +1623,7 @@ public class MainActivity extends BaseActivity {
     private void setBattery(int battery) {
         mBatteryRollView.setPercent(battery);
         mBatteryView.setText(String.valueOf(battery));
-        if(battery<=20){
+        if(battery <= 20){
             mBatteryView.setTextColor(getResources().getColor(R.color.battery_percent_low));
             mBatteryViewUint.setTextColor(getResources().getColor(R.color.battery_percent_low));
         }else{

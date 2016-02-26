@@ -24,7 +24,6 @@
         <TextView
             android:id="@+id/speed_num"
             android:textSize="@dimen/default_size_220"
-            android:text="20"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:textColor="?attr/main_text_value_color"
@@ -127,6 +126,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/model_bg"
             android:src="?attr/model_bg"
             android:paddingLeft="@dimen/default_gap_15"
             android:paddingRight="@dimen/default_gap_15"

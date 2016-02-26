@@ -32,8 +32,8 @@
         <item name="common_background">@color/common_background_night</item>
         <item name="main_setting_drawable">@drawable/icon_setting_night</item>
         <item name="main_title_drawable">@drawable/icon_logo_night</item>
-        <item name="main_light_drawable" >@drawable/icon_light_night</item>
-        <item name="main_roll_drawable">@drawable/circle_down_night_battery_roll</item>
+        <item name="main_light_drawable" >@drawable/icon_light</item>
+        <item name="main_roll_drawable">@drawable/circle_down_battery_roll</item>
         <item name="main_text_value_color">@color/white</item>
         <item name="main_text_show_color">@color/white</item>
         <item name="btn_e_drawable" >@drawable/icon_e_drawable_night</item>
