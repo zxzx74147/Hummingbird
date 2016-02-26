@@ -2,9 +2,9 @@
 <resources>
     <color name="white">#FFFFFF</color>
     <color name="common_background_day">#FFEDEDED</color>
-    <color name="common_background_night">#FF0D1535</color>
+    <color name="common_background_night">#FF321437</color>
     <color name="common_gray_day">#FFC0C0C0</color>
-    <color name="common_orange_day">#E55A28</color>
+    <color name="common_orange_day">#FF973A</color>
     <color name="common_div">#FF979797</color>
     <color name="cycling_data">#FF6600</color>
 
@@ -15,4 +15,16 @@
     <color name="battery_roll_top_day">#e97122</color>
     <color name="battery_roll_bottom_day">#f9bb4e</color>
     <color name="battery_roll_bg">#D8D8D8</color>
+
+    <color name="violet">#6001B4</color>
+
+    <color name="circle_gray">#d8d8d8</color>
+    <color name="circle_orange">#f15a24</color>
+    <color name="circle_gray_night">#9b9b9b</color>
+    <color name="circle_white_night">#ffffff</color>
+
+    <color name="begin_background">#fbf9f7</color>
+
+    <color name="battery_percent_high">#529726</color>
+    <color name="battery_percent_low">#fc3200</color>
 </resources>

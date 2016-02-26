@@ -36,12 +36,12 @@ public class ChangeUserNameReuest extends HttpJsonRequest<JSONObject> {
         params.put("r", NetworkConfig.USERNAME_ADDRESS);
         params.put("token", AccountManager.sharedInstance().getToken());
         params.put("userName", mUserName);
-        System.out.print("mUserName : " + AccountManager.sharedInstance().getToken());
+        //System.out.print("mUserName : " + AccountManager.sharedInstance().getToken());
     }
 
     @Override
     protected String url() {
-        return NetworkConfig.SERVER_ADDRESS;
+        return NetworkConfig.SERVER_ADDRESS_DEV;
     }
 
     @Override

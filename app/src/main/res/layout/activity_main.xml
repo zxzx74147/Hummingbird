@@ -20,11 +20,12 @@
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/title_bar_height"
+                android:background="?attr/main_head_bg"
                 android:layout_alignParentTop="true">
 
                 <ImageButton
                     android:id="@+id/main_setting"
-                    android:layout_width="@dimen/default_gap_80"
+                    android:layout_width="@dimen/default_gap_70"
                     android:layout_height="match_parent"
                     android:background="@null"
                     android:onClick="true"
@@ -33,16 +34,15 @@
                     android:src="?attr/main_setting_drawable" />
 
                 <ImageView
-                    android:layout_width="@dimen/default_gap_200"
-                    android:layout_height="match_parent"
+                    android:layout_width="@dimen/default_gap_170"
+                    android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:scaleType="fitCenter"
-
                     android:src="?attr/main_title_drawable" />
 
                 <ImageView
                     android:id="@+id/main_light"
-                    android:layout_width="@dimen/default_gap_120"
+                    android:layout_width="@dimen/default_gap_90"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:layout_centerInParent="true"
@@ -79,6 +79,20 @@
 
             <include layout="@layout/drawer_main" />
         </FrameLayout>
+        <FrameLayout
+            android:id="@+id/right_drawer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:choiceMode="singleChoice">
 
+            <include layout="@layout/drawer_right_main" />
+
+            <!--<com.baidu.mapapi.map.MapView-->
+                <!--android:id="@+id/bmapView"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:clickable="true" />-->
+        </FrameLayout>
     </android.support.v4.widget.DrawerLayout>
 </RelativeLayout>

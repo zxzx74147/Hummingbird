@@ -17,12 +17,22 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="主人，召唤您的锋鸟！"-->
+        <!--android:textSize="@dimen/text_size_mid"-->
+        <!--android:background="@drawable/listitem_title_bg"/>-->
     <TextView android:id="@+id/device_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="24dp"/>
-    <TextView android:id="@+id/device_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="12dp"/>
+            android:textSize="@dimen/default_gap_36"
+            android:paddingLeft="@dimen/default_gap_50"
+            android:paddingBottom="@dimen/default_gap_36"
+            android:paddingTop="@dimen/default_gap_36"
+            />
+    <!--<TextView android:id="@+id/device_address"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="@dimen/text_size_mid"/>-->
 </LinearLayout>

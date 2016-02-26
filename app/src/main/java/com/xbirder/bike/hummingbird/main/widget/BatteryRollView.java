@@ -15,6 +15,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import com.xbirder.bike.hummingbird.R;
+
 /**
  * Created by zhengxin on 2015/7/10.
  */
@@ -23,7 +25,7 @@ public class BatteryRollView extends ImageView {
     private Paint mImagePaint = null;
     private ColorFilter mFilter = null;
     private RectF mRect;
-    private float mPercent = 10;
+    private float mPercent = 0;
 
     public BatteryRollView(Context context) {
         super(context);
@@ -42,6 +44,12 @@ public class BatteryRollView extends ImageView {
 
     public void setPercent(float percent){
         mPercent = percent;
+        if(mPercent<=20){
+            setImageResource(R.drawable.circle_down_battery_roll_red);
+        }else{
+            setImageResource(R.drawable.circle_down_battery_roll);
+        }
+
         invalidate();
     }
 
@@ -52,6 +60,7 @@ public class BatteryRollView extends ImageView {
         setColorFilter(mFilter);
         mImagePaint = new Paint();
         mImagePaint.setFilterBitmap(true);
+        //mImagePaint.setAntiAlias(true);
         mImagePaint.setStrokeCap(Paint.Cap.ROUND);
         mImagePaint.setStyle(Paint.Style.STROKE); //绘制空心圆
         mRect = new RectF();
@@ -65,16 +74,16 @@ public class BatteryRollView extends ImageView {
         if(getDrawable() instanceof BitmapDrawable){
             Bitmap bitmap = ((BitmapDrawable) getDrawable()).getBitmap();
             Matrix matrix = getImageMatrix();
-            float strokeWidth = getWidth()*0.065f;
-            mRect.set(strokeWidth/2,strokeWidth/2,getWidth()-strokeWidth/2,getHeight()-strokeWidth/2);
+            float strokeWidth = getWidth()*0.056f;
+            mRect.set(0.061f * getWidth() + strokeWidth/2,0.061f * getWidth() + strokeWidth/2,getWidth() - (0.061f * getWidth() + strokeWidth/2),getHeight() - (0.061f * getWidth() + strokeWidth/2));
             BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
             if (matrix != null) {
                 shader.setLocalMatrix(matrix);
             }
             mImagePaint.setStrokeWidth(strokeWidth);
             mImagePaint.setShader(shader);
-            float end = -360 * mPercent/100;
-            float start = -90;
+            float end = -84 * mPercent/100;
+            float start = -228;
             canvas.drawArc(mRect,start,end,false,mImagePaint);
         }
 

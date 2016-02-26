@@ -23,7 +23,7 @@
         android:layout_below="@+id/head"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/default_gap_25"
-        android:text=""
+        android:text="xbird"
         android:textColor="@color/common_text_gray_day"
         android:textSize="@dimen/text_size_name" />
 
@@ -36,13 +36,32 @@
         android:background="@drawable/setting_color_one">
 
         <ImageView
-            android:id="@+id/calender_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/default_gap_50"
-            android:src="@drawable/icon_calender"
-            />
+        android:id="@+id/calender_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/default_gap_50"
+        android:src="@drawable/icon_left_drawer_low_cycling_records"
+        />
+
+               <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_centerVertical="true"
+                   android:gravity="center_vertical|left"
+                   android:paddingLeft="@dimen/default_gap_120"
+                   android:textSize="@dimen/text_size_big"
+                   android:text="@string/left_drawer_low_cycling_records"
+                   />
+
+        <!--<ImageView-->
+            <!--android:id="@+id/calender_image"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginLeft="@dimen/default_gap_50"-->
+            <!--android:src="@drawable/icon_calender"-->
+            <!--/>-->
 
         <!--        <TextView
                     android:layout_width="match_parent"
@@ -63,13 +82,31 @@
         android:background="@drawable/setting_color_two">
 
         <ImageView
-            android:id="@+id/helper"
+            android:id="@+id/self_checking"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/default_gap_50"
-            android:src="@drawable/icon_help"
+            android:src="@drawable/icon_left_drawer_self_checking"
             />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical|left"
+            android:paddingLeft="@dimen/default_gap_120"
+            android:textSize="@dimen/text_size_big"
+            android:text="@string/left_drawer_self_checking"
+            />
+        <!--<ImageView-->
+            <!--android:id="@+id/helper"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginLeft="@dimen/default_gap_50"-->
+            <!--android:src="@drawable/icon_help"-->
+            <!--/>-->
 
         <!--<TextView
             android:layout_width="match_parent"
@@ -96,8 +133,26 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/default_gap_50"
-            android:src="@drawable/icon_set"
+            android:src="@drawable/icon_left_drawer_setting_layout"
             />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical|left"
+            android:paddingLeft="@dimen/default_gap_120"
+            android:textSize="@dimen/text_size_big"
+            android:text="@string/left_drawer_setting_layout"
+            />
+        <!--<ImageView-->
+            <!--android:id="@+id/bt_setting"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginLeft="@dimen/default_gap_50"-->
+            <!--android:src="@drawable/icon_set"-->
+            <!--/>-->
 
         <!--        <TextView
                     android:layout_width="match_parent"

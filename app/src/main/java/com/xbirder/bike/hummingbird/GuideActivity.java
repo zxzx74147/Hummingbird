@@ -1,6 +1,5 @@
 package com.xbirder.bike.hummingbird;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,15 +9,17 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 
+import com.xbirder.bike.hummingbird.base.BaseActivity;
+
 import java.util.ArrayList;
+
 
 /**
  * Created by zhhz on 15/11/10.
  */
-public class GuideActivity extends Activity {
+public class GuideActivity extends BaseActivity {
     private ViewPager viewPager;
 
     /**装分页显示的view的数组*/
@@ -34,6 +35,8 @@ public class GuideActivity extends Activity {
     //包裹小圆点的LinearLayout
     private ViewGroup viewPoints;
 
+
+    private Intent mIntent;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,9 @@ public class GuideActivity extends Activity {
         pageViews = new ArrayList<View>();
         pageViews.add(inflater.inflate(R.layout.viewpager_page1, null));
         pageViews.add(inflater.inflate(R.layout.viewpager_page2, null));
+        pageViews.add(inflater.inflate(R.layout.viewpager_page3, null));
+        pageViews.add(inflater.inflate(R.layout.viewpager_page4, null));
+
 
         //创建imageviews数组，大小是要显示的图片的数量
         imageViews = new ImageView[pageViews.size()];
@@ -79,24 +85,26 @@ public class GuideActivity extends Activity {
 
         //设置viewpager的适配器和监听事件
         viewPager.setAdapter(new GuidePageAdapter());
-        viewPager.setOnPageChangeListener((ViewPager.OnPageChangeListener) new GuidePageChangeListener());
+
+        viewPager.addOnPageChangeListener((ViewPager.OnPageChangeListener) new GuidePageChangeListener());
     }
 
-    private Button.OnClickListener  Button_OnClickListener = new Button.OnClickListener() {
-        public void onClick(View v) {
-            //设置已经引导
-            setGuided();
-
-            //跳转
-            Intent mIntent = new Intent();
-            mIntent.setClass(GuideActivity.this, LogoActivity.class);
-            GuideActivity.this.startActivity(mIntent);
-            GuideActivity.this.finish();
-        }
-    };
+//    private Button.OnClickListener  Button_OnClickListener = new Button.OnClickListener() {
+//        public void onClick(View v) {
+//            //设置已经引导
+//            setGuided();
+//
+//            //跳转
+//            Intent mIntent = new Intent();
+//            mIntent.setClass(GuideActivity.this, LogoActivity.class);
+//            GuideActivity.this.startActivity(mIntent);
+//            GuideActivity.this.finish();
+//        }
+//    };
 
     private static final String SHAREDPREFERENCES_NAME = "my_pref";
     private static final String KEY_GUIDE_ACTIVITY = "guide_activity";
+
     private void setGuided(){
         SharedPreferences settings = getSharedPreferences(SHAREDPREFERENCES_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
@@ -134,11 +142,11 @@ public class GuideActivity extends Activity {
             // TODO Auto-generated method stub
             ((ViewPager) v).addView(pageViews.get(position));
 
-            // 测试页卡1内的按钮事件
-            if (position == 1) {
-                Button btn = (Button) v.findViewById(R.id.btn_close_guide);
-                btn.setOnClickListener(Button_OnClickListener);
-            }
+//            // 测试页卡1内的按钮事件
+//            if (position == 1) {
+//                Button btn = (Button) v.findViewById(R.id.btn_close_guide);
+//                btn.setOnClickListener(Button_OnClickListener);
+//            }
 
             return pageViews.get(position);
         }
@@ -184,6 +192,10 @@ public class GuideActivity extends Activity {
         public void onPageScrollStateChanged(int arg0) {
             // TODO Auto-generated method stub
 
+
+
+
+
         }
 
         @Override
@@ -203,6 +215,73 @@ public class GuideActivity extends Activity {
                 }
             }
 
+            if(position == 3){
+
+
+
+
+                //设置已经引导
+                //setGuided();
+
+                //跳转
+//                ActivityJumpHelper.startActivity(GuideActivity.this, LogoActivity.class);
+//                overridePendingTransition(0, R.anim.out_to_bottom);
+
+                 mIntent = new Intent();
+//
+////                String userName = AccountManager.sharedInstance().getUser();
+////                String pass = AccountManager.sharedInstance().getPass();
+////                if ((userName != null && userName.length() > 0) &&
+////                        (pass != null && pass.length() > 0)) {
+////                    mIntent.setClass(GuideActivity.this, MainActivity.class);
+////                }else{
+////                    mIntent.setClass(GuideActivity.this, LogoActivity.class);
+////                    overridePendingTransition(R.anim.in_to_up,
+////                            R.anim.out_to_bottom);
+////                }
+//
+                mIntent.setClass(GuideActivity.this, LogoActivity.class);
+
+                GuideActivity.this.startActivity(mIntent);
+                overridePendingTransition(R.anim.in_to_up,
+                        R.anim.out_to_bottom);
+//                mIntent.setClass(GuideActivity.this, LogoActivity.class);
+//                overridePendingTransition(R.anim.in_to_up,
+//                        R.anim.out_to_bottom);
+ //               GuideActivity.this.startActivity(mIntent);
+                //GuideActivity.this.finish();
+//                overridePendingTransition(R.anim.in_to_up,
+//                        R.anim.out_to_bottom);
+
+
+
+//                mIntent = new Intent();
+//                mIntent.setClass(GuideActivity.this, LogoActivity.class);
+//
+//                mHandler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        overridePendingTransition(R.anim.in_to_up,
+//                                R.anim.out_to_bottom);
+//                        GuideActivity.this.startActivity(mIntent);
+//                    }
+//                }, 500);
+
+
+
+            }
+
+
+
         }
     }
+
+//    @Override
+//    public void finish() {
+//        // TODO Auto-generated method stub
+//        super.finish();
+//        //关闭窗体动画显示
+//        //this.overridePendingTransition(R.anim.abc_slide_in_bottom,0);
+//    }
+
 }

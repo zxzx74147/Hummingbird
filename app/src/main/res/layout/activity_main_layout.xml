@@ -6,60 +6,110 @@
 
 
 
-    <com.xbirder.bike.hummingbird.main.widget.BatteryRollView
+    <com.xbirder.bike.hummingbird.main.widget.VelocityRollView
         android:layout_width="@dimen/default_gap_540"
         android:layout_centerHorizontal="true"
-        android:id="@+id/roll_view"
-        android:src="?attr/main_roll_drawable"
-        android:layout_marginTop="20dp"
+        android:id="@+id/velocity_view"
+        android:src="?attr/main_velocity_drawable"
+        android:layout_marginTop="@dimen/default_gap_45"
         android:layout_height="@dimen/default_gap_540" />
-
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_alignStart="@+id/roll_view"
-        android:layout_alignEnd="@+id/roll_view"
+        android:layout_alignStart="@+id/velocity_view"
+        android:layout_alignEnd="@+id/velocity_view"
         android:orientation="vertical"
-        android:layout_alignTop="@+id/roll_view"
+        android:layout_alignTop="@+id/velocity_view"
         android:layout_marginBottom="@dimen/default_gap_20"
-        android:layout_alignBottom="@+id/roll_view"
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/speed_num"
-            android:textSize="@dimen/default_size_250"
-            android:text="0"
-            android:layout_centerInParent="true"
+            android:textSize="@dimen/default_size_220"
+            android:text="20"
+            android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:textColor="?attr/main_text_value_color"
             android:lineSpacingExtra="0dip"
             android:layout_marginBottom="-15dp"
             android:lineSpacingMultiplier="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_gap_90"/>
+        <TextView
+            android:layout_below="@id/speed_num"
+            android:id="@+id/speed_unit"
+            android:textSize="@dimen/default_size_36"
+            android:text="KM/H"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:textColor="?attr/main_text_speed_unit_color"
+            android:lineSpacingExtra="0dip"
+            android:lineSpacingMultiplier="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_gap_2"/>
+        <TextView
+            android:layout_below="@id/speed_unit"
+            android:id="@+id/battery_num"
+            android:textSize="@dimen/default_size_60"
+            android:text="100"
+            android:layout_marginTop="@dimen/default_gap_20"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/battery_percent_high"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-    </RelativeLayout>
-    
-    <TextView
-        android:layout_below="@id/roll_view"
-        android:id="@+id/battery_num"
-        android:textSize="@dimen/default_size_65"
-        android:layout_marginTop="@dimen/default_gap_30"
-        android:text="100%"
-        android:layout_centerHorizontal="true"
-        android:textColor="?attr/main_text_value_color"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:layout_toRightOf="@id/battery_num"
+            android:layout_below="@id/speed_unit"
+            android:id="@+id/battery_num_unit"
+            android:textSize="@dimen/default_size_36"
+            android:layout_marginTop="@dimen/default_gap_40"
+            android:text="%"
+            android:textColor="@color/battery_percent_high"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-    <TextView
-        android:layout_below="@id/battery_num"
-        android:id="@+id/battery_show"
-        android:textSize="@dimen/default_size_40"
-        android:text="电量"
+    </RelativeLayout>
+
+    <com.xbirder.bike.hummingbird.main.widget.BatteryRollView
+        android:layout_width="@dimen/default_gap_540"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/default_gap_10"
-        android:textColor="?attr/main_text_show_color"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:id="@+id/roll_view"
+        android:src="?attr/main_roll_drawable"
+        android:layout_marginTop="@dimen/default_gap_45"
+        android:layout_height="@dimen/default_gap_540" />
 
     <ImageView
-        android:layout_below="@id/battery_show"
+        android:layout_alignBottom="@id/roll_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/icon_lightning"
+        android:layout_marginBottom="@dimen/default_gap_35"/>
+
+    <!--
+       <TextView
+           android:layout_below="@id/roll_view"
+           android:id="@+id/battery_num"
+           android:textSize="@dimen/default_size_65"
+           android:layout_marginTop="@dimen/default_gap_30"
+           android:text="100%"
+           android:layout_centerHorizontal="true"
+           android:textColor="@color/violet"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content" />
+
+       <TextView
+           android:layout_below="@id/battery_num"
+           android:id="@+id/battery_show"
+           android:textSize="@dimen/default_size_40"
+           android:text="电量"
+           android:layout_centerHorizontal="true"
+           android:layout_marginTop="@dimen/default_gap_10"
+           android:textColor="?attr/main_text_show_color"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content" />
+   -->
+    <ImageView
+        android:layout_below="@id/roll_view"
         android:id="@+id/connect_bluetooth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -70,10 +120,10 @@
 
 
     <RelativeLayout
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/weather_line"
         android:layout_width="@dimen/default_gap_613"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="30dp"
         android:layout_height="wrap_content">
 
         <ImageView
@@ -93,7 +143,6 @@
                 style="@style/mode_text"
                 android:text="@string/mode_e_text"
                 android:layout_height="wrap_content" />
-
             <View
                 android:layout_width="0dip"
                 android:layout_weight="1"
@@ -103,7 +152,6 @@
                 android:id="@+id/mode_n_text"
                 android:text="@string/mode_n_text"
                 android:layout_height="wrap_content" />
-
             <View
                 android:layout_width="0dip"
                 android:layout_weight="1"
@@ -113,7 +161,6 @@
                 android:id="@+id/mode_s_text"
                 android:text="@string/mode_s_text"
                 android:layout_height="wrap_content" />
-
         </LinearLayout>
         <RelativeLayout
             android:id="@+id/big_button_layout"
@@ -126,11 +173,10 @@
                 android:layout_width="wrap_content"
                 android:scaleType="fitStart"
                 android:layout_height="wrap_content" />
-
-            <!--<View-->
-                <!--android:layout_width="0dip"-->
-                <!--android:layout_weight="1"-->
-                <!--android:layout_height="1dip"/>-->
+            <View
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="1dip"/>
             <ImageView
                 android:src="?attr/btn_n_drawable"
                 android:layout_width="wrap_content"
@@ -138,10 +184,10 @@
                 android:id="@+id/mode_n"
                 android:layout_height="wrap_content" />
 
-            <!--<View-->
-                <!--android:layout_width="0dip"-->
-                <!--android:layout_weight="1"-->
-                <!--android:layout_height="1dip"/>-->
+            <View
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="1dip"/>
             <ImageView
                 android:src="?attr/btn_s_drawable"
                 android:layout_width="wrap_content"
@@ -153,5 +199,36 @@
         </RelativeLayout>
 
     </RelativeLayout>
+    <ImageView
+        android:src="?attr/weather_line"
+        android:id="@+id/weather_line"
+        android:layout_above="@+id/weather_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/default_gap_15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:id="@+id/weather_layout"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="@dimen/default_gap_20"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_gravity="center_vertical"
+            android:src="?attr/weather_ic_img"
+            android:id="@+id/weather_ic_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_gravity="center_vertical"
+            style="@style/mode_text"
+            android:layout_marginLeft="@dimen/default_gap_10"
+            android:id="@+id/weather_text"
+            android:text="@string/default_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
 
 </RelativeLayout>

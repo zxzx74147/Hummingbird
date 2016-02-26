@@ -1,8 +1,6 @@
 package com.xbirder.bike.hummingbird;
 
 
-import com.xbirder.bike.hummingbird.bluetooth.BluetoothLeService;
-import com.xbirder.bike.hummingbird.bluetooth.XBirdBluetoothConfig;
 import com.xbirder.bike.hummingbird.util.SharedPreferenceHelper;
 
 /**
@@ -21,6 +19,14 @@ public class AccountManager {
     private static final String KEY_STORE_DATE = "store_date";
     private static final String KEY_STORE_DISTANCE = "store_distance";
     private static final String KEY_STORE_RUNTIME = "store_runtime";
+
+    private static final String KEY_SCREEN_BRIGHT = "screen_bright";
+    private static final String KEY_BIKE_CURRENT_VERSION = "bike_current_version";
+
+    private static final String KEY_OFF_LINE_MODE = "off_line_mode";
+
+    private static final String KEY_AVATAR_NAME = "avatar_name";
+
     private String mUser;
     private String mPass;
     private String mToken;
@@ -31,6 +37,49 @@ public class AccountManager {
     private String mStoreDate;
     private String mStoreDistance;
     private String mStoreRuntime;
+
+    private String mScreenBright;
+    private String mBikeCurrentVersion;
+    private String mOffLineMode;
+    private String mAvatarName;
+
+
+    public String getAvatarName() {
+        return mAvatarName;
+    }
+
+    public void setAvatarName(String avatarName) {
+        this.mAvatarName = avatarName;
+        SharedPreferenceHelper.saveString(KEY_AVATAR_NAME + mUser, this.mAvatarName);
+    }
+
+    public String getOffLineMode() {
+        return mOffLineMode;
+    }
+
+    public void setOffLineMode(String offLineMode) {
+        this.mOffLineMode = offLineMode;
+        SharedPreferenceHelper.saveString(KEY_OFF_LINE_MODE, this.mOffLineMode);
+    }
+
+
+    public String getBikeCurrentVersion() {
+        return mBikeCurrentVersion;
+    }
+
+    public void setBikeCurrentVersion(String bikeCurrentVersion) {
+        this.mBikeCurrentVersion = bikeCurrentVersion;
+        SharedPreferenceHelper.saveString(KEY_BIKE_CURRENT_VERSION, this.mBikeCurrentVersion);
+    }
+
+    public String getScreenBright() {
+        return mScreenBright;
+    }
+
+    public void setScreenBright(String screenBright) {
+        this.mScreenBright = screenBright;
+        SharedPreferenceHelper.saveString(KEY_SCREEN_BRIGHT, this.mScreenBright);
+    }
 
 
     public String getStoreDate() {
@@ -76,12 +125,17 @@ public class AccountManager {
         mPass = SharedPreferenceHelper.getString(KEY_PASS, "");
         mToken = SharedPreferenceHelper.getString(KEY_TOKEN, "");
         mFinalToken = SharedPreferenceHelper.getString(mUser, "");
-        mUserName = SharedPreferenceHelper.getString(KEY_USER_NAME, "");
+        mUserName = SharedPreferenceHelper.getString(KEY_USER_NAME + mUser, "");
         mConnectBluetooth = SharedPreferenceHelper.getString(KEY_CONNECT_BLUETOOTH, "");
         mLastSpeedLevel = SharedPreferenceHelper.getString(KEY_LAST_SPEED_LEVEL + mUser, "");
         mStoreDate = SharedPreferenceHelper.getString(KEY_STORE_DATE + mUser, "");
         mStoreDistance = SharedPreferenceHelper.getString(KEY_STORE_DISTANCE + mUser, "0");
         mStoreRuntime = SharedPreferenceHelper.getString(KEY_STORE_RUNTIME + mUser, "0");
+        mScreenBright = SharedPreferenceHelper.getString(KEY_SCREEN_BRIGHT, "");
+
+        mBikeCurrentVersion = SharedPreferenceHelper.getString(KEY_BIKE_CURRENT_VERSION, "");
+        mOffLineMode = SharedPreferenceHelper.getString(KEY_OFF_LINE_MODE, "");
+        mAvatarName= SharedPreferenceHelper.getString(KEY_AVATAR_NAME + mUser, "");
     }
     public static AccountManager sharedInstance(){
         if(mInstance == null){
@@ -89,6 +143,9 @@ public class AccountManager {
         }
         return mInstance;
     }
+
+
+
 
     public String getToken(){
         return mToken;
@@ -122,7 +179,7 @@ public class AccountManager {
 
     public void setUserName(String userName) {
         this.mUserName = userName;
-        SharedPreferenceHelper.saveString(KEY_USER_NAME, mUserName);
+        SharedPreferenceHelper.saveString(KEY_USER_NAME + mUser, mUserName);
     }
 
     public void setSex(String sex) {

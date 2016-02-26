@@ -1,5 +1,6 @@
 package com.xbirder.bike.hummingbird.main;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -17,13 +18,18 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -32,14 +38,39 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.baidu.core.net.base.HttpResponse;
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.DotOptions;
+import com.baidu.mapapi.map.MapStatus;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MyLocationConfiguration;
+import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.PolylineOptions;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.navi.BaiduMapAppNotSupportNaviException;
+import com.baidu.mapapi.navi.BaiduMapNavigation;
+import com.baidu.mapapi.navi.NaviParaOption;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.xbirder.bike.hummingbird.AccountManager;
 import com.xbirder.bike.hummingbird.HuApplication;
@@ -48,19 +79,34 @@ import com.xbirder.bike.hummingbird.base.BaseActivity;
 import com.xbirder.bike.hummingbird.bluetooth.BluetoothLeService;
 import com.xbirder.bike.hummingbird.bluetooth.SampleGattAttributes;
 import com.xbirder.bike.hummingbird.bluetooth.XBirdBluetoothConfig;
+import com.xbirder.bike.hummingbird.config.NetworkConfig;
 import com.xbirder.bike.hummingbird.cycling.CyclingRecords;
 import com.xbirder.bike.hummingbird.fonts.FontsManager;
+import com.xbirder.bike.hummingbird.login.LoginActivity;
+import com.xbirder.bike.hummingbird.login.LoginRequest;
+import com.xbirder.bike.hummingbird.login.LoginTokenRequest;
 import com.xbirder.bike.hummingbird.main.side.WiperSwitch;
 import com.xbirder.bike.hummingbird.main.widget.BatteryRollView;
+import com.xbirder.bike.hummingbird.main.widget.VelocityRollView;
 import com.xbirder.bike.hummingbird.setting.MySetting;
 import com.xbirder.bike.hummingbird.setting.SettingActivity;
-import com.xbirder.bike.hummingbird.setting.XBirderHelp;
+import com.xbirder.bike.hummingbird.setting.XBirderSelfCheckActivity;
 import com.xbirder.bike.hummingbird.skin.SkinConfig;
 import com.xbirder.bike.hummingbird.skin.SkinManager;
 import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
+import com.xbirder.bike.hummingbird.util.CustomAlertDialog;
+import com.xbirder.bike.hummingbird.util.StringHelper;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -85,7 +131,9 @@ public class MainActivity extends BaseActivity {
 
     private TextView mSpeedText;
     private FrameLayout mLeftDrawer;
+    private FrameLayout mRightDrawer;
     private ViewGroup.LayoutParams fLp;
+    private ViewGroup.LayoutParams RightfLp;
     private RoundedImageView mRoundedImageView;
     private int screenWidth;
     private int screenHeight;
@@ -99,8 +147,10 @@ public class MainActivity extends BaseActivity {
     private TextView mTextN;
     private TextView mTextS;
     private BatteryRollView mBatteryRollView;
+    private VelocityRollView mVelocityRollView;
     private TextView mBatteryView;
-    private TextView mBatteryShow;
+    private TextView mBatteryViewUint;
+    //private TextView mBatteryShow;
     private DrawerLayout mDrawerLayout;
     private View mSettingView;
     private RelativeLayout mLockBack;
@@ -122,17 +172,69 @@ public class MainActivity extends BaseActivity {
     private boolean mScanning = false;
     private Handler mHandler;
     private LeDeviceListAdapter mLeDeviceListAdapter = null;
-    private AlertDialog mScanDeviceDialog;
+    private CustomAlertDialog mScanDeviceDialog;
 
     private int mTotalDistance = 0;
     private int mTotalTime = 0;
     private int mDisEdge = 0;
     private int mTimeEdge = 0;
 
+    private TextView mWeatherText;
+    private String mWeatherTextString = null;
+    private TextView mUser_name;
+
     public enum connectionStateEnum {isNull, isScanning, isToScan, isConnecting, isConnected, isDisconnecting}
 
     ;
     public connectionStateEnum mConnectionState = connectionStateEnum.isNull;
+
+    // 定位相关
+    LocationClient mLocClient;
+    public MyLocationListenner myListener = new MyLocationListenner();
+    private MyLocationConfiguration.LocationMode mCurrentMode;
+    private BitmapDescriptor mCurrentMarker;
+
+    private MapView mMapView;
+    private BaiduMap mBaiduMap;
+    boolean isFirstLoc = true; // 是否首次定位
+
+    private List<LatLng> mBaiduMapPoints = new ArrayList<LatLng>();
+
+    private LatLng lastll;
+
+    private int BaiduMapDistance = 0;
+    private boolean isBaiduMapDistanceEnable = false;
+
+    private BDLocation mBDLocation = null;
+
+
+
+    private TextView mdc_speed_num;
+    private TextView mdc_mileage_num;
+    private TextView mdc_power_num;
+    private RelativeLayout mpenContent;
+
+
+    private ImageView mImageView_navigation_back;
+    private ImageView mImageView_navigation_baidumap;
+    private ImageView mImageView_navigation_backtolocation;
+
+    private ImageView mdc_show;
+    private boolean isopenmenu = true;
+    private int mpenContentHeight = 0;
+
+    private boolean isFirstIn = true; // 是否首次进入
+
+    private String avatarName;
+    //private ImageView mdc_show2;
+
+//    private TranslateAnimation mTranslateAnimation = null;
+//    private TranslateAnimation mTranslateAnimation2 = null;
+
+    private LinearLayout flexible_menu;
+
+    private int mlishiTempDistance = 0;
+    private int mTotalTempDistance = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +257,7 @@ public class MainActivity extends BaseActivity {
 
         // Initializes list view adapter.
         mLeDeviceListAdapter = new LeDeviceListAdapter();
+
     }
 
     private boolean initiate() {
@@ -361,6 +464,39 @@ public class MainActivity extends BaseActivity {
                     for (int i = 14; i < 18; i++) {
                         tempTime = 256 * tempTime + bytes[i];
                     }
+
+                    //int OffLineModeEnable = bytes[11];
+//                    Log.d("test2", "0"+bytes[11]);
+//
+//                    if(bytes[11] == (byte)0x01 ){
+//                        Log.d("test3", "1");
+//                        if(!AccountManager.sharedInstance().getOffLineMode().equals("1")) {
+//                            AccountManager.sharedInstance().setOffLineMode("1");
+//                            Log.d("test1", "1");
+//                        }
+//                    }else if(bytes[11] == (byte)0x00){
+//                        Log.d("test3", "2");
+//                        if(!AccountManager.sharedInstance().getOffLineMode().equals("0")) {
+//                            AccountManager.sharedInstance().setOffLineMode("0");
+//                            Log.d("test1", "0");
+//                        }
+//                    }
+
+
+                    int bikeCurrentVersion = bytes[18];
+                    if(!AccountManager.sharedInstance().getBikeCurrentVersion().equals(""+bikeCurrentVersion)) {
+                        AccountManager.sharedInstance().setBikeCurrentVersion("" + bikeCurrentVersion);
+                    }
+
+                    mTotalTempDistance = tempDistance;
+                    if(isBaiduMapDistanceEnable){
+                        int mBaiduMapDistance = BaiduMapDistance/100;
+                        tempDistance = mTotalDistance + mBaiduMapDistance;
+                        BaiduMapDistance = BaiduMapDistance - mBaiduMapDistance*100;
+                    }else{
+                        tempDistance = mTotalDistance + tempDistance - mlishiTempDistance;
+                    }
+
                     setStoreRidingData(tempDistance, tempTime);
 
                     break;
@@ -380,7 +516,8 @@ public class MainActivity extends BaseActivity {
         String storeDis = AccountManager.sharedInstance().getStoreDistance();
         String storeTime = AccountManager.sharedInstance().getStoreRuntime();
 
-        if (storeDate == null || storeDate == "") {
+        //if (storeDate == null || storeDate == "") {
+        if (storeDate == null || storeDate.length() <= 0) {
             AccountManager.sharedInstance().setStoreDate(currentDate);
             AccountManager.sharedInstance().setStoreDistance("0");
             AccountManager.sharedInstance().setStoreRuntime("0");
@@ -430,6 +567,16 @@ public class MainActivity extends BaseActivity {
         }
 
         AccountManager.sharedInstance().setStoreDistance(String.valueOf(mTotalDistance));
+//        if(isBaiduMapDistanceEnable){
+//            AccountManager.sharedInstance().setStoreDistance(String.valueOf(BaiduMapDistance));
+//        }else{
+////            //这里的1是100米
+////            if(mTotalDistance > 5){
+////                isBaiduMapDistanceEnable = true;
+////                BaiduMapDistance = mTotalDistance;
+////            }
+//            AccountManager.sharedInstance().setStoreDistance(String.valueOf(mTotalDistance));
+//        }
         AccountManager.sharedInstance().setStoreRuntime(String.valueOf(mTotalTime));
     }
 
@@ -441,8 +588,9 @@ public class MainActivity extends BaseActivity {
         int storeDisInt = Integer.parseInt(storeDis) * 100;
         storeDis = String.valueOf(storeDisInt);
 
-        if (storeDate == null || storeDate == "") {
-            return;
+        //if (storeDate == null || storeDate == "") {
+        if (storeDate == null || storeDate.length() <= 0) {
+                return;
         }
 
         if (storeDisInt >= 1) {
@@ -493,6 +641,17 @@ public class MainActivity extends BaseActivity {
         writeConnectInfo(mIsUseToken);
     }
 
+    private Bitmap decodeUriAsBitmap(Uri uri) {
+        Bitmap bitmap = null;
+        try {
+            bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return bitmap;
+    }
+
     @Override
     protected void initView() {
         super.initView();
@@ -503,6 +662,19 @@ public class MainActivity extends BaseActivity {
         screenHeight = dm.heightPixels;//屏幕的高
         System.out.println("screenWidth : " + screenWidth + "screenHeight : " + screenHeight);//screenWidth : 720
         mRoundedImageView = (RoundedImageView) findViewById(R.id.head);
+
+         avatarName = AccountManager.sharedInstance().getAvatarName();
+        if(avatarName != null && avatarName.length()>0){
+            avatarName = avatarName.substring(avatarName.lastIndexOf("/")+1,avatarName.length());
+            String picPath = Environment.getExternalStorageDirectory()+"/xbird/pic";
+            File picfile = new File(picPath,avatarName);
+            if (picfile.exists()) {
+                Bitmap bitmap = decodeUriAsBitmap(Uri.fromFile(picfile));
+                Bitmap roundBitMap = MySetting.getRoundedCornerBitmap(bitmap, 1.0f);
+                mRoundedImageView.setImageBitmap(roundBitMap);
+            }
+        }
+
         mSpeedText = (TextView) findViewById(R.id.speed_num);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mLeftDrawer = (FrameLayout) findViewById(R.id.left_drawer);
@@ -530,7 +702,7 @@ public class MainActivity extends BaseActivity {
         mXbirderHelper = (RelativeLayout) findViewById(R.id.xbirdr_helper);
         mCyclingRecord = (RelativeLayout) findViewById(R.id.low_cycling_records);
 //        mKMText = (TextView) findViewById(R.id.km_text);
-        mBatteryShow = (TextView) findViewById(R.id.battery_show);
+        //mBatteryShow = (TextView) findViewById(R.id.battery_show);
         mButtonE = (ImageView) findViewById(R.id.mode_e);
         mButtonN = (ImageView) findViewById(R.id.mode_n);
         mButtonS = (ImageView) findViewById(R.id.mode_s);
@@ -538,8 +710,21 @@ public class MainActivity extends BaseActivity {
         mTextN = (TextView) findViewById(R.id.mode_n_text);
         mTextS = (TextView) findViewById(R.id.mode_s_text);
         mBatteryRollView = (BatteryRollView) findViewById(R.id.roll_view);
+        mVelocityRollView = (VelocityRollView) findViewById(R.id.velocity_view);
         mBatteryView = (TextView) findViewById(R.id.battery_num);
+        mBatteryViewUint = (TextView) findViewById(R.id.battery_num_unit);
+
+
         mSpeedText.setIncludeFontPadding(false);
+
+        //mWeatherText = (TextView) findViewById(R.id.weather_text);
+        mUser_name = (TextView) findViewById(R.id.user_name);
+        String muserName = AccountManager.sharedInstance().getUsername();
+        if(muserName != null && muserName.length() > 0){
+            mUser_name.setText(muserName);
+        }
+
+
         mLockBack.setOnClickListener(mOnClickListener);
         mButtonE.setOnClickListener(mOnClickListener);
         mButtonN.setOnClickListener(mOnClickListener);
@@ -551,10 +736,47 @@ public class MainActivity extends BaseActivity {
         mRoundedImageView.setOnClickListener(mOnClickListener);
         mCyclingRecord.setOnClickListener(mOnClickListener);
         mXbirderHelper.setOnClickListener(mOnClickListener);
+
+
+
         FontsManager.sharedInstance().setSpeedType(mSpeedText);
-        FontsManager.sharedInstance().setSpeedType(mBatteryView);
-        FontsManager.sharedInstance().setSpeedKMType(mBatteryShow);
-        setBattery(100);
+        FontsManager.sharedInstance().setBatteryType(mBatteryView);
+
+
+        mpenContent = (RelativeLayout) findViewById( R.id.pencontent );
+//        mpenContentHeight = (int) (mpenContent.getMeasuredHeight() * 0.81f);
+       // mpenContent.setOnClickListener(mOnClickListener);
+
+        mdc_speed_num = (TextView) findViewById( R.id.dc_speed_num );
+        mdc_mileage_num = (TextView) findViewById( R.id.dc_mileage_num );
+        mdc_power_num = (TextView) findViewById( R.id.dc_power_num );
+        mImageView_navigation_back = (ImageView)findViewById( R.id.imageView_navigation_back);
+        mImageView_navigation_back.setOnClickListener(mOnClickListener);
+
+
+        mImageView_navigation_baidumap = (ImageView)findViewById( R.id.imageView_navigation_baidumap);
+        mImageView_navigation_baidumap.setOnClickListener(mOnClickListener);
+
+        mImageView_navigation_backtolocation = (ImageView)findViewById( R.id.imageView_navigation_backtolocation);
+        mImageView_navigation_backtolocation.setOnClickListener(mOnClickListener);
+
+        mdc_show = (ImageView)findViewById(R.id.dc_show);
+        mdc_show.setOnClickListener(mOnClickListener);
+
+//        mdc_show2 = (ImageView)findViewById(R.id.dc_show2);
+//        mdc_show2.setOnClickListener(mOnClickListener);
+
+        //FontsManager.sharedInstance().setBatteryType(mWeatherText);
+        //FontsManager.sharedInstance().setSpeedKMType(mBatteryShow);
+//        if(isFirstIn) {
+//            mWeatherText = (TextView) findViewById(R.id.weather_text);
+//            isFirstIn = false;
+//            setBattery(100);
+//            setSpeed(0);
+//            ValueAnimator animator = createSpeedStartAnimator(mpenContent, 0, 70);
+//            animator.setDuration(2000);
+//            animator.start();
+//        }
 
         String storeModeStr = AccountManager.sharedInstance().getLastSpeedLevel();
         if (storeModeStr != "") {
@@ -567,8 +789,215 @@ public class MainActivity extends BaseActivity {
         if (mConnectionState == connectionStateEnum.isConnected) {
             onConectionStateChange(connectionStateEnum.isConnected);
         }
-    }
 
+        mRightDrawer = (FrameLayout) findViewById(R.id.right_drawer);
+        int j = (int) (screenWidth);
+        RightfLp = mRightDrawer.getLayoutParams();
+        RightfLp.width = j;
+        mRightDrawer.setLayoutParams(RightfLp);
+
+        flexible_menu = (LinearLayout) findViewById(R.id.flexible_menu);
+        //MultiDirectionSlidingDrawer mMultiDirectionSlidingDrawer = (MultiDirectionSlidingDrawer) findViewById( R.id.drawer );
+        setBattery(100);
+        setSpeed(0);
+        mWeatherText = (TextView) findViewById(R.id.weather_text);
+        if(mWeatherTextString != null){
+            mWeatherText.setText(mWeatherTextString);
+        }
+
+        if(isFirstIn) {
+            //mWeatherText = (TextView) findViewById(R.id.weather_text);
+            isFirstIn = false;
+//            setBattery(100);
+//            setSpeed(0);
+            ValueAnimator animator = createSpeedStartAnimator(0, 70);
+            animator.setDuration(2000);
+            animator.start();
+
+            // 地图初始化
+            mMapView = (MapView) findViewById(R.id.bmapView);
+            mBaiduMap = mMapView.getMap();
+            //普通地图
+            mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
+            // 开启定位图层
+            mBaiduMap.setMyLocationEnabled(true);
+            mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder().zoom(15).build()));
+
+            mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
+
+            mBaiduMap
+                    .setMyLocationConfigeration(new MyLocationConfiguration(
+                            mCurrentMode, true, null));
+            mMapView.onPause();
+            // 定位初始化
+            mLocClient = new LocationClient(this);
+            mLocClient.registerLocationListener(myListener);
+            LocationClientOption option = new LocationClientOption();
+            option.setOpenGps(true); // 打开gps
+            option.setCoorType("bd09ll"); // 设置坐标类型
+            option.setScanSpan(1000);
+            option.setIsNeedAddress(true);
+            option.setNeedDeviceDirect(true);
+            mLocClient.setLocOption(option);
+            mLocClient.start();
+
+            checkNameAndAvatar();
+        }
+
+        ActionBarDrawerToggle drawerbar = new ActionBarDrawerToggle(this, mDrawerLayout, null, R.string.ok, R.string.back) {
+
+            //菜单打开
+
+            @Override
+
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                if(drawerView == mLeftDrawer){
+
+                    mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED,mRightDrawer);
+                }else if(drawerView == mRightDrawer){
+                    mMapView.onResume();
+                    mLocClient.start();
+                    isBaiduMapDistanceEnable = true;
+
+                    mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED,mLeftDrawer);
+                    mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN,mRightDrawer);
+                }
+
+
+//                if (mDrawerLayout.isDrawerOpen(mLeftDrawer)) {
+//                    Log.d("isLeftDrawerOpen", "yes");
+//
+//
+//                }else{
+//                    Log.d("isLeftDrawerOpen", "no");
+//                    mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+////                    TranslateAnimation mv = new TranslateAnimation(0,0,0,-200);
+////                    mv.setDuration(3000);
+////                    mpenContent.startAnimation(mv);
+//
+//                }
+            }
+
+            // 菜单关闭
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                if(drawerView == mRightDrawer) {
+                    mMapView.onPause();
+                    mLocClient.stop();
+                    isBaiduMapDistanceEnable = false;
+                    mlishiTempDistance = mTotalTempDistance;
+
+                }
+                super.onDrawerClosed(drawerView);
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            }
+            @Override
+            public void onDrawerStateChanged(int newState){
+                    super.onDrawerStateChanged(newState);
+
+            }
+        };
+        mDrawerLayout.setDrawerListener(drawerbar);
+    }
+    private void baiduMapStart(){
+        mLocClient.start();
+    }
+//    private void baiduMapStop(){
+//        mLocClient.stop();
+//    }
+    /**
+     * 定位SDK监听函数
+     */
+    public class MyLocationListenner implements BDLocationListener {
+
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            // map view 销毁后不在处理新接收的位置
+            if (location == null || mMapView == null) {
+                return;
+            }
+            mBDLocation = location;
+            //Log.d("getCity",location.getCity());
+            MyLocationData locData = new MyLocationData.Builder()
+                    .accuracy(location.getRadius())
+                            // 此处设置开发者获取到的方向信息，顺时针0-360
+                    .direction(location.getDirection()).latitude(location.getLatitude())
+                    .longitude(location.getLongitude()).build();
+            mBaiduMap.setMyLocationData(locData);
+
+
+           if(mCurrentMode == MyLocationConfiguration.LocationMode.FOLLOWING){
+               mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
+               mBaiduMap
+                       .setMyLocationConfigeration(new MyLocationConfiguration(
+                               mCurrentMode, true, mCurrentMarker));
+           }
+            if (isFirstLoc) {
+                isFirstLoc = false;
+                LatLng ll = new LatLng(location.getLatitude(),
+                        location.getLongitude());
+                MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
+                mBaiduMap.animateMapStatus(u);
+
+                OverlayOptions ooDot2 = new DotOptions().center(ll).radius(13)
+                        .color(0xFFffffff);
+//                        .color(0xFF0000FF);0xFFff973a
+                mBaiduMap.addOverlay(ooDot2);
+
+                OverlayOptions ooDot = new DotOptions().center(ll).radius(10)
+                          .color(0xFFff973a);
+//                        .color(0xFF0000FF);
+                mBaiduMap.addOverlay(ooDot);
+
+                lastll = ll;
+
+                String cityName = location.getCity();
+                if(cityName == null){
+                    //mWeatherText.setText("获取城市位置失败！");
+                    isFirstLoc = true;
+                }else{
+                    getWeather(cityName.substring(0, cityName.length() - 1));
+                    if(!mDrawerLayout.isDrawerOpen(mRightDrawer)){
+                        mLocClient.stop();
+                    }
+                }
+            }else{
+                LatLng ll = new LatLng(location.getLatitude(),
+                        location.getLongitude());
+
+
+//                if(mWeatherText.equals(R.string.default_weather)){
+//                    String cityName = location.getCity();
+//                    if(cityName != null){
+//                        getWeather(cityName.substring(0, cityName.length() - 1));
+//                    }
+//                }
+
+
+                int pdistance = (int) DistanceUtil.getDistance(ll, lastll);
+                if(pdistance < 10) {
+                    return;
+                }else if(pdistance > 500){
+                    lastll = ll;
+                    return;
+                }else{
+                    BaiduMapDistance +=  pdistance;
+                }
+                List<LatLng> pts = new ArrayList<LatLng>();
+                pts.add(lastll);
+                pts.add(ll);
+
+                OverlayOptions ooPolyline = new PolylineOptions().width(5)
+                        .color(0xFFff973a).points(pts);
+                mBaiduMap.addOverlay(ooPolyline);
+                lastll = ll;
+            }
+        }
+
+        public void onReceivePoi(BDLocation poiLocation) {
+        }
+    }
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -586,10 +1015,35 @@ public class MainActivity extends BaseActivity {
                 setMode(StatusConfig.MODE_N, true);
             } else if (v == mButtonS) {
                 setMode(StatusConfig.MODE_S, true);
+            } else if (v == mdc_show) {
+                //if(mpenContent.getHeight())
+                if(mpenContentHeight == 0){
+                    mpenContentHeight = flexible_menu.getHeight();
+                }
+
+                if(isopenmenu) {
+                    ValueAnimator animator = createDropAnimator(mpenContent,0,-mpenContentHeight);
+                    animator.start();
+                    isopenmenu = false;
+                }else{
+                    ValueAnimator animator = createDropAnimator(mpenContent,-mpenContentHeight,0);
+                    animator.start();
+                    isopenmenu = true;
+                }
+            } else if (v == mImageView_navigation_back){
+                if (mDrawerLayout.isDrawerOpen(mRightDrawer)) {
+                    mDrawerLayout.closeDrawer(mRightDrawer);
+                }
+            } else if (v == mImageView_navigation_baidumap) {
+                startNavi();
+            } else if (v == mImageView_navigation_backtolocation){
+                mCurrentMode = MyLocationConfiguration.LocationMode.FOLLOWING;
+                mBaiduMap
+                        .setMyLocationConfigeration(new MyLocationConfiguration(
+                                mCurrentMode, true, mCurrentMarker));
             } else if (v == mCyclingRecord) {
                 ActivityJumpHelper.startActivity(MainActivity.this, CyclingRecords.class);
             } else if (v == mSettingView) {
-                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 if (mDrawerLayout.isDrawerOpen(mLeftDrawer)) {
                     mDrawerLayout.closeDrawer(mLeftDrawer);
                 } else {
@@ -629,7 +1083,7 @@ public class MainActivity extends BaseActivity {
             } else if (v == mSideSetting) {
                 ActivityJumpHelper.startActivity(MainActivity.this, SettingActivity.class);
             } else if (v == mXbirderHelper) {
-                ActivityJumpHelper.startActivity(MainActivity.this, XBirderHelp.class);
+               ActivityJumpHelper.startActivity(MainActivity.this, XBirderSelfCheckActivity.class);
             } else if (v == mConnectBtn) {
                 onSearchClick();
             } else if (v == mRoundedImageView) {
@@ -637,6 +1091,45 @@ public class MainActivity extends BaseActivity {
             }
         }
     };
+
+    private ValueAnimator createDropAnimator(final ViewGroup view,int start,int end){
+        ValueAnimator animator = ValueAnimator.ofInt(start,end);
+        animator.addUpdateListener(
+                new ValueAnimator.AnimatorUpdateListener(){
+
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator valueAnimator){
+                        int value = (Integer) valueAnimator.getAnimatedValue();
+//                        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+//                        layoutParams.height = mdc_show.getHeight()+value;
+//                        //android.widget.RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view.getLayoutParams();
+//                        //params.bottomMargin = value;
+//                        //view.setLayoutParams(params);
+//                        view.setLayoutParams(layoutParams);
+                          //view.setTop(value);
+                          view.setY(value);
+            }
+        });
+        return animator;
+    }
+
+    private ValueAnimator createSpeedStartAnimator(int start, int end){
+        ValueAnimator animator = ValueAnimator.ofInt(start,end);
+        animator.addUpdateListener(
+                new ValueAnimator.AnimatorUpdateListener(){
+
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator valueAnimator){
+                        int value = (Integer) valueAnimator.getAnimatedValue();
+                        if(value > 35){
+                            value = 70 - value;
+                        }
+                            setSpeed(value);
+                    }
+                });
+        return animator;
+    }
+
 
     private void lock() {
         mLockEnd.setVisibility(View.INVISIBLE);
@@ -714,7 +1207,7 @@ public class MainActivity extends BaseActivity {
                 mConnectBtn.setImageResource(R.drawable.search_unable);
                 break;
             case isScanning:
-                mConnectBtn.setBackgroundResource(R.drawable.search);
+                mConnectBtn.setImageResource(R.drawable.search);
                 animationDrawable = (AnimationDrawable) mConnectBtn.getDrawable();
                 animationDrawable.start();
                 break;
@@ -843,7 +1336,13 @@ public class MainActivity extends BaseActivity {
                 }
                 scanLeDevice(false);
                 onConectionStateChange(connectionStateEnum.isNull);
-                onSearchClick();
+                new Handler().postDelayed(new Runnable(){
+                    public void run() {
+                        onSearchClick();
+                    }
+                }, 500);
+                //onSearchClick();
+
             } else if (mLeDeviceListAdapter.getCount() == 1) {
                 String lastConnectBluetooth = AccountManager.sharedInstance().getConnectBluetooth();
                 BluetoothDevice device = mLeDeviceListAdapter.getDevice(0);
@@ -872,22 +1371,35 @@ public class MainActivity extends BaseActivity {
                         onConectionStateChange(mConnectionState);
                     }
                 } else {
-                    initScanAlert();
+                    //initScanAlert();
+                    initScanAlert2();
                 }
             } else {
-                initScanAlert();
+                //initScanAlert();
+                initScanAlert2();
             }
         }
     };
+    private void initScanAlert2(){
+        mScanDeviceDialog = new CustomAlertDialog(mainContext);
+        mScanDeviceDialog.showDialog(R.layout.custom_alert_dialog_scan, new CustomAlertDialog.IHintDialog() {
+            @Override
+            public void onKeyDown(int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    mScanDeviceDialog.dismissDialog();
+                }
+            }
 
-    private void initScanAlert() {
-        // Initializes and show the scan Device Dialog
-        mScanDeviceDialog = new AlertDialog.Builder(mainContext)
-                .setTitle("搜索锋鸟").setAdapter(mLeDeviceListAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void showWindowDetail(Window window) {
+                TextView title = (TextView) window.findViewById(R.id.tv_title);
+                ListView scan_listview = (ListView) window.findViewById(R.id.scan_listview);
+                scan_listview.setAdapter(mLeDeviceListAdapter);
 
+                scan_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        final BluetoothDevice device = mLeDeviceListAdapter.getDevice(which);
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
                         if (device == null)
                             return;
                         scanLeDevice(false);
@@ -906,6 +1418,7 @@ public class MainActivity extends BaseActivity {
                                 Log.d(TAG, "Connect request success");
                                 mConnectionState = connectionStateEnum.isConnecting;
                                 onConectionStateChange(mConnectionState);
+                                mScanDeviceDialog.dismissDialog();
 //                                mHandler.postDelayed(mConnectingOverTimeRunnable, 10000);
                             } else {
                                 Log.d(TAG, "Connect request fail");
@@ -914,32 +1427,257 @@ public class MainActivity extends BaseActivity {
                             }
                         }
                     }
-                })
-                .setOnCancelListener(new DialogInterface.OnCancelListener() {
-
-                    @Override
-                    public void onCancel(DialogInterface arg0) {
-                        System.out.println("mBluetoothAdapter.stopLeScan");
-
-                        mConnectionState = connectionStateEnum.isToScan;
-                        onConectionStateChange(mConnectionState);
-                        mScanDeviceDialog.dismiss();
-
-                        scanLeDevice(false);
-                    }
-                }).create();
-        mScanDeviceDialog.show();
+                });
+            }
+        });
     }
+//    private void initScanAlert() {
+//
+//
+//        // Initializes and show the scan Device Dialog
+//        mScanDeviceDialog = new AlertDialog.Builder(mainContext)
+//                .setTitle("搜索锋鸟").setAdapter(mLeDeviceListAdapter, new DialogInterface.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        final BluetoothDevice device = mLeDeviceListAdapter.getDevice(which);
+//                        if (device == null)
+//                            return;
+//                        scanLeDevice(false);
+//                        System.out.println("onListItemClick " + device.getName().toString());
+//
+//                        System.out.println("Device Name:" + device.getName() + "   " + "Device Name:" + device.getAddress());
+//
+//                        mDeviceName = device.getName().toString();
+//                        mDeviceAddress = device.getAddress().toString();
+//
+//                        if (mDeviceName.equals("No Device Available") && mDeviceAddress.equals("No Address Available")) {
+//                            mConnectionState = connectionStateEnum.isToScan;
+//                            onConectionStateChange(mConnectionState);
+//                        } else {
+//                            if (HuApplication.sharedInstance().XBirdBluetoothManager().getBluetoothLeService().connect(mDeviceAddress)) {
+//                                Log.d(TAG, "Connect request success");
+//                                mConnectionState = connectionStateEnum.isConnecting;
+//                                onConectionStateChange(mConnectionState);
+////                                mHandler.postDelayed(mConnectingOverTimeRunnable, 10000);
+//                            } else {
+//                                Log.d(TAG, "Connect request fail");
+//                                mConnectionState = connectionStateEnum.isToScan;
+//                                onConectionStateChange(mConnectionState);
+//                            }
+//                        }
+//                    }
+//                })
+//                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+//
+//                    @Override
+//                    public void onCancel(DialogInterface arg0) {
+//                        System.out.println("mBluetoothAdapter.stopLeScan");
+//
+//                        mConnectionState = connectionStateEnum.isToScan;
+//                        onConectionStateChange(mConnectionState);
+//                        mScanDeviceDialog.dismiss();
+//
+//                        scanLeDevice(false);
+//                    }
+//                }).create();
+//        mScanDeviceDialog.show();
+//    }
 
 
     private void setSpeed(int speed) {
+        mVelocityRollView.setPercent(100 * speed / 35);
         mSpeedText.setText(String.valueOf(speed));
+
+        mdc_speed_num.setText(String.valueOf(speed));
+        mdc_mileage_num.setText(AccountManager.sharedInstance().getStoreDistance());
+
     }
 
     private void setBattery(int battery) {
         mBatteryRollView.setPercent(battery);
-        mBatteryView.setText(String.valueOf(battery) + "%");
+        mBatteryView.setText(String.valueOf(battery));
+        if(battery<=20){
+            mBatteryView.setTextColor(getResources().getColor(R.color.battery_percent_low));
+            mBatteryViewUint.setTextColor(getResources().getColor(R.color.battery_percent_low));
+        }else{
+            mBatteryView.setTextColor(getResources().getColor(R.color.battery_percent_high));
+            mBatteryViewUint.setTextColor(getResources().getColor(R.color.battery_percent_high));
+        }
+        mdc_power_num.setText(String.valueOf(battery));
     }
+
+    private void getWeather(final String city){
+        if(StringHelper.checkString(city)) {
+        WeatherRequest request = new WeatherRequest(new HttpResponse.Listener<JSONObject>() {
+                @Override
+                public void onResponse(HttpResponse<JSONObject> response) {
+                    if (response.isSuccess()) {
+                        try {
+                            if (response.result.getInt("error") == 0) {
+                                //String accessToken = response.result.getJSONObject("user").getString("accessToken");
+                                String name = response.result.getJSONObject("data").getString("city");
+                                String low = "-";
+                                String high = "-";
+                                String dayWeather = "";
+
+                                JSONArray datas = response.result.getJSONObject("data").getJSONArray("weather");
+                                if (datas != null) {
+                                    JSONObject temp = datas.getJSONObject(0);
+                                    low = temp.getString("nightTemp");
+                                    high = temp.getString("dayTemp");
+                                    dayWeather = temp.getString("dayWeather");
+                                    mWeatherTextString = name+" "+low+"到"+high+"℃ "+dayWeather;
+                                    mWeatherText.setText(mWeatherTextString);
+                                }
+                            } else {
+                                getWeather(city);
+                                toast("失败");
+                                //mWeatherText.setText("获取天气失败");
+                            }
+                        } catch (Exception e) {
+                            getWeather(city);
+                            toast("失败2");
+                        }
+                    }
+
+                    else{
+                        VolleyError tt = response.error;
+                        getWeather(city);
+                    }
+
+                }
+            });
+            request.setParam(city);
+            sendRequest(request);
+        }
+    }
+
+    /**
+     * 启动百度地图骑行导航(Native)
+     *
+     */
+    public void startNavi() {
+        if(mBDLocation==null){
+            return;
+        }
+        LatLng pt1 = new LatLng(mBDLocation.getLatitude(), mBDLocation.getLongitude());
+        //LatLng pt2 = new LatLng(mLat2, mLon2);
+
+        // 构建 导航参数
+        NaviParaOption para = new NaviParaOption()
+                .startPoint(pt1).endPoint(pt1)
+                .startName("起点").endName("终点");
+
+        try {
+            BaiduMapNavigation.openBaiduMapNavi(para, this);
+        } catch (BaiduMapAppNotSupportNaviException e) {
+            e.printStackTrace();
+            //showDialog();
+        }
+
+    }
+
+//    /**
+//     * 启动百度地图Poi周边检索
+//     */
+//    public void startPoiNearbySearch() {
+//        if(mBDLocation==null){
+//            return;
+//        }
+//        //LatLng ptCenter = new LatLng(mLat1, mLon1); // 天安门
+//        LatLng ptCenter = new LatLng(mBDLocation.getLatitude(), mBDLocation.getLongitude());
+//
+//        PoiParaOption para = new PoiParaOption()
+//                .key("")
+//                .center(ptCenter)
+//                .radius(2000);
+//
+//        try {
+//            BaiduMapPoiSearch.openBaiduMapPoiNearbySearch(para, this);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//
+//        }
+//
+//    }
+//    /**
+//     * 启动百度地图Poi详情页面
+//     */
+//    public void startPoiDetails() {
+//       // PoiParaOption para = new PoiParaOption().uid("65e1ee886c885190f60e77ff"); // 天安门
+//        PoiParaOption para = new PoiParaOption().uid(""); // 天安门
+//        try {
+//            BaiduMapPoiSearch.openBaiduMapPoiDetialsPage(para, this);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//
+//        }
+//
+//    }
+    private void checkHeadImage() {
+        String storePhone = AccountManager.sharedInstance().getUser();
+        String storePass = AccountManager.sharedInstance().getPass();
+        if (storePhone != null && storePhone != "") {
+            if (storePass != null && storePass != "") {
+                LoginRequest request = new LoginRequest(new HttpResponse.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(HttpResponse<JSONObject> response) {
+                        if (response.isSuccess()) {
+                            try {
+                                if (response.result.getString("error").equals("0")) {
+                                    String avatar = response.result.getJSONObject("user").getString("avatar");
+                                    if (avatar != null && avatar != "") {
+                                        String avatarFileName = avatar.substring(10,avatar.length());
+                                        File pictureFileDir = new File(Environment.getExternalStorageDirectory(), "/xbird/pic");
+                                        File picFile = new File(pictureFileDir, avatarFileName);
+                                        if (picFile.exists()) {
+
+                                        }else{
+                                            //需要跟换头像
+                                            if (!pictureFileDir.exists()) {
+                                                pictureFileDir.mkdirs();
+                                            }
+                                            if (!picFile.exists()) {
+                                                picFile.createNewFile();
+                                            }
+
+
+                                        }
+
+                                    }else{
+
+                                    }
+
+                                    String userName = response.result.getJSONObject("user").getString("userName");
+                                    if (userName != null && userName != "") {
+                                        if(!userName.equals(AccountManager.sharedInstance().getUsername())){
+                                            AccountManager.sharedInstance().setUserName(userName);
+                                            //更改显示名称
+                                            mUser_name.setText(userName);
+                                        }
+                                    }else{
+                                            //不做更改
+
+                                    }
+                                } else {
+                                    toast("密码已更改");
+                                    ActivityJumpHelper.startActivity(MainActivity.this, LoginActivity.class);
+                                    AccountManager.sharedInstance().setPass("");
+                                    MainActivity.this.finish();
+                                }
+                            } catch (Exception e) {
+
+                            }
+                        }
+                    }
+                });
+                request.setParam(storePhone, storePass);
+                sendRequest(request);
+            }
+        }
+    }
+
 
     Bitmap mTran;
 
@@ -961,9 +1699,161 @@ public class MainActivity extends BaseActivity {
         return intentFilter;
     }
 
+    private void checkNameAndAvatar(){
+        LoginTokenRequest request = new LoginTokenRequest(new HttpResponse.Listener<JSONObject>() {
+            @Override
+            public void onResponse(HttpResponse<JSONObject> response) {
+                if (response.isSuccess()) {
+                    try {
+                        if (response.result.getString("error").equals("0")) {
+
+
+                            String userName = response.result.getJSONObject("user").getString("userName");
+                            if(userName!=AccountManager.sharedInstance().getUsername()){
+                                AccountManager.sharedInstance().setUserName(userName);
+                                mUser_name.setText(userName);
+                            }
+
+                            String avatar = response.result.getJSONObject("user").getString("avatar");
+                            if(!avatar.equals(AccountManager.sharedInstance().getAvatarName()) ){
+                                AccountManager.sharedInstance().setAvatarName(avatar);
+                                if(avatar!=null&&avatar.length()>0){
+                                    avatar = avatar.substring(avatar.lastIndexOf("/") + 1,avatar.length());
+                                    filedown(NetworkConfig.SERVER_ADDRESS_AVATAR_DOWN_HEAD + avatar);
+                                }
+                            }else{
+                                //验证是否存在图片avatarName
+                                avatar = avatar.substring(avatar.lastIndexOf("/") + 1,avatar.length());
+                                String newFilename = Environment.getExternalStorageDirectory() + "/xbird/pic/" + avatar;
+                                File file = new File(newFilename);
+                                //如果目标文件已经存在，则删除。产生覆盖旧文件的效果
+                                if(!file.exists())
+                                {
+                                    filedown(NetworkConfig.SERVER_ADDRESS_AVATAR_DOWN_HEAD + avatar);
+                                }
+                            }
+                        } else {
+                            toast("登陆失败");
+                        }
+                    } catch (Exception e) {
+
+                    }
+                }
+            }
+        });
+        String sToken = AccountManager.sharedInstance().getToken();
+        if(sToken != null && sToken.length()>0){
+            request.setParam(sToken);
+            sendRequest(request);
+        }
+
+
+    }
+
+    private void filedown(String urlStr) {
+        final String murlStr = urlStr;
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //另起线程执行下载，安卓最新sdk规范，网络操作不能再主线程。
+                File fileDir = new File(Environment.getExternalStorageDirectory(), "/xbird/pic/");
+                if (!fileDir.exists()) {
+                    fileDir.mkdirs();
+                }
+                String fileName = murlStr.substring(murlStr.lastIndexOf("/") + 1,murlStr.length());
+                String newFilename = Environment.getExternalStorageDirectory() + "/xbird/pic/" + fileName;
+                File file = new File(newFilename);
+                //如果目标文件已经存在，则删除。产生覆盖旧文件的效果
+                if(file.exists())
+                {
+                    file.delete();
+                }
+                try {
+                    // 构造URL
+                    URL url = new URL(murlStr);
+                    // 打开连接
+                    URLConnection con = url.openConnection();
+                    //获得文件的长度
+                    int contentLength = con.getContentLength();
+                    //System.out.println("长度 :"+contentLength);
+                    // 输入流
+                    InputStream is = con.getInputStream();
+                    // 1K的数据缓冲
+                    byte[] bs = new byte[1024];
+                    // 读取到的数据长度
+                    int len;
+                    // 输出的文件流
+                    OutputStream os = new FileOutputStream(newFilename);
+                    // 开始读取
+                    while ((len = is.read(bs)) != -1) {
+                        os.write(bs, 0, len);
+                    }
+                    // 完毕，关闭所有链接
+                    os.close();
+                    is.close();
+
+                    Message msg = handler.obtainMessage();
+                    msg.what = 0;
+                    msg.sendToTarget();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+    }
+    final Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    avatarName = AccountManager.sharedInstance().getAvatarName();
+                    if(avatarName != null && avatarName.length()>0){
+                        avatarName = avatarName.substring(avatarName.lastIndexOf("/")+1,avatarName.length());
+                        String picPath = Environment.getExternalStorageDirectory()+"/xbird/pic";
+                        File picfile = new File(picPath,avatarName);
+                        if (picfile.exists()) {
+                            Bitmap bitmap = decodeUriAsBitmap(Uri.fromFile(picfile));
+                            Bitmap roundBitMap = MySetting.getRoundedCornerBitmap(bitmap, 1.0f);
+                            mRoundedImageView.setImageBitmap(roundBitMap);
+                        }
+                    }
+                    break;
+            }
+        }
+    };
+
+
+    private void resumeAvatarAndName(){
+        if(!avatarName.equals(AccountManager.sharedInstance().getAvatarName())) {
+            avatarName = AccountManager.sharedInstance().getAvatarName();
+            if (avatarName != null && avatarName.length() > 0) {
+                avatarName = avatarName.substring(avatarName.lastIndexOf("/") + 1, avatarName.length());
+                String picPath = Environment.getExternalStorageDirectory() + "/xbird/pic";
+                File picfile = new File(picPath, avatarName);
+                if (picfile.exists()) {
+                    Bitmap bitmap = decodeUriAsBitmap(Uri.fromFile(picfile));
+                    Bitmap roundBitMap = MySetting.getRoundedCornerBitmap(bitmap, 1.0f);
+                    mRoundedImageView.setImageBitmap(roundBitMap);
+                }
+            }
+        }
+
+        String muserName = AccountManager.sharedInstance().getUsername();
+        if(muserName != null && muserName.length() > 0){
+            mUser_name.setText(muserName);
+        }
+
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
+        resumeAvatarAndName();
+        mMapView.onResume();
         if (mBluetoothAdapter == null) {
             return;
         }
@@ -975,16 +1865,35 @@ public class MainActivity extends BaseActivity {
         if (mConnectionState != connectionStateEnum.isConnected) {
             onSearchClick();
         }
+
+
     }
+
+//    @Override
+//    public void onWindowFocusChanged(boolean hasFocus) {
+//        super.onWindowFocusChanged(hasFocus);
+//
+//        ValueAnimator animator = createSpeedStartAnimator(mpenContent, 0, 70);
+//        animator.setDuration(2000);
+//        animator.start();
+//    }
 
     @Override
     protected void onPause() {
+        mMapView.onPause();
         super.onPause();
 //        unregisterReceiver(mGattUpdateReceiver);
     }
 
     @Override
     protected void onDestroy() {
+        // 退出时销毁定位
+        mLocClient.stop();
+        // 关闭定位图层
+        mBaiduMap.setMyLocationEnabled(false);
+        //.onDestroy();
+        mMapView = null;
+
         super.onDestroy();
         unbindService(mServiceConnection);
         HuApplication.sharedInstance().XBirdBluetoothManager().setBluetoothLeService(null);
@@ -1078,8 +1987,8 @@ public class MainActivity extends BaseActivity {
             if (view == null) {
                 view = mInflator.inflate(R.layout.listitem_device, null);
                 viewHolder = new ViewHolder();
-                viewHolder.deviceAddress = (TextView) view
-                        .findViewById(R.id.device_address);
+//                viewHolder.deviceAddress = (TextView) view
+//                        .findViewById(R.id.device_address);
                 viewHolder.deviceName = (TextView) view
                         .findViewById(R.id.device_name);
                 System.out.println("mInflator.inflate  getView");
@@ -1094,7 +2003,7 @@ public class MainActivity extends BaseActivity {
                 viewHolder.deviceName.setText(deviceName);
             else
                 viewHolder.deviceName.setText(R.string.unknown_device);
-            viewHolder.deviceAddress.setText(device.getAddress());
+            //viewHolder.deviceAddress.setText(device.getAddress());
 
             return view;
         }
@@ -1102,7 +2011,7 @@ public class MainActivity extends BaseActivity {
 
     static class ViewHolder {
         TextView deviceName;
-        TextView deviceAddress;
+        //TextView deviceAddress;
     }
 
     void scanLeDevice(final boolean enable) {
@@ -1117,6 +2026,7 @@ public class MainActivity extends BaseActivity {
 
             if (!mScanning) {
                 mScanning = true;
+
                 mBluetoothAdapter.startLeScan(mLeScanCallback);
             }
         } else {
@@ -1136,4 +2046,8 @@ public class MainActivity extends BaseActivity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+
+
+
 }

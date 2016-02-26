@@ -78,19 +78,37 @@
             android:layout_width="fill_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
-
-    <TextView
-        android:textColor="@color/common_text_gray_day"
-        android:text="@string/foget_password"
-        android:id="@+id/find_password"
-        android:layout_marginRight="@dimen/default_gap_50"
-        android:gravity="center"
-        android:textSize="@dimen/text_size_small"
-        android:layout_width="wrap_content"
-        android:layout_gravity="right"
+    <LinearLayout
+        android:layout_marginLeft="@dimen/default_gap_50"
+        android:layout_width="match_parent"
         android:layout_marginTop="@dimen/default_gap_20"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <!--<CheckBox-->
+          <!--android:id="@+id/cb"-->
+          <!--android:layout_width="wrap_content"-->
+          <!--android:layout_height="wrap_content"-->
+          <!--android:checked="false"-->
+          <!--android:text="安全模式"-->
+          <!--android:textSize="@dimen/text_size_big"-->
+          <!--android:textColor="@color/common_text_gray_day"-->
+          <!--></CheckBox>-->
+        <LinearLayout
+            android:layout_marginRight="@dimen/default_gap_50"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="right">
+            <TextView
+            android:textColor="@color/common_text_gray_day"
+            android:text="@string/foget_password"
+            android:id="@+id/find_password"
+            android:textSize="@dimen/text_size_big"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/default_gap_20"
+            android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
 
     <ImageButton
         android:id="@+id/btn_start"

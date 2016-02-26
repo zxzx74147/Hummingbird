@@ -1,0 +1,73 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_background_day">
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/bmapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true" />
+
+
+    <include
+    layout="@layout/drawer_right_pen_content2" />
+
+
+    <ImageView
+        android:id="@+id/imageView_navigation_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_gap_120"
+        android:layout_marginLeft="@dimen/default_gap_30"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/icon_navigation_back" />
+
+
+    <ImageView
+        android:id="@+id/imageView_navigation_baidumap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_gap_120"
+        android:layout_marginRight="@dimen/default_gap_30"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/icon_navigation_baidumap" />
+
+    <ImageView
+        android:id="@+id/imageView_navigation_backtolocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_gap_220"
+        android:layout_marginRight="@dimen/default_gap_30"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/icon_navigation_backtolocation" />
+
+    <!--<FrameLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/default_gap_400">-->
+    <!--<com.xbirder.bike.hummingbird.main.widget.MultiDirectionSlidingDrawer-->
+        <!--xmlns:my="http://schemas.android.com/apk/res/com.xbirder.bike.hummingbird"-->
+        <!--android:id="@+id/drawer"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--my:content="@+id/content"-->
+        <!--my:direction="topToBottom"-->
+        <!--my:handle="@+id/handle">-->
+
+        <!--<include-->
+            <!--android:id="@id/content"-->
+            <!--layout="@layout/drawer_right_pen_content" />-->
+
+        <!--<ImageView-->
+            <!--android:id="@id/handle"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/sliding_drawer_handle_bottom" />-->
+    <!--</com.xbirder.bike.hummingbird.main.widget.MultiDirectionSlidingDrawer>-->
+
+    <!--</FrameLayout>-->
+
+</RelativeLayout>

@@ -1,0 +1,142 @@
+<resources>
+    <string name="app_name">xbird</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_register">Register</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="back">返回</string>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="login">登录</string>
+    <string name="register">注册</string>
+    <string name="reg_user"><u>用户注册</u></string>
+
+    <string name="login_by_phone">手机号码登录</string>
+    <string name="register_by_phone">手机号码注册</string>
+    <string name="register_account_info">账户信息</string>
+    <string name="login_remind">主人，请输入注册时的手机号码</string>
+    <string name="login_input_phone_remind">手机号码</string>
+    <string name="password_remind">密码</string>
+    <string name="foget_password">忘记密码？</string>
+    <string name="title_activity_regiester">RegiesterActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_setting">SettingActivity</string>
+    <string name="cycling_records">骑行记录</string>
+    <string name="xbirder_aide">锋鸟助手</string>
+    <string name="setting">设置</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="personal_info">个人资料</string>
+    <string name="change_password">修改用户密码</string>
+    <string name="feedback">重置锋鸟电动车</string>
+    <string name="about">关于</string>
+    <string name="vote">主人，给个好评</string>
+    <string name="phone_num">手机号</string>
+    <string name="register_input_phone_remind">手机号码</string>
+    <string name="input_code">收取验证码</string>
+    <string name="rule">隐私与服务条款</string>
+    <string name="resent">重发</string>
+    <string name="input_code_hint">输入手机验证码</string>
+    <string name="password_hint">密码</string>
+    <string name="new_password_hint">输入新密码</string>
+    <string name="repeat_new_password_hint">重复新密码</string>
+    <string name="please__set_password">请设置您的新密码:</string>
+    <string name="reg_name">名字</string>
+    <string name="done">完成</string>
+    <string name="quit_login">退出登录</string>
+    <string name="mode_e_text">ECO</string>
+    <string name="mode_n_text">NORMAL</string>
+    <string name="mode_s_text">SPORT</string>
+    <string name="change_passwrod">修改密码</string>
+    <string name="my_information">个人中心</string>
+    <string name="commit">提交</string>
+    <string name="setting_head_portrait">头像</string>
+    <string name="setting_name">名字</string>
+    <string name="setting_sex">性别</string>
+    <string name="change_name">修改用户名</string>
+    <string name="input_new_name">输入新的用户名</string>
+    <string name="travel_Info">行驶统计</string>
+    <string name="total_distance">总里程</string>
+    <string name="day_total_distance">今日里程</string>
+    <string name="week_data_info">一周低碳统计 KM/DAY (6.21-)</string>
+
+    <string name="today_mileage">今日里程 KM</string>
+    <string name="total_mileage">总里程 KM</string>
+    <string name="today_time">今日时间</string>
+    <string name="reduce_carbon_emissions">减少碳排放 KG</string>
+
+    <string name="ble_not_supported">BLE is not supported</string>
+    <string name="label_data">Data:</string>
+    <string name="label_device_address">Device address:</string>
+    <string name="label_state">State:</string>
+    <string name="no_data">No data</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="title_devices">搜索蜂鸟</string>
+    <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
+
+    <string name="unknown_device">未知设备</string>
+    <string name="unknown_characteristic">Unknown characteristic</string>
+    <string name="unknown_service">Unknown service</string>
+
+    <string name="default_weather">获取中...</string>
+    <string name="left_drawer_low_cycling_records">骑行记录</string>
+    <string name="left_drawer_self_checking">车身自检</string>
+    <string name="left_drawer_setting_layout">设置</string>
+
+    <string name="setting_reset_xbird">重置锋鸟</string>
+    <string name="setting_general_options">通用选项</string>
+    <string name="setting_detection_update">检测更新</string>
+    <string name="setting_use_help">使用帮助</string>
+    <string name="setting_feedback">反馈意见</string>
+    <string name="setting_about_us">关于我们</string>
+    <string name="setting_charging_shield">充电屏蔽</string>
+    <string name="setting_offline_mode">离线模式</string>
+    <string name="setting_screen_often_bright">屏幕常亮</string>
+
+    <string name="detection_update">固件更新</string>
+    <string name="line_version">最新版本: </string>
+    <string name="current_version">当前版本: </string>
+    <string name="btn_detection_update">固件更新</string>
+    <string name="btn_reset_detection_update">恢复出厂</string>
+
+    <string name="self_check_dianji">电机</string>
+    <string name="self_check_lanya">蓝牙</string>
+    <string name="self_check_dianchi">电池</string>
+    <string name="self_check_shache">刹车</string>
+    <string name="self_check_youmen">油门</string>
+    <string name="self_check_dianlu">电路</string>
+
+    <string name="self_check_dengdai">等待</string>
+    <string name="self_check_jiancezhong">检测中</string>
+    <string name="self_check_dianjichucuo">电机出错</string>
+    <string name="self_check_lanyachucuo">蓝牙出错</string>
+    <string name="self_check_dianyadianliangdi">电压低电量低</string>
+    <string name="self_check_youmenxitongyichang">油门系统异常</string>
+    <string name="self_check_shachexitongyichang">刹车系统异常</string>
+    <string name="self_check_dianjiduzhuan">电机堵转</string>
+    <string name="self_check_dianluduanlu">电路短路</string>
+    <string name="self_check_lanyaweilianjie">蓝牙未连接</string>
+
+    <string name="feedback_head">请输入反馈意见和问题</string>
+
+
+
+
+
+    <!-- Menu items -->
+    <string name="menu_connect">Connect</string>
+    <string name="menu_disconnect">Disconnect</string>
+    <string name="menu_scan">搜索</string>
+    <string name="menu_stop">停止</string>
+    <string name="title_activity_connect">ConnectActivity</string>
+    <string name="find_password">找回密码</string>
+    <string name="reset_password">重设密码</string>
+    <string name="find_password_remind">请输入你的电话号码</string>
+    <string name="enter_auth_code">输入收到的验证码</string>
+    <string name="new_password">新密码</string>
+    <string name="check_password">请重复新密码</string>
+</resources>

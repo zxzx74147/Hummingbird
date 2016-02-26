@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.VideoView;
 
+
 /**
  * Created by zhhz on 15/12/7.
  */
@@ -38,7 +39,4 @@ public class MyVideoView extends VideoView {
 
         setMeasuredDimension(width, height);
     }
-
-
-
 }

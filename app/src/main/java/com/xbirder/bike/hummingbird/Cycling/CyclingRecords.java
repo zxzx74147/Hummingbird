@@ -8,29 +8,26 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.baidu.core.net.base.HttpResponse;
-import com.github.mikephil.charting.utils.Legend;
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.utils.Legend;
 import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.YLabels;
 import com.xbirder.bike.hummingbird.AccountManager;
 import com.xbirder.bike.hummingbird.R;
 import com.xbirder.bike.hummingbird.base.BaseActivity;
-import com.github.mikephil.charting.charts.BarChart;
-import com.xbirder.bike.hummingbird.login.LoginRequest;
-import com.xbirder.bike.hummingbird.main.MainActivity;
-import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.text.DecimalFormat;
 
 /**
  * Created by Administrator on 2015/8/26.
@@ -141,11 +138,14 @@ public class CyclingRecords extends BaseActivity{
                                 totalDisStr = "0";
                             }
                             float finalDis = Float.parseFloat(totalDisStr) / 1000.0f + mLocalDistance;
-                            String finalDisStr = String.valueOf(finalDis);
+                            DecimalFormat decimalFormat=new DecimalFormat("0.0");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+
+                            String finalDisStr = decimalFormat.format(finalDis);
+                            //String finalDisStr = String.valueOf(Math.round(finalDis*100.0f)/100.0f);
                             mTotalTextView.setText(finalDisStr);
 
                             float finalCost = 0.27f * finalDis;
-                            DecimalFormat decimalFormat=new DecimalFormat("0.0");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+                           // DecimalFormat decimalFormat=new DecimalFormat("0.0");//构造方法的字符格式这里如果小数不足2位,会以0补足.
                             String finalCostStr = decimalFormat.format(finalCost);
                             mTotalCostTextView.setText(finalCostStr);
 
@@ -389,7 +389,7 @@ public class CyclingRecords extends BaseActivity{
         // y轴的数据集合
         BarDataSet barDataSet = new BarDataSet(yValues, "KM/DAY");
         barDataSet.setBarSpacePercent(85);
-        barDataSet.setColor(Color.rgb(242, 90, 35));
+        barDataSet.setColor(Color.rgb(255, 151, 58));
 
         ArrayList<BarDataSet> barDataSets = new ArrayList<BarDataSet>();
         barDataSets.add(barDataSet); // add the datasets
@@ -455,7 +455,7 @@ public class CyclingRecords extends BaseActivity{
         // y轴的数据集合
         BarDataSet barDataSet = new BarDataSet(yValues, "KM/DAY");
         barDataSet.setBarSpacePercent(85);
-        barDataSet.setColor(Color.rgb(242, 90, 35));
+        barDataSet.setColor(Color.rgb(255, 151, 58));
 
         ArrayList<BarDataSet> barDataSets = new ArrayList<BarDataSet>();
         barDataSets.add(barDataSet); // add the datasets
@@ -527,7 +527,7 @@ public class CyclingRecords extends BaseActivity{
         // y轴的数据集合
         BarDataSet barDataSet = new BarDataSet(yValues, "KM/MONTH");
         barDataSet.setBarSpacePercent(85);
-        barDataSet.setColor(Color.rgb(242, 90, 35));
+        barDataSet.setColor(Color.rgb(255, 151, 58));
 
         ArrayList<BarDataSet> barDataSets = new ArrayList<BarDataSet>();
         barDataSets.add(barDataSet); // add the datasets

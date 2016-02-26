@@ -2,11 +2,15 @@ package com.xbirder.bike.hummingbird.login;
 
 import android.os.Bundle;
 import android.text.method.DialerKeyListener;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.baidu.core.net.base.HttpResponse;
 import com.xbirder.bike.hummingbird.AccountManager;
@@ -17,6 +21,7 @@ import com.xbirder.bike.hummingbird.main.MainActivity;
 import com.xbirder.bike.hummingbird.register.FindPasswordActivity;
 import com.xbirder.bike.hummingbird.register.RegisterActivity;
 import com.xbirder.bike.hummingbird.util.ActivityJumpHelper;
+import com.xbirder.bike.hummingbird.util.CustomAlertDialog;
 import com.xbirder.bike.hummingbird.util.StringHelper;
 
 import org.json.JSONObject;
@@ -34,6 +39,13 @@ public class LoginFragment extends BaseFragment {
     private View mFindPassword;
     public LoginFragment() {
     }
+
+    private boolean isSafeLogin = false;
+    private CustomAlertDialog detectionUpdateRunCustomAlertDialog;
+
+    private ProgressBar detectionUpdate_progressbar;
+    private TextView detectionUpdate_complete_lines;
+    private TextView detectionUpdate_total_lines;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,6 +85,29 @@ public class LoginFragment extends BaseFragment {
                 ActivityJumpHelper.startActivity(LoginFragment.this,RegisterActivity.class);
             }
         });
+
+
+
+//        //获取CheckBox实例
+//        CheckBox cb = (CheckBox) root.findViewById(R.id.cb);
+//        //绑定监听器
+//        cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//
+//            @Override
+//            public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+//                // TODO Auto-generated method stub
+//                isSafeLogin = arg1;
+////                if(arg1){
+////
+////                }else{
+////
+////                }
+//
+//            }
+//        });
+//
+//
+//
         return root;
     }
 
@@ -95,6 +130,12 @@ public class LoginFragment extends BaseFragment {
                 if (storePhone != null && storePhone != "") {
                     if (storePass != null && storePass != "") {
                         if (storePass.equals(password) && storePhone.equals(phone)) {
+                            if(isSafeLogin){
+
+
+                                return;
+                            }
+
                             ActivityJumpHelper.startActivity(LoginFragment.this, MainActivity.class);
                             getActivity().finish();
                             return;
@@ -113,6 +154,11 @@ public class LoginFragment extends BaseFragment {
                                         AccountManager.sharedInstance().setPass(mPassword.getText().toString());
                                         String accessToken = response.result.getJSONObject("user").getString("accessToken");
                                         AccountManager.sharedInstance().setToken(accessToken);
+                                        String userName = response.result.getJSONObject("user").getString("userName");
+                                        AccountManager.sharedInstance().setUserName(userName);
+                                        String avatar = response.result.getJSONObject("user").getString("avatar");
+                                        AccountManager.sharedInstance().setAvatarName(avatar);
+
                                         ActivityJumpHelper.startActivity(LoginFragment.this, MainActivity.class);
                                         getActivity().finish();
                                     } else {
@@ -132,4 +178,26 @@ public class LoginFragment extends BaseFragment {
             }
         }
     };
+
+
+    private void showDetectionUpdateING(){
+        detectionUpdateRunCustomAlertDialog = new CustomAlertDialog(getActivity());
+        detectionUpdateRunCustomAlertDialog.showDialog(R.layout.custom_alert_dialog_update_run, new CustomAlertDialog.IHintDialog() {
+            @Override
+            public void onKeyDown(int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    //detectionUpdateRunCustomAlertDialog.dismissDialog();
+                }
+            }
+
+            @Override
+            public void showWindowDetail(Window window) {
+                detectionUpdate_progressbar = (ProgressBar) window.findViewById(R.id.progressbar);
+                detectionUpdate_complete_lines = (TextView) window.findViewById(R.id.complete_lines);
+                detectionUpdate_total_lines = (TextView) window.findViewById(R.id.total_lines);
+            }
+        });
+    }
+
+
 }

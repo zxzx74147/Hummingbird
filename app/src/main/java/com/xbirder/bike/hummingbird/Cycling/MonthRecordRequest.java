@@ -34,7 +34,7 @@ public class MonthRecordRequest extends HttpJsonRequest<JSONObject> {
 
     @Override
     protected String url() {
-        return NetworkConfig.SERVER_ADDRESS;
+        return NetworkConfig.SERVER_ADDRESS_DEV;
     }
 
     @Override

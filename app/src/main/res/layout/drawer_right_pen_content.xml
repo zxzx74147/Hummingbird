@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pencontent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@drawable/pattern1" >
+
+    <LinearLayout
+        android:id="@+id/flexible_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+            <TextView
+                android:id="@+id/dc_speed_num"
+                android:textSize="@dimen/default_size_84"
+                android:text="20"
+                android:layout_width="wrap_content"
+                android:textColor="@color/common_orange_day"
+                android:lineSpacingExtra="0dip"
+                android:lineSpacingMultiplier="1"
+                android:layout_height="wrap_content"
+                />
+            <TextView
+                android:textSize="@dimen/default_size_36"
+                android:text="KM/H"
+                android:layout_width="wrap_content"
+                android:textColor="?attr/main_text_speed_unit_color"
+                android:lineSpacingExtra="0dip"
+                android:lineSpacingMultiplier="1"
+                android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+                <ImageView
+                    android:layout_width="@dimen/default_gap_50"
+                    android:layout_height="@dimen/default_gap_50"
+                android:src="@drawable/pen_content_speed_left"
+                android:layout_gravity="bottom"/>
+            <TextView
+                android:textSize="@dimen/default_size_40"
+                android:text="行驶速度"
+                android:layout_marginLeft="@dimen/default_gap_2"
+                android:layout_width="wrap_content"
+                android:textColor="@color/common_orange_day"
+                android:gravity="bottom"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                />
+            </LinearLayout>
+            <!--<ImageView-->
+                <!--android:layout_width="@dimen/default_gap_200"-->
+                <!--android:layout_height="@dimen/default_gap_38"-->
+                <!--android:src="@drawable/map_speed"-->
+                <!--android:layout_gravity="center_horizontal" />-->
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+                <TextView
+                    android:id="@+id/dc_mileage_num"
+                    android:textSize="@dimen/default_size_84"
+                    android:text="20"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/common_orange_day"
+                    android:lineSpacingExtra="0dip"
+                    android:lineSpacingMultiplier="1"
+                    android:layout_height="wrap_content"
+                    />
+                <TextView
+                    android:textSize="@dimen/default_size_36"
+                    android:text="KM"
+                    android:layout_width="wrap_content"
+                    android:textColor="?attr/main_text_speed_unit_color"
+                    android:lineSpacingExtra="0dip"
+                    android:lineSpacingMultiplier="1"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+                <ImageView
+                    android:layout_width="@dimen/default_gap_50"
+                    android:layout_height="@dimen/default_gap_50"
+                    android:src="@drawable/pen_content_mileage_left"
+                    android:layout_gravity="bottom"/>
+                <TextView
+                    android:textSize="@dimen/default_size_40"
+                    android:text="行驶里程"
+                    android:layout_marginLeft="@dimen/default_gap_2"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/common_orange_day"
+                    android:gravity="bottom"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    />
+            </LinearLayout>
+            <!--<TextView-->
+                <!--android:textSize="@dimen/default_size_40"-->
+                <!--android:text=" 行驶里程"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:textColor="@color/common_orange_day"-->
+                <!--android:lineSpacingExtra="0dip"-->
+                <!--android:lineSpacingMultiplier="1"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:drawableLeft="@drawable/pen_content_mileage_left"-->
+                <!--/>-->
+            <!--<ImageView-->
+                <!--android:layout_width="@dimen/default_gap_200"-->
+                <!--android:layout_height="@dimen/default_gap_38"-->
+                <!--android:src="@drawable/map_mileage"-->
+                <!--android:layout_gravity="center_horizontal" />-->
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+                <TextView
+                    android:id="@+id/dc_power_num"
+                    android:textSize="@dimen/default_size_84"
+                    android:text="80"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/common_orange_day"
+                    android:lineSpacingExtra="0dip"
+                    android:lineSpacingMultiplier="1"
+                    android:layout_height="wrap_content"
+                    />
+                <TextView
+                    android:textSize="@dimen/default_size_36"
+                    android:text="%"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/common_orange_day"
+                    android:lineSpacingExtra="0dip"
+                    android:lineSpacingMultiplier="1"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+                <ImageView
+                    android:layout_width="@dimen/default_gap_50"
+                    android:layout_height="@dimen/default_gap_50"
+                    android:src="@drawable/pen_content_power_left"
+                    android:layout_gravity="bottom"/>
+                <TextView
+                    android:textSize="@dimen/default_size_40"
+                    android:text="剩余电量"
+                    android:layout_marginLeft="@dimen/default_gap_2"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/common_orange_day"
+                    android:gravity="bottom"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    />
+            </LinearLayout>
+            <!--<TextView-->
+                <!--android:textSize="@dimen/default_size_40"-->
+                <!--android:text=" 剩余电量"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:textColor="@color/common_orange_day"-->
+                <!--android:lineSpacingExtra="0dip"-->
+                <!--android:lineSpacingMultiplier="1"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:drawableLeft="@drawable/pen_content_power_left"-->
+                <!--/>-->
+            <!--<ImageView-->
+                <!--android:layout_width="@dimen/default_gap_200"-->
+                <!--android:layout_height="@dimen/default_gap_38"-->
+                <!--android:src="@drawable/map_power"-->
+                <!--android:layout_gravity="center_horizontal" />-->
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

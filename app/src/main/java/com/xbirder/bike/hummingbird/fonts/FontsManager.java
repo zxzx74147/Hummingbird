@@ -11,6 +11,7 @@ import com.xbirder.bike.hummingbird.HuApplication;
 public class FontsManager {
 
     private Typeface mSpeedType;
+    private Typeface mBatteryType;
     private Typeface mSpeedKMType;
 
 
@@ -40,7 +41,8 @@ public class FontsManager {
     public void setSpeedType(TextView textView){
         try {
             if(mSpeedType == null) {
-                mSpeedType = Typeface.createFromAsset(HuApplication.sharedInstance().getAssets(), "fonts/HelveticaNeueLTPro-UltLt.otf");
+               // mSpeedType = Typeface.createFromAsset(HuApplication.sharedInstance().getAssets(), "fonts/HelveticaNeueLTPro-UltLt.otf");
+                mSpeedType = Typeface.createFromAsset(HuApplication.sharedInstance().getAssets(), "fonts/DINCond-Bold.otf");
             }
             textView.setTypeface(mSpeedType);
         }catch (Exception e){
@@ -54,6 +56,17 @@ public class FontsManager {
                 mSpeedType = Typeface.createFromAsset(HuApplication.sharedInstance().getAssets(), "fonts/Helvetica.ttf");
             }
             textView.setTypeface(mSpeedType);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void setBatteryType(TextView textView){
+        try {
+            if(mBatteryType == null) {
+                mBatteryType = Typeface.createFromAsset(HuApplication.sharedInstance().getAssets(), "fonts/HelveticaNeue-Thin.otf");
+            }
+            textView.setTypeface(mBatteryType);
         }catch (Exception e){
             e.printStackTrace();
         }

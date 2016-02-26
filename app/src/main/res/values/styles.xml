@@ -10,29 +10,43 @@
     <style name="AppTheme.Day" parent="AppTheme">
         <item name="common_background">@color/common_background_day</item>
         <item name="main_setting_drawable">@drawable/icon_setting</item>
-        <item name="main_title_drawable">@drawable/icon_logo</item>
+        <item name="main_title_drawable">@drawable/icon_logo_night</item>
         <item name="main_light_drawable" >@drawable/icon_light</item>
-        <item name="main_roll_drawable">@drawable/icon_100</item>
+        <item name="main_roll_drawable">@drawable/circle_down_battery_roll</item>
         <item name="main_text_value_color">@color/common_orange_day</item>
         <item name="main_text_show_color">@color/common_text_gray_day</item>
         <item name="btn_e_drawable" >@drawable/icon_e_drawable</item>
         <item name="btn_n_drawable" >@drawable/icon_n_drawable</item>
         <item name="btn_s_drawable" >@drawable/icon_s_drawable</item>
         <item name="model_bg" >@drawable/model</item>
+        <item name="main_head_bg" >@drawable/icon_head_bg</item>
+        <item name="main_text_speed_unit_color">@color/common_text_gray_day</item>
+        <item name="main_velocity_drawable">@drawable/circle_down_velocity_roll</item>
+        <item name="circle_point_dark">@color/circle_gray</item>
+        <item name="circle_point_light">@color/circle_orange</item>
+        <item name="weather_ic_img">@drawable/icon_lc</item>
+        <item name="weather_line">@drawable/line</item>
     </style>
     <!-- 夜间模式 -->
     <style name="AppTheme.Night" parent="AppTheme">
-        <item name="common_background">@drawable/bg_night</item>
+        <item name="common_background">@color/common_background_night</item>
         <item name="main_setting_drawable">@drawable/icon_setting_night</item>
         <item name="main_title_drawable">@drawable/icon_logo_night</item>
         <item name="main_light_drawable" >@drawable/icon_light_night</item>
-        <item name="main_roll_drawable">@drawable/icon_100_night</item>
+        <item name="main_roll_drawable">@drawable/circle_down_night_battery_roll</item>
         <item name="main_text_value_color">@color/white</item>
         <item name="main_text_show_color">@color/white</item>
         <item name="btn_e_drawable" >@drawable/icon_e_drawable_night</item>
         <item name="btn_n_drawable" >@drawable/icon_n_drawable_night</item>
         <item name="btn_s_drawable" >@drawable/icon_s_drawable_night</item>
         <item name="model_bg" >@drawable/model_night</item>
+        <item name="main_head_bg" >@color/common_background_night</item>
+        <item name="main_text_speed_unit_color" >@color/common_text_gray_day</item>
+        <item name="main_velocity_drawable">@drawable/circle_down_night_velocity_roll</item>
+        <item name="circle_point_dark">@color/circle_gray_night</item>
+        <item name="circle_point_light">@color/circle_white_night</item>
+        <item name="weather_ic_img">@drawable/icon_lc_night</item>
+        <item name="weather_line">@drawable/line_night</item>
     </style>
 
     <style name="item_text">

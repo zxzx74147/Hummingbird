@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.xbirder.bike.hummingbird.common.widget.TitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        app:title_text="@string/left_drawer_self_checking" />
+<RelativeLayout
+    android:layout_marginTop="@dimen/default_gap_70"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="@dimen/default_gap_476"
+        android:layout_height="@dimen/default_gap_476"
+        android:src="@drawable/self_checking_start_bg"
+        android:layout_centerInParent="true" />
+
+    <ImageView
+        android:id="@+id/self_checking_start"
+        android:layout_width="@dimen/default_gap_400"
+        android:layout_height="@dimen/default_gap_400"
+        android:src="@drawable/self_check_start_drawable"
+        android:layout_centerInParent="true"
+        android:clickable="true"/>
+    <ImageView
+        android:id="@+id/self_checking_runing_bg"
+        android:layout_width="@dimen/default_gap_400"
+        android:layout_height="@dimen/default_gap_400"
+        android:src="@drawable/self_checking_runing_bg3"
+        android:layout_centerInParent="true"
+         />
+    <TextView
+        android:id="@+id/self_checking_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/default_gap_60"
+        android:text="0"
+        android:textColor="#ff973b"
+        android:textSize="@dimen/default_gap_60"
+        android:visibility="invisible"/>
+    <TextView
+        android:id="@+id/self_checking_score_dsc"
+        android:layout_toRightOf="@+id/self_checking_score"
+        android:layout_marginTop="@dimen/default_gap_90"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="分"
+        android:textColor="#ff973b"
+        android:textSize="@dimen/default_gap_30"
+        android:visibility="invisible"/>
+    <com.xbirder.bike.hummingbird.setting.widget.SelfCheckRollView
+        android:layout_width="@dimen/default_gap_400"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"
+        android:id="@+id/self_check_roll_view"
+        android:src="@drawable/self_checking_runing_bg2"
+        android:layout_height="@dimen/default_gap_400"
+        android:visibility="invisible"/>
+
+</RelativeLayout>
+    <View
+        android:layout_marginTop="@dimen/default_gap_70"
+        android:layout_width="match_parent"
+        android:background="@color/common_gray_day"
+        android:layout_height="@dimen/default_gap_1"/>
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

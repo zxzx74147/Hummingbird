@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.xbirder.bike.hummingbird.common.widget.TitleBar
+        android:layout_width="match_parent"
+        app:title_text="@string/detection_update"
+        android:id="@+id/title_bar"
+        android:layout_height="@dimen/title_bar_height"/>
+
+  <FrameLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/default_gap_45"
+      android:layout_gravity="center_horizontal"
+      >
+      <com.xbirder.bike.hummingbird.setting.widget.DetectionUpdateRollView
+          android:layout_width="@dimen/default_gap_540"
+          android:layout_gravity="center"
+          android:id="@+id/detection_update_view"
+          android:src="@drawable/setting_detection_update_drawable"
+          android:layout_height="@dimen/default_gap_540" />
+
+      <ImageView
+          android:id="@+id/detection_update_view_bg"
+          android:layout_gravity="center"
+          android:layout_width="@dimen/default_gap_540"
+          android:layout_height="@dimen/default_gap_540"
+          android:src="@drawable/setting_detection_update_drawable_bg"
+          />
+
+      <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:layout_gravity="center">
+          <TextView
+              android:id="@+id/update_persent"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:textColor="@color/common_orange_day"
+              android:textSize="@dimen/title_bar_height"
+              android:text="60%"
+
+              android:visibility="invisible"
+              android:layout_gravity="center_horizontal" />
+
+          <TextView
+              android:id="@+id/update_persent_desc"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:textColor="@color/common_orange_day"
+              android:textSize="@dimen/text_size_name"
+              android:text="updating..."
+              android:visibility="invisible"
+              android:layout_gravity="center_horizontal" />
+
+      </LinearLayout>
+
+
+
+  </FrameLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/default_gap_50">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|left"
+        android:textColor="@color/common_text_gray_day"
+        android:textSize="@dimen/text_size_name"
+        android:text="@string/line_version" />
+
+        <TextView
+            android:id="@+id/line_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|left"
+            android:layout_marginLeft="@dimen/default_gap_10"
+            android:textColor="@color/common_text_gray_day"
+            android:textSize="@dimen/text_size_name"
+            android:text="0" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/default_gap_10">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|left"
+            android:textColor="@color/common_text_gray_day"
+            android:textSize="@dimen/text_size_name"
+            android:text="@string/current_version" />
+
+        <TextView
+            android:id="@+id/current_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|left"
+            android:layout_marginLeft="@dimen/default_gap_10"
+            android:textColor="@color/common_text_gray_day"
+            android:textSize="@dimen/text_size_name"
+            android:text="0" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/default_gap_100">
+        <Button
+            android:background="@drawable/reg_btn"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/default_gap_50"
+            android:layout_marginRight="@dimen/default_gap_25"
+            android:text="@string/btn_detection_update"
+            android:textColor="@color/common_orange_day"
+            android:textSize="@dimen/default_size_36"
+            android:id="@+id/quit_login"
+            android:layout_height="@dimen/default_gap_93"
+            android:layout_weight="1">
+        </Button>
+        <Button
+            android:background="@drawable/reg_btn"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/default_gap_25"
+            android:layout_marginRight="@dimen/default_gap_50"
+            android:text="@string/btn_reset_detection_update"
+            android:textColor="@color/common_orange_day"
+            android:textSize="@dimen/default_size_36"
+            android:id="@+id/dp_reset"
+            android:layout_height="@dimen/default_gap_93"
+            android:layout_weight="1">
+        </Button>
+    </LinearLayout>
+
+    <!--<Button-->
+        <!--android:background="@drawable/detection_update_btn"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_marginLeft="@dimen/default_gap_50"-->
+        <!--android:layout_marginRight="@dimen/default_gap_50"-->
+        <!--android:layout_marginTop="@dimen/default_gap_150"-->
+        <!--android:text="@string/btn_detection_update"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:textSize="@dimen/default_size_36"-->
+        <!--android:id="@+id/quit_login"-->
+        <!--android:layout_height="@dimen/default_gap_93">-->
+    <!--</Button>-->
+
+</LinearLayout>

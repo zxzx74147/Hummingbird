@@ -1,12 +1,12 @@
 package com.xbirder.bike.hummingbird.base;
 
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.widget.Toast;
 
 import com.baidu.asyncTask.CommonUniqueId;
 import com.baidu.core.net.base.HttpManager;
 import com.baidu.core.net.base.HttpRequestBase;
+import com.xbirder.bike.hummingbird.AccountManager;
 import com.xbirder.bike.hummingbird.R;
 import com.xbirder.bike.hummingbird.skin.SkinConfig;
 import com.xbirder.bike.hummingbird.skin.SkinManager;
@@ -25,6 +25,11 @@ public class BaseActivity extends AppCompatActivity {
         super.onResume();
         if(mSkinMode != SkinManager.sharedInstance().getSkinMode()){
             initView();
+        }
+        if(AccountManager.sharedInstance().getScreenBright().equals("yes")){
+            getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }else if(AccountManager.sharedInstance().getScreenBright().equals("no")) {
+            getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
     }
 

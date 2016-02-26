@@ -19,17 +19,18 @@
         android:layout_marginTop="@dimen/default_gap_20"
         android:layout_height="@dimen/default_gap_100">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/input_new_name"
-            android:textSize="15dp"/>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/input_new_name"-->
+            <!--android:textSize="15dp"/>-->
 
         <EditText
             android:layout_weight="1"
             android:drawablePadding="@dimen/default_gap_10"
             android:layout_width="0dip"
             android:paddingLeft="@dimen/default_gap_15"
+            android:hint="@string/input_new_name"
             android:gravity="left|center_vertical"
             android:singleLine="true"
             android:background="@null"
@@ -44,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_marginTop="@dimen/default_gap_20"
         android:text="@string/commit"
-        android:textColor="@color/white"
+        android:textColor="@color/common_orange_day"
         android:id="@+id/btn_succeeds"
         android:layout_height="@dimen/default_gap_100">
     </Button>

@@ -1,0 +1,113 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.xbirder.bike.hummingbird.setting.SettingActivity">
+    <com.xbirder.bike.hummingbird.common.widget.TitleBar
+        android:layout_width="match_parent"
+        app:title_text="@string/setting_general_options"
+        android:id="@+id/title_bar"
+        android:layout_height="@dimen/title_bar_height" />
+
+    <View
+        android:layout_marginTop="@dimen/default_gap_80"
+        android:layout_width="match_parent"
+        android:background="@color/common_gray_day"
+        android:layout_height="@dimen/default_gap_1"/>
+   <!--<LinearLayout-->
+       <!--android:id="@+id/cell_phone_number"-->
+       <!--android:layout_width="fill_parent"-->
+       <!--android:layout_height="wrap_content"-->
+       <!--android:orientation="horizontal">-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+           android:layout_width="wrap_content"
+           style="@style/item_text"
+           android:paddingRight="@dimen/default_gap_50"
+           android:layout_marginLeft="@dimen/default_gap_48"
+           android:text="@string/setting_charging_shield"
+           android:layout_height="@dimen/default_gap_100" />
+        <ToggleButton
+            android:id="@+id/charging_shield"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/default_gap_100"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:button="@drawable/ios7_btn"
+            android:checked="false"
+            android:text=""
+            android:textOff=""
+            android:textOn="" />
+    </RelativeLayout>
+
+
+        <View
+        android:layout_width="match_parent"
+        android:background="@color/common_gray_day"
+        android:layout_marginLeft="@dimen/default_gap_48"
+        android:layout_height="@dimen/default_gap_1"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            style="@style/item_text"
+            android:paddingRight="@dimen/default_gap_50"
+            android:layout_marginLeft="@dimen/default_gap_48"
+            android:text="@string/setting_offline_mode"
+            android:layout_height="@dimen/default_gap_100" />
+        <ToggleButton
+            android:id="@+id/offlineMode"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/default_gap_100"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:button="@drawable/ios7_btn"
+            android:checked="false"
+            android:text=""
+            android:textOff=""
+            android:textOn="" />
+    </RelativeLayout>
+        <View
+        android:layout_width="match_parent"
+        android:background="@color/common_gray_day"
+        android:layout_marginLeft="@dimen/default_gap_48"
+        android:layout_height="@dimen/default_gap_1"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            style="@style/item_text"
+            android:paddingRight="@dimen/default_gap_50"
+            android:layout_marginLeft="@dimen/default_gap_48"
+            android:text="@string/setting_screen_often_bright"
+            android:layout_height="@dimen/default_gap_100" />
+        <ToggleButton
+            android:id="@+id/screenOftenBright"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/default_gap_100"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:button="@drawable/ios7_btn"
+            android:checked="false"
+            android:text=""
+            android:textOff=""
+            android:textOn="" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/common_gray_day"
+        android:layout_height="@dimen/default_gap_1"/>
+
+</LinearLayout>

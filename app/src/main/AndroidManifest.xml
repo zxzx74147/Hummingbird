@@ -2,18 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xbirder.bike.hummingbird">
 
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-
     <supports-screens android:resizeable="true"></supports-screens>
     <supports-screens android:smallScreens="true"></supports-screens>
     <supports-screens android:normalScreens="true"></supports-screens>
@@ -28,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme.Day">
         <activity
-            android:name=".GuideActivity"
+            android:name=".BeginActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -37,13 +25,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+
         <activity
             android:name=".login.LoginActivity"
-            android:label="@string/title_activity_register"
+            android:label="LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible"></activity>
         <activity
             android:name=".register.FindPasswordActivity"
+            android:label="FindPasswordActivity"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".main.MainActivity"
@@ -96,31 +88,66 @@
             android:name=".LogoActivity"
             android:label="LogoActivity"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".GuideActivity"
+            android:label="GuideActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".setting.GeneralOptionsActivity"
+            android:label="GeneralOptionsActivity"
+            android:screenOrientation="portrait"></activity>
 
+        <activity
+            android:name=".setting.DetectionUpdateActivity"
+            android:label="DetectionUpdateActivity"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".setting.XBirderSelfCheckActivity"
+            android:label="XBirderSelfCheck"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".setting.FeedbackActivity"
+            android:label="FeedBackActivity"
+            android:screenOrientation="portrait"></activity>
         <service
             android:name=".bluetooth.BluetoothLeService"
             android:enabled="true" />
 
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="MPGYMzaGWOql1AC4SBXMgC86" />
+            android:value="c3y7MyXxMkealgN4hL0ccCPu" />
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote">
+        </service>
+
     </application>
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
 
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 </manifest>

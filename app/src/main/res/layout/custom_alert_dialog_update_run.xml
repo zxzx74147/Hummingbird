@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="200dp"
+    android:background="@color/common_background_day"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:paddingTop="@dimen/default_gap_20"
+        android:paddingBottom="@dimen/default_gap_40"
+        android:gravity="center_horizontal">
+
+        <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:paddingTop="50dp"
+        android:text="正在刷新，请耐心等待"
+        android:textColor="#FF6600"
+        android:textSize="20sp" />
+
+        <ProgressBar
+            android:layout_below="@+id/tv_title"
+            android:layout_marginTop="@dimen/default_gap_50"
+            android:id="@+id/progressbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:max="100"
+            android:progress="0"
+            />
+        <LinearLayout
+            android:layout_marginTop="@dimen/default_gap_10"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/progressbar"
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
+            <TextView
+                android:id="@+id/complete_lines"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="0"
+                android:textColor="#FF6600"
+                android:textSize="20sp" />
+            <TextView
+                android:id="@+id/total_lines"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="/0"
+                android:textColor="#FF6600"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

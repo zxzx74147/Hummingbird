@@ -1,6 +1,11 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+<LinearLayout
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.xbirder.bike.hummingbird.setting.SettingActivity">
@@ -11,60 +16,114 @@
         android:layout_height="@dimen/title_bar_height"/>
 
     <View
-        android:layout_marginTop="@dimen/default_gap_70"
+        android:layout_marginTop="@dimen/default_gap_80"
         android:layout_width="match_parent"
         android:background="@color/common_gray_day"
         android:layout_height="@dimen/default_gap_1"/>
-   <LinearLayout
-       android:id="@+id/cell_phone_number"
-       android:layout_width="fill_parent"
-       android:layout_height="wrap_content"
-       android:orientation="horizontal">
+   <!--<LinearLayout-->
+       <!--android:id="@+id/cell_phone_number"-->
+       <!--android:layout_width="fill_parent"-->
+       <!--android:layout_height="wrap_content"-->
+       <!--android:orientation="horizontal">-->
+
        <TextView
-           android:layout_width="50dp"
-           android:text="@string/phone_num"
+           android:id="@+id/resetXBird"
+           android:layout_width="match_parent"
+           style="@style/item_text"
+           android:paddingRight="@dimen/default_gap_50"
            android:layout_marginLeft="@dimen/default_gap_48"
-           style="@style/item_text"
+           android:text="@string/setting_reset_xbird"
+           android:drawableRight="@drawable/icon_next_change"
            android:layout_height="@dimen/default_gap_100" />
-       <TextView
-           android:id="@+id/phone_number"
-           android:layout_width="fill_parent"
-           android:paddingRight="@dimen/default_gap_60"
-           android:layout_marginLeft="@dimen/default_gap_59"
-           style="@style/item_text"
-           android:layout_height="@dimen/default_gap_100" />
-   </LinearLayout>
-    <View
+        <View
         android:layout_width="match_parent"
         android:background="@color/common_gray_day"
         android:layout_marginLeft="@dimen/default_gap_48"
         android:layout_height="@dimen/default_gap_1"/>
-    <TextView
-        android:id="@+id/change_pwd"
+       <TextView
+           android:id="@+id/generalOptions"
+           android:layout_width="match_parent"
+           style="@style/item_text"
+           android:paddingRight="@dimen/default_gap_50"
+           android:layout_marginLeft="@dimen/default_gap_48"
+           android:text="@string/setting_general_options"
+           android:drawableRight="@drawable/icon_next_change"
+           android:layout_height="@dimen/default_gap_100" />
+        <View
         android:layout_width="match_parent"
-        android:paddingRight="@dimen/default_gap_50"
+        android:background="@color/common_gray_day"
         android:layout_marginLeft="@dimen/default_gap_48"
-        android:text="@string/change_password"
-        android:drawableRight="@drawable/icon_next_change"
-        style="@style/item_text"
-        android:layout_height="@dimen/default_gap_100" />
+        android:layout_height="@dimen/default_gap_1"/>
+       <TextView
+           android:id="@+id/detectionUpdate"
+           android:layout_width="match_parent"
+           style="@style/item_text"
+           android:paddingRight="@dimen/default_gap_50"
+           android:layout_marginLeft="@dimen/default_gap_48"
+           android:text="@string/setting_detection_update"
+           android:layout_height="@dimen/default_gap_100" />
+       <!--<TextView-->
+           <!--android:layout_width="50dp"-->
+           <!--android:text="@string/phone_num"-->
+           <!--android:layout_marginLeft="@dimen/default_gap_48"-->
+           <!--style="@style/item_text"-->
+           <!--android:layout_height="@dimen/default_gap_100" />-->
+       <!--<TextView-->
+           <!--android:id="@+id/phone_number"-->
+           <!--android:layout_width="fill_parent"-->
+           <!--android:paddingRight="@dimen/default_gap_60"-->
+           <!--android:layout_marginLeft="@dimen/default_gap_59"-->
+           <!--style="@style/item_text"-->
+           <!--android:layout_height="@dimen/default_gap_100" />-->
+   <!--</LinearLayout>-->
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:background="@color/common_gray_day"-->
+        <!--android:layout_marginLeft="@dimen/default_gap_48"-->
+        <!--android:layout_height="@dimen/default_gap_1"/>-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/change_pwd"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:paddingRight="@dimen/default_gap_50"-->
+        <!--android:layout_marginLeft="@dimen/default_gap_48"-->
+        <!--android:text="@string/change_password"-->
+        <!--android:drawableRight="@drawable/icon_next_change"-->
+        <!--style="@style/item_text"-->
+        <!--android:layout_height="@dimen/default_gap_100" />-->
     <View
         android:layout_width="match_parent"
         android:background="@color/common_gray_day"
         android:layout_height="@dimen/default_gap_1"/>
 
     <View
-        android:layout_marginTop="@dimen/default_gap_120"
+        android:layout_marginTop="@dimen/default_gap_90"
         android:layout_width="match_parent"
         android:background="@color/common_gray_day"
         android:layout_height="@dimen/default_gap_1"/>
+
+
     <TextView
-        android:id="@+id/resetXBird"
+        android:id="@+id/useHelp"
         android:layout_width="match_parent"
         style="@style/item_text"
         android:paddingRight="@dimen/default_gap_50"
         android:layout_marginLeft="@dimen/default_gap_48"
-        android:text="@string/feedback"
+        android:text="@string/setting_use_help"
+        android:drawableRight="@drawable/icon_next_change"
+        android:layout_height="@dimen/default_gap_100" />
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/common_gray_day"
+        android:layout_marginLeft="@dimen/default_gap_48"
+        android:layout_height="@dimen/default_gap_1"/>
+    <TextView
+        android:id="@+id/feedback"
+        android:layout_width="match_parent"
+        style="@style/item_text"
+        android:paddingRight="@dimen/default_gap_50"
+        android:layout_marginLeft="@dimen/default_gap_48"
+        android:text="@string/setting_feedback"
         android:drawableRight="@drawable/icon_next_change"
         android:layout_height="@dimen/default_gap_100" />
     <View
@@ -77,10 +136,33 @@
         android:layout_width="match_parent"
         style="@style/item_text"
         android:paddingRight="@dimen/default_gap_50"
-        android:text="@string/about"
         android:layout_marginLeft="@dimen/default_gap_48"
+        android:text="@string/setting_about_us"
         android:drawableRight="@drawable/icon_next_change"
         android:layout_height="@dimen/default_gap_100" />
+    <!--<TextView-->
+        <!--android:id="@+id/resetXBird"-->
+        <!--android:layout_width="match_parent"-->
+        <!--style="@style/item_text"-->
+        <!--android:paddingRight="@dimen/default_gap_50"-->
+        <!--android:layout_marginLeft="@dimen/default_gap_48"-->
+        <!--android:text="@string/feedback"-->
+        <!--android:drawableRight="@drawable/icon_next_change"-->
+        <!--android:layout_height="@dimen/default_gap_100" />-->
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:background="@color/common_gray_day"-->
+        <!--android:layout_marginLeft="@dimen/default_gap_48"-->
+        <!--android:layout_height="@dimen/default_gap_1"/>-->
+    <!--<TextView-->
+        <!--android:id="@+id/about"-->
+        <!--android:layout_width="match_parent"-->
+        <!--style="@style/item_text"-->
+        <!--android:paddingRight="@dimen/default_gap_50"-->
+        <!--android:text="@string/about"-->
+        <!--android:layout_marginLeft="@dimen/default_gap_48"-->
+        <!--android:drawableRight="@drawable/icon_next_change"-->
+        <!--android:layout_height="@dimen/default_gap_100" />-->
     <View
         android:layout_width="match_parent"
         android:background="@color/common_gray_day"
@@ -92,9 +174,9 @@
         android:layout_width="wrap_content"
         android:layout_marginLeft="@dimen/default_gap_50"
         android:layout_marginRight="@dimen/default_gap_50"
-        android:layout_marginTop="@dimen/default_gap_348"
+        android:layout_marginTop="@dimen/default_gap_150"
         android:text="@string/quit_login"
-        android:textColor="@color/white"
+        android:textColor="@color/common_orange_day"
         android:textSize="@dimen/default_size_36"
         android:id="@+id/quit_login"
         android:layout_height="@dimen/default_gap_93">
@@ -102,3 +184,4 @@
 
 
 </LinearLayout>
+</ScrollView>

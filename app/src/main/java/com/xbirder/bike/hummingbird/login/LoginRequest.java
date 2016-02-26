@@ -1,11 +1,9 @@
 package com.xbirder.bike.hummingbird.login;
 
 import com.android.volley.Request;
-import com.baidu.core.net.base.HttpGsonRequest;
 import com.baidu.core.net.base.HttpJsonRequest;
 import com.baidu.core.net.base.HttpResponse;
 import com.xbirder.bike.hummingbird.config.NetworkConfig;
-import com.xbirder.bike.hummingbird.login.data.LoginData;
 
 import org.json.JSONObject;
 
@@ -36,7 +34,7 @@ public class LoginRequest extends HttpJsonRequest<JSONObject> {
 
     @Override
     protected String url() {
-        return NetworkConfig.SERVER_ADDRESS;
+        return NetworkConfig.SERVER_ADDRESS_DEV;
     }
 
     @Override

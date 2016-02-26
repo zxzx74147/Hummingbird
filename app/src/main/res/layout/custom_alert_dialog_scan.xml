@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/scan_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/default_gap_36"
+        android:paddingTop="@dimen/default_gap_36"
+        android:gravity="center_horizontal"
+        android:text="主人，召唤您的锋鸟！"
+        android:textColor="@color/white"
+        android:background="@color/common_orange_day"
+        android:textSize="@dimen/default_gap_36"
+        />
+    <ListView
+        android:id="@+id/scan_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@color/common_orange_day"
+        android:dividerHeight="@dimen/default_gap_1">
+
+    </ListView>
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="200dp"-->
+        <!--android:layout_marginLeft="30dp"-->
+        <!--android:layout_marginRight="30dp"-->
+        <!--android:focusable="true"-->
+        <!--android:focusableInTouchMode="true"-->
+        <!--android:paddingTop="@dimen/default_gap_20"-->
+        <!--android:paddingBottom="@dimen/default_gap_40"-->
+        <!--android:gravity="center_horizontal">-->
+
+        <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/tv_title"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_centerHorizontal="true"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:gravity="center_horizontal"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:paddingTop="50dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:text="确认刷新固件？"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:textColor="#FF6600"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:textSize="20sp" />&ndash;&gt;-->
+
+        <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_marginTop="@dimen/default_gap_25"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="fill_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_below="@+id/tv_title"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:orientation="horizontal"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:paddingTop="10dp">&ndash;&gt;-->
+
+            <!--&lt;!&ndash;<Button&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/bt_cancel"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_width="0dp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:background="@color/white"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:text="取消"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:textColor="#FF6600" />&ndash;&gt;-->
+
+            <!--&lt;!&ndash;<Button&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/bt_make_sure"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_width="0dp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:background="#FF6600"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:text="确定"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:textColor="@color/white" />&ndash;&gt;-->
+        <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
+    <!--</RelativeLayout>-->
+
+</LinearLayout>

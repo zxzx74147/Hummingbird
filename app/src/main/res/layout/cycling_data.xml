@@ -230,7 +230,7 @@
                         android:layout_weight="2"
                         android:text="0"
                         android:textSize="@dimen/default_size_80"
-                        android:textColor="@color/cycling_data"
+                        android:textColor="@color/common_orange_day"
                         android:gravity="center_vertical|center_horizontal"
                         />
                 </LinearLayout>
@@ -255,7 +255,7 @@
                         android:layout_weight="2"
                         android:text="0"
                         android:textSize="@dimen/default_size_80"
-                        android:textColor="@color/cycling_data"
+                        android:textColor="@color/common_orange_day"
                         android:gravity="center_vertical|center_horizontal"
                         />
                 </LinearLayout>
@@ -286,7 +286,7 @@
                         android:layout_weight="2"
                         android:text="0"
                         android:textSize="@dimen/default_size_80"
-                        android:textColor="@color/cycling_data"
+                        android:textColor="@color/common_orange_day"
                         android:gravity="center_vertical|center_horizontal"
                         />
                 </LinearLayout>
@@ -311,7 +311,7 @@
                         android:layout_weight="2"
                         android:text="0"
                         android:textSize="@dimen/default_size_80"
-                        android:textColor="@color/cycling_data"
+                        android:textColor="@color/common_orange_day"
                         android:gravity="center_vertical|center_horizontal"
                         />
                 </LinearLayout>

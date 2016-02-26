@@ -8,28 +8,37 @@
         android:layout_height="match_parent"
         android:id="@+id/logo_videoView"
         android:layout_width="wrap_content"/>
+    <!--<SurfaceView-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:id="@+id/logo_videoView"-->
+    <!--android:layout_width="wrap_content"/>-->
 
-    <ImageButton
-        android:background="@drawable/icon_start_login_drawable"
-        android:id="@+id/btn_login"
-        android:scaleType="fitCenter"
-        android:layout_centerHorizontal="true"
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/default_gap_200"
-        android:layout_width="@dimen/default_gap_500"
-        android:layout_height="@dimen/default_gap_90" />
-
-    <Button
-        android:id="@+id/btn_reg"
-        android:text="@string/reg_user"
-        android:textColor="#FFFFFFFF"
-        android:textSize="15sp"
-        android:background="@null"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="65dp"
-        android:layout_centerHorizontal="true" />
-
-
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_reg"
+            android:text="@string/register"
+            android:textColor="#FF000000"
+            android:textSize="@dimen/text_size_name"
+            android:background="@color/common_div"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+             />
+        <Button
+            android:id="@+id/btn_login"
+            android:text="@string/login"
+            android:textColor="#FFFFFFFF"
+            android:textSize="@dimen/text_size_name"
+            android:background="@color/common_orange_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
 </RelativeLayout>
