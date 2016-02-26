@@ -114,7 +114,7 @@
         android:layout_height="wrap_content"
         android:background="@null"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/default_gap_20"
         android:src="@drawable/search" />
 
 

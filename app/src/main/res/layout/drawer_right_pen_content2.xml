@@ -28,7 +28,7 @@
             <TextView
                 android:id="@+id/dc_speed_num"
                 android:textSize="@dimen/default_size_75"
-                android:text="20"
+                android:text="0"
                 android:layout_width="wrap_content"
                 android:textColor="@color/common_orange_day"
                 android:lineSpacingExtra="0dip"
@@ -81,7 +81,7 @@
                 <TextView
                     android:id="@+id/dc_mileage_num"
                     android:textSize="@dimen/default_size_75"
-                    android:text="20"
+                    android:text="0"
                     android:layout_width="wrap_content"
                     android:textColor="@color/common_orange_day"
                     android:lineSpacingExtra="0dip"
@@ -133,7 +133,7 @@
                 <TextView
                     android:id="@+id/dc_power_num"
                     android:textSize="@dimen/default_size_75"
-                    android:text="80"
+                    android:text="100"
                     android:layout_width="wrap_content"
                     android:textColor="@color/common_orange_day"
                     android:lineSpacingExtra="0dip"
