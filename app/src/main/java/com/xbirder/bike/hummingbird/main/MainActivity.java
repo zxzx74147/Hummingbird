@@ -109,6 +109,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -485,7 +486,8 @@ public class MainActivity extends BaseActivity {
                         tempDistance = mTotalDistance + mBaiduMapDistance;
                         BaiduMapDistance = BaiduMapDistance - mBaiduMapDistance*100;
                     }else{
-                        tempDistance = mTotalDistance + tempDistance - mlishiTempDistance;
+                        //tempDistance = mTotalDistance + tempDistance - mlishiTempDistance;
+                        tempDistance = tempDistance - mlishiTempDistance;
                     }
 
                     setStoreRidingData(tempDistance, tempTime);
@@ -1045,23 +1047,35 @@ public class MainActivity extends BaseActivity {
                 MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
                 mBaiduMap.animateMapStatus(u);
 
-                OverlayOptions ooDot2 = new DotOptions().center(ll).radius(13)
-                        .color(0xFFffffff);
-//                        .color(0xFF0000FF);0xFFff973a
-                mBaiduMap.addOverlay(ooDot2);
-
-                OverlayOptions ooDot = new DotOptions().center(ll).radius(10)
-                          .color(0xFFff973a);
-//                        .color(0xFF0000FF);
-                mBaiduMap.addOverlay(ooDot);
-
-                lastll = ll;
+//                OverlayOptions ooDot2 = new DotOptions().center(ll).radius(13)
+//                        .color(0xFFffffff);
+////                        .color(0xFF0000FF);0xFFff973a
+//                mBaiduMap.addOverlay(ooDot2);
+//
+//                OverlayOptions ooDot = new DotOptions().center(ll).radius(10)
+//                          .color(0xFFff973a);
+////                        .color(0xFF0000FF);
+//                mBaiduMap.addOverlay(ooDot);
+//
+//                lastll = ll;
 
                 String cityName = location.getCity();
                 if(cityName == null){
                     //mWeatherText.setText("获取城市位置失败！");
                     isFirstLoc = true;
                 }else{
+                    OverlayOptions ooDot2 = new DotOptions().center(ll).radius(13)
+                            .color(0xFFffffff);
+//                        .color(0xFF0000FF);0xFFff973a
+                    mBaiduMap.addOverlay(ooDot2);
+
+                    OverlayOptions ooDot = new DotOptions().center(ll).radius(10)
+                            .color(0xFFff973a);
+//                        .color(0xFF0000FF);
+                    mBaiduMap.addOverlay(ooDot);
+
+                    lastll = ll;
+
                     getWeather(cityName.substring(0, cityName.length() - 1));
                     if(!mDrawerLayout.isDrawerOpen(mRightDrawer)){
                         mLocClient.stop();
@@ -1071,14 +1085,12 @@ public class MainActivity extends BaseActivity {
                 LatLng ll = new LatLng(location.getLatitude(),
                         location.getLongitude());
 
-
 //                if(mWeatherText.equals(R.string.default_weather)){
 //                    String cityName = location.getCity();
 //                    if(cityName != null){
 //                        getWeather(cityName.substring(0, cityName.length() - 1));
 //                    }
 //                }
-
 
                 int pdistance = (int) DistanceUtil.getDistance(ll, lastll);
                 if(pdistance < 10) {
@@ -1616,8 +1628,14 @@ public class MainActivity extends BaseActivity {
         mSpeedText.setText(String.valueOf(speed));
 
         mdc_speed_num.setText(String.valueOf(speed));
-        mdc_mileage_num.setText(AccountManager.sharedInstance().getStoreDistance());
 
+        String mdc_mileage_numStr = AccountManager.sharedInstance().getStoreDistance();
+//        int i = Integer.parseInt(mdc_mileage_numStr);
+//        float mdc_mileage_numFloat = (float) i/1000;
+        float mdc_mileage_numFloat = Float.parseFloat(mdc_mileage_numStr) / 1000.0f;
+        DecimalFormat decimalFormat=new DecimalFormat("0.0");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+        String mdc_mileage_numStr2 = decimalFormat.format(mdc_mileage_numFloat);
+        mdc_mileage_num.setText(mdc_mileage_numStr2);
     }
 
     private void setBattery(int battery) {

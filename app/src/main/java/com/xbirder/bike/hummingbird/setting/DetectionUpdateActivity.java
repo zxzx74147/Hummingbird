@@ -66,15 +66,10 @@ public class DetectionUpdateActivity extends BaseActivity {
     private CustomAlertDialog detectionUpdateCustomAlertDialog;
     private CustomAlertDialog detectionUpdateRunCustomAlertDialog;
 
-    //private ProgressBar detectionUpdate_progressbar;
-//    private TextView detectionUpdate_complete_lines;
-//    private TextView detectionUpdate_total_lines;
-
     private DetectionUpdateRollView mDetectionUpdateRollView;
     private ImageView detection_update_view_bg;
     private TextView update_persent;
     private TextView update_persent_desc;
-    //private Button bt_back;
     private Button bt_dialog_make_sure;
     private Button bt_dialog_cancel;
     private Button bt_dp_reset;
@@ -104,16 +99,8 @@ public class DetectionUpdateActivity extends BaseActivity {
                     isUpdateing = false;
                     break;
             }
-//            //这里就一条消息
-//            if(msg.arg1 == 1){
-//                detectionUpdate();
-//            }
-//            if(msg.arg2 != 0){
-//                detectionUpdateING(msg.arg2);
-//            }
         }
     };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,7 +158,6 @@ public class DetectionUpdateActivity extends BaseActivity {
                 if (!fileDir.exists()) {
                     fileDir.mkdirs();
                 }
-
                 String newFilename = Environment.getExternalStorageDirectory() + "/xbird/update.xbird";
                 File file = new File(newFilename);
                 //如果目标文件已经存在，则删除。产生覆盖旧文件的效果
@@ -250,11 +236,7 @@ public class DetectionUpdateActivity extends BaseActivity {
         sendRequest(request);
     }
 
-
     private void detectionUpdate(){
-
-         //showDetectionUpdateING();
-        //String fileName = "osfile"; //文件名字
         String fileName = Environment.getExternalStorageDirectory()+"/xbird/update.xbird";
         File file = new File(fileName);
         try{
@@ -268,10 +250,7 @@ public class DetectionUpdateActivity extends BaseActivity {
                 InputStreamReader inputreader = new InputStreamReader(instream);
                 BufferedReader buffreader = new BufferedReader(inputreader);
 
-
                 String line;
-                //int checkNum = 0;
-
                 //分行读取
                 while (( line = buffreader.readLine()) != null) {
                     if(line.length() < 3){
@@ -287,22 +266,13 @@ public class DetectionUpdateActivity extends BaseActivity {
                     String linehead = line.substring(0,3);
                     if(linehead.equals(":10")) {
                         for (int i = 0; i < 16; i++) {
-                            Log.d("aa", line);
                             String lineciel = line.substring(9+2*i,9+2*i+2);
-                            //String lineciel2 = line.substring(9+2*i+1,9+2*i+2);
-                            //Integer.parseInt(lineciel, 16);
-//                            byte devBin = (byte) Integer.parseInt("0x"+lineciel, 16);
-//
-//                            Log.d("aa", "aa");
-                            //byte value5 = (byte) 0xC8;
-                            //int v1 = Integer.parseInt(lineciel);
+
                             byte v= (byte) Integer.parseInt(lineciel, 16);
                             value[i+2] = (byte) (v & 0xFF);
 
                             int ilineciel = hexStringToInt(lineciel);
                             checkvalue += ilineciel;
-//                            bytes[i] = (byte) ilineciel;
-
                         }
                         checkvalue = checkvalue%256;
                         byte checkvalueByte = (byte) checkvalue;
@@ -322,7 +292,6 @@ public class DetectionUpdateActivity extends BaseActivity {
                 //detectionUpdate_total_lines.setText("/"+maxlines);
                 //detectionUpdate_progressbar.setMax(maxlines);
                 detectionUpdateStart();
-
             }
             //res = EncodingUtils.getString(buffer, "UTF-8");
         } catch (java.io.FileNotFoundException e)
@@ -338,7 +307,6 @@ public class DetectionUpdateActivity extends BaseActivity {
 
     }
     private void detectionReset(){
-
         //showDetectionUpdateING();
         String fileName = "osfile"; //文件名字
 
@@ -427,7 +395,6 @@ public class DetectionUpdateActivity extends BaseActivity {
                     //detectionUpdateRunCustomAlertDialog.dismissDialog();
                 }
             }
-
             @Override
             public void showWindowDetail(Window window) {
                 //detectionUpdate_progressbar = (ProgressBar) window.findViewById(R.id.progressbar);
@@ -452,8 +419,6 @@ public class DetectionUpdateActivity extends BaseActivity {
         byte[] value = {XBirdBluetoothConfig.PREFIX, XBirdBluetoothConfig.DETECTION_END, XBirdBluetoothConfig.END};
         HuApplication.sharedInstance().XBirdBluetoothManager().sendToBluetooth(value);
     }
-
-
 
     private final BroadcastReceiver mGattUpdateReceiver2 = new BroadcastReceiver() {
         @Override
@@ -499,7 +464,6 @@ public class DetectionUpdateActivity extends BaseActivity {
 //                            msg.what = DETECTION_UI_UPDATE;
 //                            msg.arg1 = sendid;
 //                            msg.sendToTarget();
-
                             //updatePercent(sendid);
                             sendid++;
 
@@ -529,7 +493,6 @@ public class DetectionUpdateActivity extends BaseActivity {
         }
     }
 
-
     private void updatePercent(int numid){
         //detectionUpdate_complete_lines.setText("" + numid);
         //detectionUpdate_progressbar.setProgress(numid);
@@ -546,8 +509,6 @@ public class DetectionUpdateActivity extends BaseActivity {
         char[] chars = str.toCharArray();
         int valueset1 = (int) chars[0];//49
         int valueset2 = (int) chars[1];//49
-
-
 
         int int_ch1;
         if(valueset1 >= 48 && valueset1 <= 57)
@@ -568,13 +529,11 @@ public class DetectionUpdateActivity extends BaseActivity {
         return int_ch1 + int_ch2;
     }
 
-
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
         return intentFilter;
     }
-
 
     private void setUpdateRoll(int battery) {
         if(battery > 0&&battery<100){
@@ -664,10 +623,6 @@ public class DetectionUpdateActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-
-
-
         registerReceiver(mGattUpdateReceiver2, makeGattUpdateIntentFilter());
 
     }
@@ -676,6 +631,4 @@ public class DetectionUpdateActivity extends BaseActivity {
         super.onPause();
         //unregisterReceiver(mGattUpdateReceiver2);
     }
-
-
 }

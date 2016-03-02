@@ -159,8 +159,9 @@ public class CyclingRecords extends BaseActivity{
 
                                     if (data != null && data.equals(mTodayStr)) {
                                         float todayDis = distance / 1000.0f + mLocalDistance;
-                                        String finalTodayDisStr = String.valueOf(todayDis);
-                                        mTodayDisTextView.setText(finalTodayDisStr);
+                                        String todayDisStr = decimalFormat.format(todayDis);
+                                       //String finalTodayDisStr = String.valueOf(todayDis);
+                                        mTodayDisTextView.setText(todayDisStr);
 
                                         mTodayTimeTextView.setText(getTimeString(time+mLocalTime));
                                     }
